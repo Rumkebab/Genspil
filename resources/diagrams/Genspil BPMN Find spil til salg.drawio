@@ -1,0 +1,154 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.6">
+  <diagram name="Page-1" id="ry6Oc0hCemptXLkoPPoE">
+    <mxGraphModel dx="1264" dy="681" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dt-YGawLlrKlaYyseMyV-1" parent="1" style="swimlane;html=1;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;whiteSpace=wrap;" value="Genspil: Nutid - find spil til salg" vertex="1">
+          <mxGeometry height="450" width="650" x="100" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-2" parent="dt-YGawLlrKlaYyseMyV-1" style="swimlane;html=1;startSize=20;horizontal=0;" value="Lagerliste" vertex="1">
+          <mxGeometry height="250" width="650" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-6" parent="dt-YGawLlrKlaYyseMyV-2" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;" value="Åbner liste i word" vertex="1">
+          <mxGeometry height="40" width="70" x="35.5" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-49" parent="dt-YGawLlrKlaYyseMyV-2" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=standard;symbol=timer;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="130" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-53" edge="1" parent="dt-YGawLlrKlaYyseMyV-2" source="dt-YGawLlrKlaYyseMyV-6" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="dt-YGawLlrKlaYyseMyV-49" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="105.5" y="124.65999999999997" as="sourcePoint" />
+            <mxPoint x="265.5" y="124.65999999999997" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-3" parent="dt-YGawLlrKlaYyseMyV-1" style="swimlane;html=1;startSize=20;horizontal=0;" value="Medarbejder" vertex="1">
+          <mxGeometry height="180" width="650" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-5" parent="dt-YGawLlrKlaYyseMyV-3" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=standard;symbol=general;" value="Vil finde et spil" vertex="1">
+          <mxGeometry height="35" width="35" x="53" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-7" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;" target="dt-YGawLlrKlaYyseMyV-6" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="70" y="35" as="sourcePoint" />
+            <mxPoint x="70" y="-50" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-17" parent="dt-YGawLlrKlaYyseMyV-3" style="rounded=1;whiteSpace=wrap;html=1;" value="Ønsker kunden dette?" vertex="1">
+          <mxGeometry height="40" width="90" x="304" y="32" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-21" parent="dt-YGawLlrKlaYyseMyV-3" style="rhombus;whiteSpace=wrap;html=1;" value="Findes?" vertex="1">
+          <mxGeometry height="80" width="80" x="190" y="-170" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-24" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;startArrow=diamondThin;startFill=0;endSize=6;startSize=10;rounded=0;" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="270" y="-130.17000000000002" as="sourcePoint" />
+            <mxPoint x="310" y="-130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-27" parent="dt-YGawLlrKlaYyseMyV-3" style="rounded=1;whiteSpace=wrap;html=1;" value="Spil ikke tilgængeligt" vertex="1">
+          <mxGeometry height="40" width="90" x="500" y="-70" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-29" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" source="dt-YGawLlrKlaYyseMyV-21" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;startArrow=dash;startFill=0;endSize=6;startSize=6;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.51;exitY=0.038;exitDx=0;exitDy=0;exitPerimeter=0;" target="dt-YGawLlrKlaYyseMyV-27" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="535" y="-210" />
+            </Array>
+            <mxPoint x="229" y="-190" as="sourcePoint" />
+            <mxPoint x="389" y="-170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-32" parent="dt-YGawLlrKlaYyseMyV-3" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;" value="Stand?" vertex="1">
+          <mxGeometry height="40" width="82" x="308" y="-150" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-35" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" source="dt-YGawLlrKlaYyseMyV-32" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;startArrow=diamondThin;startFill=0;endSize=6;startSize=10;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;elbow=horizontal;" target="dt-YGawLlrKlaYyseMyV-17" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="240" y="-70" as="sourcePoint" />
+            <mxPoint x="400" y="-70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-36" connectable="0" parent="dt-YGawLlrKlaYyseMyV-35" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Slidt" vertex="1">
+          <mxGeometry relative="1" x="0.3987" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-37" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dt-YGawLlrKlaYyseMyV-15" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="445" y="-100" />
+            </Array>
+            <mxPoint x="390" y="-130.17000000000002" as="sourcePoint" />
+            <mxPoint x="550" y="-130.17000000000002" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-38" connectable="0" parent="dt-YGawLlrKlaYyseMyV-37" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="God" vertex="1">
+          <mxGeometry relative="1" x="0.357" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-44" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;startArrow=diamondThin;startFill=0;endSize=6;startSize=10;rounded=0;elbow=vertical;" target="dt-YGawLlrKlaYyseMyV-42" value="Nej">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="304" y="51.83000000000004" as="sourcePoint" />
+            <mxPoint x="464" y="51.83000000000004" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-39" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;startArrow=diamondThin;startFill=0;endSize=6;startSize=10;rounded=0;entryX=0.544;entryY=0.016;entryDx=0;entryDy=0;entryPerimeter=0;elbow=vertical;" target="dt-YGawLlrKlaYyseMyV-40" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="350" y="70" as="sourcePoint" />
+            <mxPoint x="350" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-41" connectable="0" parent="dt-YGawLlrKlaYyseMyV-39" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Ja" vertex="1">
+          <mxGeometry relative="1" x="0.2992" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-40" parent="dt-YGawLlrKlaYyseMyV-3" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;" value="Træk X% af prisen" vertex="1">
+          <mxGeometry height="40" width="86" x="304" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-42" parent="dt-YGawLlrKlaYyseMyV-3" style="whiteSpace=wrap;html=1;rounded=1;" value="Intet foretages" vertex="1">
+          <mxGeometry height="38" width="69" x="180" y="33.5" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-15" parent="dt-YGawLlrKlaYyseMyV-3" style="rounded=1;whiteSpace=wrap;html=1;" value="Fuld pris" vertex="1">
+          <mxGeometry height="40" width="50" x="420" y="32.5" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-45" parent="dt-YGawLlrKlaYyseMyV-3" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=terminate2;" value="" vertex="1">
+          <mxGeometry height="40" width="40" x="423" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-46" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;" target="dt-YGawLlrKlaYyseMyV-45" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="390" y="129.83000000000004" as="sourcePoint" />
+            <mxPoint x="550" y="129.83000000000004" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-47" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" source="dt-YGawLlrKlaYyseMyV-15" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;exitX=0.459;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;" target="dt-YGawLlrKlaYyseMyV-45" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="445" y="90" />
+            </Array>
+            <mxPoint x="450" y="73" as="sourcePoint" />
+            <mxPoint x="600" y="72.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-57" parent="dt-YGawLlrKlaYyseMyV-3" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=terminate;" value="" vertex="1">
+          <mxGeometry height="40" width="40" x="530" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-48" edge="1" parent="dt-YGawLlrKlaYyseMyV-3" source="dt-YGawLlrKlaYyseMyV-27" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="dt-YGawLlrKlaYyseMyV-57" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="50" />
+            </Array>
+            <mxPoint x="460" y="-20" as="sourcePoint" />
+            <mxPoint x="550" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dt-YGawLlrKlaYyseMyV-54" edge="1" parent="dt-YGawLlrKlaYyseMyV-1" source="dt-YGawLlrKlaYyseMyV-49" style="edgeStyle=elbowEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="dt-YGawLlrKlaYyseMyV-21" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="160" y="144.65999999999997" as="sourcePoint" />
+            <mxPoint x="320" y="144.65999999999997" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
