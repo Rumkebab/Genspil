@@ -1,0 +1,2 @@
+﻿0;Sequence;245.00;0,2;1;2-4;true;2
+1;Catan Grundspil;299.95;0,1,2;2;3-4;true;1
