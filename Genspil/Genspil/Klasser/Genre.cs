@@ -1,4 +1,4 @@
-﻿namespace Genspil.Models
+﻿namespace Genspil.Klasser
 {
     public class Genre
     {
