@@ -1,36 +1,49 @@
-﻿namespace Genspil.Klasser
+﻿namespace Genspil.Klasser // Ligger i mappen Klasser
 {
-    public class Spil
+    public class Spil // Klasse der repræsenterer ét brætspil
     {
-        public int Id { get; set; }
-        public string Navn { get; set; }
-        public double Pris { get; set; }
-        public string GenreIds { get; set; }
-        public int StandId { get; set; }
-        public string AntalSpillere { get; set; }
-        public bool ErAvailable { get; set; }
-        public int AntalAvailable { get; set; }
+        // Properties (data om spillet)
+        public string Titel { get; set; }   // Navnet på spillet
+        public Genre Genre { get; set; }    // Hvilken type spil det er
+        public Stand Stand { get; set; }    // Hvor god stand spillet er i
+        public int Pris { get; set; }       // Pris i kroner
 
-        public override string ToString()
+        // Constructor - bruges når vi opretter et nyt spil
+        public Spil(string titel, Genre genre, Stand stand, int pris)
         {
-            return $"{Id};{Navn};{Pris};{GenreIds};{StandId};{AntalSpillere};{ErAvailable};{AntalAvailable}";
+            Titel = titel;   // Gemmer titel
+            Genre = genre;   // Gemmer genre
+            Stand = stand;   // Gemmer stand
+            Pris = pris;     // Gemmer pris
         }
 
-        public static Spil FromString(string data)
+        // Bruges når vi skal gemme spillet som tekst i en fil
+        public override string ToString()
         {
-            string[] parts = data.Split(';');
+            // Laver objektet om til en tekstlinje med ; imellem
+            return $"{Titel};{Genre};{Stand};{Pris}";
+        }
 
-            return new Spil
-            {
-                Id = int.Parse(parts[0]),
-                Navn = parts[1],
-                Pris = double.Parse(parts[2]),
-                GenreIds = parts[3],
-                StandId = int.Parse(parts[4]),
-                AntalSpillere = parts[5],
-                ErAvailable = bool.Parse(parts[6]),
-                AntalAvailable = int.Parse(parts[7])
-            };
+        // Bruges når vi læser fra fil og skal lave tekst om til et objekt
+        public static Spil FromString(string linje)
+        {
+            // Deler linjen op ved ;
+            string[] data = linje.Split(';');
+
+            // Henter værdierne fra arrayet
+            string titel = data[0];
+            Genre genre = Enum.Parse<Genre>(data[1]);
+            Stand stand = Enum.Parse<Stand>(data[2]);
+            int pris = int.Parse(data[3]);
+
+            // Returnerer et nyt Spil-objekt med værdierne
+            return new Spil(titel, genre, stand, pris);
+        }
+
+        // Bruges til at vise spillet pænt i konsollen
+        public string VisInfo()
+        {
+            return $"Titel: {Titel}, Genre: {Genre}, Stand: {Stand}, Pris: {Pris} kr.";
         }
     }
 }

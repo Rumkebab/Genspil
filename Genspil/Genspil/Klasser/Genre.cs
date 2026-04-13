@@ -1,24 +1,11 @@
-﻿namespace Genspil.Klasser
+﻿namespace Genspil.Klasser // Høre til i Klasser mappen
 {
-    public class Genre
+    public enum Genre // bruger enum her for at vælge valg
     {
-        public int Id { get; set; }
-        public string Navn { get; set; }
-
-        public override string ToString()
-        {
-            return $"{Id},{Navn}";
-        }
-
-        public static Genre FromString(string data)
-        {
-            string[] parts = data.Split(',');
-
-            return new Genre
-            {
-                Id = int.Parse(parts[0]),
-                Navn = parts[1]
-            };
-        }
+        Strategi,
+        Familie,
+        Kortspil,
+        Quiz,
+        Samarbejde
     }
 }
