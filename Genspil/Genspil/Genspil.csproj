@@ -9,10 +9,14 @@
 
   <ItemGroup>
     <None Remove="Datafiler\spil.txt" />
+    <None Remove="Datafiler\medarbejdere.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Datafiler\spil.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Datafiler\medarbejdere.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

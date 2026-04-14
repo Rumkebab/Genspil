@@ -1,6 +1,5 @@
 ﻿using Genspil.Klasser;
 using Genspil.Data;
-using System.Security.Cryptography.X509Certificates;
 
 // Sti til tekstfilen
 string filsti = "Datafiler/spil.txt";
@@ -8,11 +7,14 @@ string filsti = "Datafiler/spil.txt";
 // Læser spillene fra filen når programmet starter
 List<Spil> spilListe = SpilDataHandler.LæsFraFil(filsti);
 
-static void Hovedmenu(string filsti, List<Spil> spilListe) { 
+Medarbejder.VisAlleMedarbejdere();
+
+static void Hovedmenu(string filsti, List<Spil> spilListe) {
 
     // Styrer om programmet skal fortsætte
-    bool kører = true;
+    bool kører = false;
 
+    
     // Menu-loop
     while (kører)
     {
