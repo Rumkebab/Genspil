@@ -1,5 +1,5 @@
 ﻿Matador;Familie;God;150
-Catan;Strategi;Ny;250
-Hint;Quiz;God;180
+;Strategi;Ny;250
+Gæt;Quiz;God;180
 UNO;Kortspil;Slidt;50
-Pandemic;Samarbejde;God;220
+;Samarbejde;God;220
