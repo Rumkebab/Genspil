@@ -1,0 +1,5 @@
+﻿Matador;Familie;God;150;1;false;false
+Catan;Strategi;Ny;250;2;false;false
+Gæt;Quiz;God;180;3;false;false
+UNO;Kortspil;Slidt;50;4;false;false
+Pandemic;Samarbejde;God;220;5;false;false
