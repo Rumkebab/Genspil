@@ -20,7 +20,8 @@ while (kører)
     Console.WriteLine("3. Gem spil til fil");
     Console.WriteLine("4. Slet spil");
     Console.WriteLine("5. Rediger spil");
-    Console.WriteLine("6. Afslut");
+    Console.WriteLine("6. Søg efter spil");
+    Console.WriteLine("7. Afslut");
     Console.Write("Vælg en mulighed: ");
 
     string valg = Console.ReadLine();
@@ -28,12 +29,10 @@ while (kører)
     switch (valg)
     {
         case "1":
-            // Viser alle spil
             VisAlleSpil(spilListe);
             break;
 
         case "2":
-            // Opretter et nyt spil
             Spil nytSpil = OpretNytSpil();
             spilListe.Add(nytSpil);
 
@@ -42,7 +41,6 @@ while (kører)
             break;
 
         case "3":
-            // Gemmer listen til fil
             SpilDataHandler.GemTilFil(filsti, spilListe);
 
             Console.WriteLine("Spillene er gemt til fil.");
@@ -50,17 +48,18 @@ while (kører)
             break;
 
         case "4":
-            // Sletter et spil
             SletSpil(spilListe);
             break;
 
         case "5":
-            // Redigerer et spil
             RedigerSpil(spilListe);
             break;
 
         case "6":
-            // Afslutter programmet
+            SøgEfterSpil(spilListe);
+            break;
+
+        case "7":
             kører = false;
             break;
 
@@ -176,7 +175,6 @@ static void RedigerSpil(List<Spil> spilListe)
         return;
     }
 
-    // Vis alle spil med nummer
     for (int i = 0; i < spilListe.Count; i++)
     {
         Console.WriteLine($"{i + 1}. {spilListe[i].VisInfo()}");
@@ -193,7 +191,6 @@ static void RedigerSpil(List<Spil> spilListe)
             Console.WriteLine();
             Console.WriteLine("Tryk Enter hvis du vil beholde den nuværende værdi.");
 
-            // Titel
             Console.Write($"Ny titel ({valgtSpil.Titel}): ");
             string nyTitel = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(nyTitel))
@@ -201,7 +198,6 @@ static void RedigerSpil(List<Spil> spilListe)
                 valgtSpil.Titel = nyTitel;
             }
 
-            // Genre
             Console.WriteLine($"Nuværende genre: {valgtSpil.Genre}");
             Console.WriteLine("Vælg ny genre:");
             Console.WriteLine("1 = Strategi");
@@ -222,16 +218,15 @@ static void RedigerSpil(List<Spil> spilListe)
                     }
                     else
                     {
-                        Console.WriteLine("Ugyldigt genrevalg.");
+                        Console.WriteLine("Ugyldigt genrevalg. Den gamle genre beholdes.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Ugyldi");
+                    Console.WriteLine("Ugyldigt input. Den gamle genre beholdes.");
                 }
             }
 
-            // Stand
             Console.WriteLine($"Nuværende stand: {valgtSpil.Stand}");
             Console.WriteLine("Vælg ny stand:");
             Console.WriteLine("1 = Ny");
@@ -250,16 +245,15 @@ static void RedigerSpil(List<Spil> spilListe)
                     }
                     else
                     {
-                        Console.WriteLine("Ugyldigt standvalg.");
+                        Console.WriteLine("Ugyldigt standvalg. Den gamle stand beholdes.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Ugyldigt");
+                    Console.WriteLine("Ugyldigt input. Den gamle stand beholdes.");
                 }
             }
 
-            // Pris
             Console.Write($"Ny pris ({valgtSpil.Pris} kr): ");
             string prisInput = Console.ReadLine();
 
@@ -271,7 +265,7 @@ static void RedigerSpil(List<Spil> spilListe)
                 }
                 else
                 {
-                    Console.WriteLine("Ugyldig");
+                    Console.WriteLine("Ugyldig pris. Den gamle pris beholdes.");
                 }
             }
 
@@ -286,6 +280,57 @@ static void RedigerSpil(List<Spil> spilListe)
     else
     {
         Console.WriteLine("Du skal skrive et tal.");
+    }
+
+    Pause();
+}
+
+// Søger efter spil ud fra titel
+static void SøgEfterSpil(List<Spil> spilListe)
+{
+    Console.Clear();
+    Console.WriteLine("=== Søg efter spil ===");
+
+    if (spilListe.Count == 0)
+    {
+        Console.WriteLine("Ingen spil i listen.");
+        Pause();
+        return;
+    }
+
+    Console.Write("Indtast titel eller en del af titlen: ");
+    string søgning = Console.ReadLine();
+
+    if (string.IsNullOrWhiteSpace(søgning))
+    {
+        Console.WriteLine("Du skal skrive noget for at søge.");
+        Pause();
+        return;
+    }
+
+    List<Spil> fundneSpil = new List<Spil>();
+
+    foreach (Spil spil in spilListe)
+    {
+        if (spil.Titel.ToLower().Contains(søgning.ToLower()))
+        {
+            fundneSpil.Add(spil);
+        }
+    }
+
+    Console.WriteLine();
+
+    if (fundneSpil.Count == 0)
+    {
+        Console.WriteLine("Ingen spil fundet.");
+    }
+    else
+    {
+        Console.WriteLine("Fundne spil:");
+        for (int i = 0; i < fundneSpil.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {fundneSpil[i].VisInfo()}");
+        }
     }
 
     Pause();
