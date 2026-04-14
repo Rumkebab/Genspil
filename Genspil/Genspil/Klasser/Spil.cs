@@ -77,7 +77,7 @@
         // Bruges til at vise spillet pænt i konsollen
         public string VisInfo()
         {
-            return $"{Id}: Titel: {Titel}, Genre: {Genre}, Stand: {Stand}, Pris: {Pris} kr.";
+            return $"{Id,-5} {Titel,-30} {Genre,-12} {Stand,-8} {Pris,8} kr";
         }
     }
 }

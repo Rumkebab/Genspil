@@ -2,10 +2,10 @@
 {
     public enum Genre // bruger enum her for at vælge valg
     {
-        Strategi,
         Familie,
         Kortspil,
         Quiz,
+        Strategi,
         Samarbejde
     }
 }

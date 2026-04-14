@@ -1,5 +1,6 @@
 ﻿using Genspil.Klasser;
 using Genspil.Data;
+using System.Security.Cryptography.X509Certificates;
 
 // Sti til tekstfilen
 string filsti = "Datafiler/spil.txt";
@@ -31,7 +32,7 @@ static void Hovedmenu(string filsti, List<Spil> spilListe) {
         switch (valg)
         {
             case "1":
-                VisAlleSpil(spilListe);
+                VisAlleSpil(spilListe, filsti);
                 break;
 
             case "2":
@@ -43,26 +44,27 @@ static void Hovedmenu(string filsti, List<Spil> spilListe) {
                 break;
 
             case "3":
-                SpilDataHandler.GemTilFil(filsti, spilListe);
+                SpilDataHandler.GemTilFil(filsti, spilListe); // Gemmer spillene til filen
 
                 Console.WriteLine("Spillene er gemt til fil.");
                 Pause();
                 break;
 
             case "4":
-                SletSpil(spilListe);
+                SletSpil(spilListe); // Går til en undermenu for at vælge hvilket spil der skal slettes
                 break;
 
             case "5":
-                RedigerSpil(spilListe);
+                RedigerSpil(spilListe); // Går til en undermenu for at vælge hvilket
                 break;
 
             case "6":
-                SøgEfterSpilMenu(filsti, spilListe);
+                SøgEfterSpilMenu(filsti, spilListe); // Går til en undermenu for at vælge søgekriterier
                 break;
 
             case "7":
                 kører = false;
+                System.Environment.Exit(0); // Afslutter programmet helt
                 break;
 
             default:
@@ -75,8 +77,9 @@ static void Hovedmenu(string filsti, List<Spil> spilListe) {
 Hovedmenu(filsti, spilListe);
 
 // Viser alle spil i listen
-static void VisAlleSpil(List<Spil> spilListe)
+static void VisAlleSpil(List<Spil> spilListe, string filsti)
 {
+
     Console.Clear();
     Console.WriteLine("=== Liste over spil ===");
 
@@ -86,13 +89,73 @@ static void VisAlleSpil(List<Spil> spilListe)
     }
     else
     {
+        // Udskriv tabel-header
+        Console.WriteLine(new string('-', 100));
+        Console.WriteLine($"{"ID",-5} {"Titel",-30} {"Genre",-12} {"Stand",-8} {"Pris",8}");
+        Console.WriteLine(new string('-', 100));
+
+        // Udskriv hver spil som en tabel-række
+        for (int i = 0; i < spilListe.Count; i++)
+        {
+            Spil spil = spilListe[i];
+             Console.WriteLine(spilListe[i].VisInfo());
+        }
+
+        Console.WriteLine(new string('-', 100));
+    }
+
+    void Sorteringsmenu()
+    {
+        Console.WriteLine($"\nSortér efter: [N]avn | [G]enre | [S]tand | [P]ris | | [A]fbryd");
+        Console.Write("> ");
+        char sortValg = char.ToUpper(Console.ReadKey().KeyChar);
+        SorterSpil(sortValg);
+    }
+
+    void SorterSpil(char sortValg)
+    {
+        switch (sortValg)
+        {
+            case 'G':
+                spilListe.Sort((s1, s2) => s1.Genre.CompareTo(s2.Genre)); // Sorter efter genre i stigende rækkefølge
+                Console.Clear();
+                Console.WriteLine("=== Liste over spil (sorteret efter genre) ===");
+                break;
+            case 'S':
+                spilListe.Sort((s1, s2) => s1.Stand.CompareTo(s2.Stand)); // Sorter efter stand i stigende rækkefølge
+                Console.Clear();
+                Console.WriteLine("=== Liste over spil (sorteret efter stand) ===");    
+                break;
+            case 'P':
+                spilListe.Sort((s1, s2) => s1.Pris.CompareTo(s2.Pris)); // Sorter efter pris i stigende rækkefølge
+                Console.Clear();
+                Console.WriteLine("=== Liste over spil (sorteret efter pris) ===");
+                break;
+            case 'A':
+                Hovedmenu(filsti, spilListe);
+                break;
+            default: // Behandl som Navn hvis input er ugyldigt
+                spilListe.Sort((s1, s2) => s1.Titel.CompareTo(s2.Titel)); // Sorter alfabetisk efter titel
+                Console.Clear();
+                Console.WriteLine("=== Liste over spil (sorteret efter navn) ===");
+                break;
+        }
+        // Udskriv tabel-header
+        Console.WriteLine(new string('-', 100));
+        Console.WriteLine($"{"ID",-5} {"Titel",-30} {"Genre",-12} {"Stand",-8} {"Pris",8}");
+        Console.WriteLine(new string('-', 100));
+
         for (int i = 0; i < spilListe.Count; i++)
         {
             Console.WriteLine(spilListe[i].VisInfo());
         }
+        Console.WriteLine(new string('-', 100));
+
+        Sorteringsmenu();
+        Pause();
     }
 
-    Pause();
+    Sorteringsmenu();
 }
 
 // Opretter et nyt spil ud fra brugerens input
@@ -123,7 +186,14 @@ static Spil OpretNytSpil()
     Console.Write("Indtast pris: ");
     int pris = int.Parse(Console.ReadLine());
 
-    return new Spil(titel, genre, stand, pris);
+    Console.Write("Er det et request? (ja/nej): ");
+    if(!bool.TryParse(Console.ReadLine().Trim().ToLower() == "ja" ? "true" : "false", out bool erRequest))
+    {
+        erRequest = false; // Standard til false hvis input er ugyldigt
+    }
+    bool erReserveret = false; // Standard til false for nye spil
+    int id = 0; // Id genereres automatisk i Spil-klassen
+    return new Spil(titel, genre, stand, pris, id, erReserveret, erRequest);
 }
 
 // Sletter et spil fra listen
@@ -303,16 +373,16 @@ static void SøgEfterSpilMenu(string filsti, List<Spil> spilListe)
     switch (svalg)
     {
         case "1":
-            SøgEfterSpil(spilListe);
+            SøgEfterSpil(spilListe, filsti);
             break;
         case "2":
-            SøgEfterSpil(spilListe, "Genre");
+            SøgEfterSpil(spilListe, filsti, "Genre");
             break;
         case "3":
-            SøgEfterSpil(spilListe, "Pris");
+            SøgEfterSpil(spilListe, filsti, "Pris");
             break;
         case "4":
-                SøgEfterSpil(spilListe, "Stand");
+            SøgEfterSpil(spilListe, filsti, "Stand");
             break;
         case "5":
             Hovedmenu(filsti, spilListe);
@@ -325,10 +395,8 @@ static void SøgEfterSpilMenu(string filsti, List<Spil> spilListe)
     }
 }
 
-
-
 // Søger efter spil ud fra titel
-static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
+static void SøgEfterSpil(List<Spil> spilListe, string filsti, string svalue = "Titel")
 {
     List<Spil> fundneSpil = new List<Spil>();
     string søgning;
@@ -412,7 +480,7 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
     else
     {
         Console.WriteLine("Fundne spil:");
-        VisAlleSpil(fundneSpil);
+        VisAlleSpil(fundneSpil, filsti);
     }
 
     Pause();
