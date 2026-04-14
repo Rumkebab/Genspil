@@ -2,7 +2,10 @@
 using Genspil.Data;    // Giver adgang til SpilDataHandler
 
 // Sti til filen med spillene
-string filsti = "Datafiler/spil.txt";
+string filsti = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Datafiler\spil.txt");
+filsti = Path.GetFullPath(filsti);
+
+Console.WriteLine("Fuld sti: " + filsti);
 
 // Læser spillene fra filen ved opstart
 List<Spil> spilListe = SpilDataHandler.LæsFraFil(filsti);
