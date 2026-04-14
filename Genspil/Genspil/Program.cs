@@ -56,7 +56,7 @@ while (kører)
             break;
 
         case "6":
-            SøgEfterSpil(spilListe);
+            SøgEfterSpilMenu(spilListe);
             break;
 
         case "7":
@@ -284,22 +284,77 @@ static void RedigerSpil(List<Spil> spilListe)
 
     Pause();
 }
-
-// Søger efter spil ud fra titel
-static void SøgEfterSpil(List<Spil> spilListe)
+static void SøgEfterSpilMenu(List<Spil> spilListe)
 {
     Console.Clear();
-    Console.WriteLine("=== Søg efter spil ===");
+    Console.WriteLine("=== Vælg hvad du vil søge efter ===");
+    Console.WriteLine("1. Navn");
+    Console.WriteLine("2. Genre");
+    Console.WriteLine("3. Pris");
+    Console.WriteLine("4. Stand");
+    Console.WriteLine("5. Gå tilbage");
+    string svalg = Console.ReadLine();
 
+    switch (svalg)
+    {
+        case "1":
+            SøgEfterSpil(spilListe);
+            break;
+        case "2":
+            SøgEfterSpil(spilListe, "Genre");
+            break;
+        case "3":
+            SøgEfterSpil(spilListe, "Pris");
+            break;
+        case "4":
+                SøgEfterSpil(spilListe, "Stand");
+            break;
+
+        default:
+            Console.WriteLine("Ugyldigt input. Prøv igen.");
+            SøgEfterSpilMenu(spilListe);
+            break;
+    }
+}
+
+
+
+// Søger efter spil ud fra titel
+static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
+{
+    List<Spil> fundneSpil = new List<Spil>();
+    string søgning;
     if (spilListe.Count == 0)
     {
-        Console.WriteLine("Ingen spil i listen.");
+        Console.WriteLine("Ingen spil at søge efter.");
         Pause();
         return;
     }
-
-    Console.Write("Indtast titel eller en del af titlen: ");
-    string søgning = Console.ReadLine();
+    Console.Clear();
+    switch (svalue)
+    {
+        case "Titel":
+            Console.WriteLine("=== Søg efter navn ===");
+            Console.Write("Indtast titel eller en del af titlen: ");
+            break;
+        case "Genre":
+            Console.WriteLine("=== Søg efter genre ===");
+            Console.Write("Indtast genre: ");
+            break;
+        case "Pris":
+            Console.WriteLine("=== Søg efter pris ===");
+            Console.Write("Indtast pris: ");
+            break;
+        case "Stand":
+            Console.WriteLine("=== Søg efter stand ===");
+            Console.Write("Indtast stand: ");
+            break;
+        default:
+            Console.WriteLine("=== Søg efter navn ===");
+            Console.Write("Indtast titel eller en del af titlen: ");
+            break;
+    }
+    søgning = Console.ReadLine();
 
     if (string.IsNullOrWhiteSpace(søgning))
     {
@@ -308,13 +363,35 @@ static void SøgEfterSpil(List<Spil> spilListe)
         return;
     }
 
-    List<Spil> fundneSpil = new List<Spil>();
-
     foreach (Spil spil in spilListe)
     {
-        if (spil.Titel.ToLower().Contains(søgning.ToLower()))
+        if (svalue == "Titel")
         {
-            fundneSpil.Add(spil);
+            if (spil.Titel.ToLower().Contains(søgning.ToLower()))
+            {
+                fundneSpil.Add(spil);
+            }
+        }
+        else if (svalue == "Genre")
+        {
+            if (spil.Genre.ToString().ToLower() == søgning.ToLower())
+            {
+                fundneSpil.Add(spil);
+            }
+        }
+        else if (svalue == "Pris")
+        {
+            if (spil.Pris.ToString() == søgning)
+            {
+                fundneSpil.Add(spil);
+            }
+        }
+        else if (svalue == "Stand")
+        {
+            if (spil.Stand.ToString().ToLower() == søgning.ToLower())
+            {
+                fundneSpil.Add(spil);
+            }
         }
     }
 
@@ -327,10 +404,7 @@ static void SøgEfterSpil(List<Spil> spilListe)
     else
     {
         Console.WriteLine("Fundne spil:");
-        for (int i = 0; i < fundneSpil.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {fundneSpil[i].VisInfo()}");
-        }
+        VisAlleSpil(fundneSpil);
     }
 
     Pause();
