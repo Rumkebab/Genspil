@@ -2,19 +2,19 @@
 {
     public class Spil // Klasse der repræsenterer ét brætspil
     {
-        // Static field til at holde styr på det næste ID der skal tildeles
+        // Holder styr på sidste brugte ID
         private static int lastId = 0;
 
-        // Properties (data om spillet)
-        public string Titel { get; set; }   // Navnet på spillet
-        public Genre Genre { get; set; }    // Hvilken type spil det er
-        public Stand Stand { get; set; }    // Hvor god stand spillet er i
-        public int Pris { get; set; }       // Pris i kroner
-        public bool ErReserveret { get; set; }       //Reserveret eller ej
-        public bool ErRequest { get; set; }       // Ønsket eller ej
-        public int Id { get; private set; }       // Unikt ID for hvert spil
+        // Oplysninger om spillet
+        public string Titel { get; set; }
+        public Genre Genre { get; set; }
+        public Stand Stand { get; set; }
+        public int Pris { get; set; }
+        public int Id { get; private set; }
+        public bool ErReserveret { get; set; }
+        public bool ErRequest { get; set; }
 
-        // Metode til at opdatere lastId når vi læser fra fil
+        // Opdaterer sidste ID når vi læser fra fil
         public static void SetLastId(int id)
         {
             if (id > lastId)
@@ -23,61 +23,60 @@
             }
         }
 
-        // Constructor - bruges når vi opretter et nyt spil
+        // Constructor
         public Spil(string titel, Genre genre, Stand stand, int pris, int id = 0, bool erReserveret = false, bool erRequest = false)
         {
-            Titel = titel;   // Gemmer titel
-            Genre = genre;   // Gemmer genre
-            Stand = stand;   // Gemmer stand
-            Pris = pris;     // Gemmer pris
-            ErReserveret = erReserveret; // Standardværdi
-            ErRequest = erRequest;    // Standardværdi
+            Titel = titel;
+            Genre = genre;
+            Stand = stand;
+            Pris = pris;
+            ErReserveret = erReserveret;
+            ErRequest = erRequest;
+
             if (id > 0)
             {
                 Id = id;
-                SetLastId(id); // Opdaterer lastId hvis vi loader fra fil
+                SetLastId(id);
             }
             else
             {
-                Id = GenerateId(); // Genererer et unikt ID fortløbende fra højeste ID i filen
+                Id = GenerateId();
             }
         }
 
+        // Laver nyt ID
         private int GenerateId()
         {
             lastId++;
-            // Genererer et unikt ID baseret på tidspunktet og en tilfældig del
             return lastId;
         }
 
-        // Bruges når vi skal gemme spillet som tekst i en fil
+        // Gør objektet til tekst til filen
         public override string ToString()
         {
-            // Laver objektet om til en tekstlinje med ; imellem
-            return $"{Titel};{Genre};{Stand};{Pris};{Id}";
+            return $"{Titel};{Genre};{Stand};{Pris};{Id};{ErReserveret};{ErRequest}";
         }
 
-        // Bruges når vi læser fra fil og skal lave tekst om til et objekt
+        // Laver tekst fra filen om til et objekt
         public static Spil FromString(string linje)
         {
-            // Deler linjen op ved ;
             string[] data = linje.Split(';');
 
-            // Henter værdierne fra arrayet
             string titel = data[0];
             Genre genre = Enum.Parse<Genre>(data[1]);
             Stand stand = Enum.Parse<Stand>(data[2]);
             int pris = int.Parse(data[3]);
             int id = int.Parse(data[4]);
+            bool erReserveret = bool.Parse(data[5]);
+            bool erRequest = bool.Parse(data[6]);
 
-            // Returnerer et nyt Spil-objekt med værdierne
-            return new Spil(titel, genre, stand, pris, id);
+            return new Spil(titel, genre, stand, pris, id, erReserveret, erRequest);
         }
 
-        // Bruges til at vise spillet pænt i konsollen
+        // Viser spillet pænt i konsollen
         public string VisInfo()
         {
-            return $"{Id}: Titel: {Titel}, Genre: {Genre}, Stand: {Stand}, Pris: {Pris} kr.";
+            return $"{Id}: Titel: {Titel}, Genre: {Genre}, Stand: {Stand}, Pris: {Pris} kr., Reserveret: {ErReserveret}, Request: {ErRequest}";
         }
     }
 }

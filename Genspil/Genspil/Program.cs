@@ -1,18 +1,19 @@
-﻿using Genspil.Klasser;
-using Genspil.Data;
+﻿using Genspil.Klasser; // Giver adgang til Spil, Genre og Stand
+using Genspil.Data;    // Giver adgang til SpilDataHandler
 
-// Sti til tekstfilen
+// Sti til filen med spillene
 string filsti = "Datafiler/spil.txt";
 
-// Læser spillene fra filen når programmet starter
+// Læser spillene fra filen ved opstart
 List<Spil> spilListe = SpilDataHandler.LæsFraFil(filsti);
 
-static void Hovedmenu(string filsti, List<Spil> spilListe) { 
+// Starter hovedmenuen
+Hovedmenu(filsti, spilListe);
 
-    // Styrer om programmet skal fortsætte
-    bool kører = true;
+static void Hovedmenu(string filsti, List<Spil> spilListe)
+{
+    bool kører = true; // Styrer om programmet skal fortsætte
 
-    // Menu-loop
     while (kører)
     {
         Console.Clear();
@@ -38,27 +39,29 @@ static void Hovedmenu(string filsti, List<Spil> spilListe) {
                 Spil nytSpil = OpretNytSpil();
                 spilListe.Add(nytSpil);
 
-                Console.WriteLine("Spillet blev tilføjet.");
+                // Gemmer automatisk efter oprettelse
+                SpilDataHandler.GemTilFil(filsti, spilListe);
+
+                Console.WriteLine("Spillet blev tilføjet og gemt.");
                 Pause();
                 break;
 
             case "3":
                 SpilDataHandler.GemTilFil(filsti, spilListe);
-
                 Console.WriteLine("Spillene er gemt til fil.");
                 Pause();
                 break;
 
             case "4":
-                SletSpil(spilListe);
+                SletSpil(filsti, spilListe);
                 break;
 
             case "5":
-                RedigerSpil(spilListe);
+                RedigerSpil(filsti, spilListe);
                 break;
 
             case "6":
-                SøgEfterSpilMenu(filsti, spilListe);
+                SøgEfterSpilMenu(spilListe);
                 break;
 
             case "7":
@@ -72,9 +75,8 @@ static void Hovedmenu(string filsti, List<Spil> spilListe) {
         }
     }
 }
-Hovedmenu(filsti, spilListe);
 
-// Viser alle spil i listen
+// Viser alle spil
 static void VisAlleSpil(List<Spil> spilListe)
 {
     Console.Clear();
@@ -86,16 +88,16 @@ static void VisAlleSpil(List<Spil> spilListe)
     }
     else
     {
-        for (int i = 0; i < spilListe.Count; i++)
+        foreach (Spil spil in spilListe)
         {
-            Console.WriteLine(spilListe[i].VisInfo());
+            Console.WriteLine(spil.VisInfo());
         }
     }
 
     Pause();
 }
 
-// Opretter et nyt spil ud fra brugerens input
+// Opretter et nyt spil
 static Spil OpretNytSpil()
 {
     Console.Clear();
@@ -110,15 +112,17 @@ static Spil OpretNytSpil()
     Console.WriteLine("3 = Kortspil");
     Console.WriteLine("4 = Quiz");
     Console.WriteLine("5 = Samarbejde");
+    Console.Write("> ");
     int genreValg = int.Parse(Console.ReadLine());
-    Genre genre = (Genre)(genreValg - 1);
+    Genre genre = (Genre)(genreValg - 1); // Trækker 1 fra fordi enum starter ved 0
 
     Console.WriteLine("Vælg stand:");
     Console.WriteLine("1 = Ny");
     Console.WriteLine("2 = God");
     Console.WriteLine("3 = Slidt");
+    Console.Write("> ");
     int standValg = int.Parse(Console.ReadLine());
-    Stand stand = (Stand)(standValg - 1);
+    Stand stand = (Stand)(standValg - 1); // Trækker 1 fra fordi enum starter ved 0
 
     Console.Write("Indtast pris: ");
     int pris = int.Parse(Console.ReadLine());
@@ -126,8 +130,8 @@ static Spil OpretNytSpil()
     return new Spil(titel, genre, stand, pris);
 }
 
-// Sletter et spil fra listen
-static void SletSpil(List<Spil> spilListe)
+// Sletter et spil via ID
+static void SletSpil(string filsti, List<Spil> spilListe)
 {
     Console.Clear();
     Console.WriteLine("=== Slet spil ===");
@@ -139,35 +143,52 @@ static void SletSpil(List<Spil> spilListe)
         return;
     }
 
-    for (int i = 0; i < spilListe.Count; i++)
+    Console.WriteLine("Spil i systemet:");
+    foreach (Spil spil in spilListe)
     {
-        Console.WriteLine($"{i + 1}. {spilListe[i].VisInfo()}");
+        Console.WriteLine(spil.VisInfo());
     }
 
-    Console.Write("Vælg nummer på spil der skal slettes: ");
+    Console.WriteLine();
+    Console.Write("Indtast ID på spil der skal slettes: ");
 
-    if (int.TryParse(Console.ReadLine(), out int valg))
+    if (int.TryParse(Console.ReadLine(), out int id))
     {
-        if (valg > 0 && valg <= spilListe.Count)
+        Spil spilDerSkalSlettes = null;
+
+        foreach (Spil spil in spilListe)
         {
-            spilListe.RemoveAt(valg - 1);
-            Console.WriteLine("Spillet er slettet.");
+            if (spil.Id == id)
+            {
+                spilDerSkalSlettes = spil;
+                break;
+            }
+        }
+
+        if (spilDerSkalSlettes != null)
+        {
+            spilListe.Remove(spilDerSkalSlettes);
+
+            // Gemmer automatisk efter sletning
+            SpilDataHandler.GemTilFil(filsti, spilListe);
+
+            Console.WriteLine("Spillet er slettet og gemt.");
         }
         else
         {
-            Console.WriteLine("Ugyldigt nummer.");
+            Console.WriteLine("Der blev ikke fundet et spil med det ID.");
         }
     }
     else
     {
-        Console.WriteLine("Du skal skrive et tal.");
+        Console.WriteLine("Du skal skrive et gyldigt tal.");
     }
 
     Pause();
 }
 
-// Redigerer et spil i listen
-static void RedigerSpil(List<Spil> spilListe)
+// Redigerer et spil via ID
+static void RedigerSpil(string filsti, List<Spil> spilListe)
 {
     Console.Clear();
     Console.WriteLine("=== Rediger spil ===");
@@ -179,19 +200,30 @@ static void RedigerSpil(List<Spil> spilListe)
         return;
     }
 
-    for (int i = 0; i < spilListe.Count; i++)
+    Console.WriteLine("Spil i systemet:");
+    foreach (Spil spil in spilListe)
     {
-        Console.WriteLine($"{i + 1}. {spilListe[i].VisInfo()}");
+        Console.WriteLine(spil.VisInfo());
     }
 
-    Console.Write("Vælg nummer på spil der skal redigeres: ");
+    Console.WriteLine();
+    Console.Write("Indtast ID på spil der skal redigeres: ");
 
-    if (int.TryParse(Console.ReadLine(), out int valg))
+    if (int.TryParse(Console.ReadLine(), out int id))
     {
-        if (valg > 0 && valg <= spilListe.Count)
-        {
-            Spil valgtSpil = spilListe[valg - 1];
+        Spil valgtSpil = null;
 
+        foreach (Spil spil in spilListe)
+        {
+            if (spil.Id == id)
+            {
+                valgtSpil = spil;
+                break;
+            }
+        }
+
+        if (valgtSpil != null)
+        {
             Console.WriteLine();
             Console.WriteLine("Tryk Enter hvis du vil beholde den nuværende værdi.");
 
@@ -273,22 +305,27 @@ static void RedigerSpil(List<Spil> spilListe)
                 }
             }
 
+            // Gemmer automatisk efter redigering
+            SpilDataHandler.GemTilFil(filsti, spilListe);
+
             Console.WriteLine();
-            Console.WriteLine("Spillet er blevet opdateret.");
+            Console.WriteLine("Spillet er blevet opdateret og gemt.");
         }
         else
         {
-            Console.WriteLine("Ugyldigt nummer.");
+            Console.WriteLine("Der blev ikke fundet et spil med det ID.");
         }
     }
     else
     {
-        Console.WriteLine("Du skal skrive et tal.");
+        Console.WriteLine("Du skal skrive et gyldigt tal.");
     }
 
     Pause();
 }
-static void SøgEfterSpilMenu(string filsti, List<Spil> spilListe)
+
+// Lille menu til søgning
+static void SøgEfterSpilMenu(List<Spil> spilListe)
 {
     Console.Clear();
     Console.WriteLine("=== Vælg hvad du vil søge efter ===");
@@ -312,33 +349,33 @@ static void SøgEfterSpilMenu(string filsti, List<Spil> spilListe)
             SøgEfterSpil(spilListe, "Pris");
             break;
         case "4":
-                SøgEfterSpil(spilListe, "Stand");
+            SøgEfterSpil(spilListe, "Stand");
             break;
         case "5":
-            Hovedmenu(filsti, spilListe);
-            break;
+            return;
 
         default:
             Console.WriteLine("Ugyldigt input. Prøv igen.");
-            SøgEfterSpilMenu(filsti, spilListe);
+            Pause();
+            SøgEfterSpilMenu(spilListe);
             break;
     }
 }
 
-
-
-// Søger efter spil ud fra titel
+// Søger efter spil
 static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
 {
     List<Spil> fundneSpil = new List<Spil>();
-    string søgning;
+
     if (spilListe.Count == 0)
     {
         Console.WriteLine("Ingen spil at søge efter.");
         Pause();
         return;
     }
+
     Console.Clear();
+
     switch (svalue)
     {
         case "Titel":
@@ -362,7 +399,8 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
             Console.Write("Indtast titel eller en del af titlen: ");
             break;
     }
-    søgning = Console.ReadLine();
+
+    string søgning = Console.ReadLine();
 
     if (string.IsNullOrWhiteSpace(søgning))
     {
@@ -373,33 +411,21 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
 
     foreach (Spil spil in spilListe)
     {
-        if (svalue == "Titel")
+        if (svalue == "Titel" && spil.Titel.ToLower().Contains(søgning.ToLower()))
         {
-            if (spil.Titel.ToLower().Contains(søgning.ToLower()))
-            {
-                fundneSpil.Add(spil);
-            }
+            fundneSpil.Add(spil);
         }
-        else if (svalue == "Genre")
+        else if (svalue == "Genre" && spil.Genre.ToString().ToLower().Contains(søgning.ToLower()))
         {
-            if (spil.Genre.ToString().ToLower().Contains(søgning.ToLower()))
-            {
-                fundneSpil.Add(spil);
-            }
+            fundneSpil.Add(spil);
         }
-        else if (svalue == "Pris")
+        else if (svalue == "Pris" && spil.Pris.ToString().Contains(søgning))
         {
-            if (spil.Pris.ToString().Contains(søgning))
-            {
-                fundneSpil.Add(spil);
-            }
+            fundneSpil.Add(spil);
         }
-        else if (svalue == "Stand")
+        else if (svalue == "Stand" && spil.Stand.ToString().ToLower().Contains(søgning.ToLower()))
         {
-            if (spil.Stand.ToString().ToLower().Contains(søgning.ToLower()))
-            {
-                fundneSpil.Add(spil);
-            }
+            fundneSpil.Add(spil);
         }
     }
 
@@ -412,16 +438,19 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
     else
     {
         Console.WriteLine("Fundne spil:");
-        VisAlleSpil(fundneSpil);
+        foreach (Spil spil in fundneSpil)
+        {
+            Console.WriteLine(spil.VisInfo());
+        }
     }
 
     Pause();
 }
 
-// Pause så brugeren kan læse teksten
+// Laver en lille pause i programmet
 static void Pause()
 {
     Console.WriteLine();
-    Console.WriteLine("\nTryk på en tast for at fortsætte...");
+    Console.WriteLine("Tryk på en tast for at fortsætte...");
     Console.ReadKey();
 }
