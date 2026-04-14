@@ -7,68 +7,72 @@ string filsti = "Datafiler/spil.txt";
 // Læser spillene fra filen når programmet starter
 List<Spil> spilListe = SpilDataHandler.LæsFraFil(filsti);
 
-// Styrer om programmet skal fortsætte
-bool kører = true;
+static void Hovedmenu(string filsti, List<Spil> spilListe) { 
 
-// Menu-loop
-while (kører)
-{
-    Console.Clear();
-    Console.WriteLine("=== Genspil Menu ===");
-    Console.WriteLine("1. Vis alle spil");
-    Console.WriteLine("2. Tilføj nyt spil");
-    Console.WriteLine("3. Gem spil til fil");
-    Console.WriteLine("4. Slet spil");
-    Console.WriteLine("5. Rediger spil");
-    Console.WriteLine("6. Søg efter spil");
-    Console.WriteLine("7. Afslut");
-    Console.Write("Vælg en mulighed: ");
+    // Styrer om programmet skal fortsætte
+    bool kører = true;
 
-    string valg = Console.ReadLine();
-
-    switch (valg)
+    // Menu-loop
+    while (kører)
     {
-        case "1":
-            VisAlleSpil(spilListe);
-            break;
+        Console.Clear();
+        Console.WriteLine("=== Genspil Menu ===");
+        Console.WriteLine("1. Vis alle spil");
+        Console.WriteLine("2. Tilføj nyt spil");
+        Console.WriteLine("3. Gem spil til fil");
+        Console.WriteLine("4. Slet spil");
+        Console.WriteLine("5. Rediger spil");
+        Console.WriteLine("6. Søg efter spil");
+        Console.WriteLine("7. Afslut");
+        Console.Write("Vælg en mulighed: ");
 
-        case "2":
-            Spil nytSpil = OpretNytSpil();
-            spilListe.Add(nytSpil);
+        string valg = Console.ReadLine();
 
-            Console.WriteLine("Spillet blev tilføjet.");
-            Pause();
-            break;
+        switch (valg)
+        {
+            case "1":
+                VisAlleSpil(spilListe);
+                break;
 
-        case "3":
-            SpilDataHandler.GemTilFil(filsti, spilListe);
+            case "2":
+                Spil nytSpil = OpretNytSpil();
+                spilListe.Add(nytSpil);
 
-            Console.WriteLine("Spillene er gemt til fil.");
-            Pause();
-            break;
+                Console.WriteLine("Spillet blev tilføjet.");
+                Pause();
+                break;
 
-        case "4":
-            SletSpil(spilListe);
-            break;
+            case "3":
+                SpilDataHandler.GemTilFil(filsti, spilListe);
 
-        case "5":
-            RedigerSpil(spilListe);
-            break;
+                Console.WriteLine("Spillene er gemt til fil.");
+                Pause();
+                break;
 
-        case "6":
-            SøgEfterSpilMenu(spilListe);
-            break;
+            case "4":
+                SletSpil(spilListe);
+                break;
 
-        case "7":
-            kører = false;
-            break;
+            case "5":
+                RedigerSpil(spilListe);
+                break;
 
-        default:
-            Console.WriteLine("Ugyldigt valg. Prøv igen.");
-            Pause();
-            break;
+            case "6":
+                SøgEfterSpilMenu(filsti, spilListe);
+                break;
+
+            case "7":
+                kører = false;
+                break;
+
+            default:
+                Console.WriteLine("Ugyldigt valg. Prøv igen.");
+                Pause();
+                break;
+        }
     }
 }
+Hovedmenu(filsti, spilListe);
 
 // Viser alle spil i listen
 static void VisAlleSpil(List<Spil> spilListe)
@@ -284,7 +288,7 @@ static void RedigerSpil(List<Spil> spilListe)
 
     Pause();
 }
-static void SøgEfterSpilMenu(List<Spil> spilListe)
+static void SøgEfterSpilMenu(string filsti, List<Spil> spilListe)
 {
     Console.Clear();
     Console.WriteLine("=== Vælg hvad du vil søge efter ===");
@@ -293,6 +297,7 @@ static void SøgEfterSpilMenu(List<Spil> spilListe)
     Console.WriteLine("3. Pris");
     Console.WriteLine("4. Stand");
     Console.WriteLine("5. Gå tilbage");
+    Console.Write("> ");
     string svalg = Console.ReadLine();
 
     switch (svalg)
@@ -309,10 +314,13 @@ static void SøgEfterSpilMenu(List<Spil> spilListe)
         case "4":
                 SøgEfterSpil(spilListe, "Stand");
             break;
+        case "5":
+            Hovedmenu(filsti, spilListe);
+            break;
 
         default:
             Console.WriteLine("Ugyldigt input. Prøv igen.");
-            SøgEfterSpilMenu(spilListe);
+            SøgEfterSpilMenu(filsti, spilListe);
             break;
     }
 }
