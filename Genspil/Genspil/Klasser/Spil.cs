@@ -54,7 +54,7 @@
         public override string ToString()
         {
             // Laver objektet om til en tekstlinje med ; imellem
-            return $"{Titel};{Genre};{Stand};{Pris};{Id}";
+            return $"{Titel};{Genre};{Stand};{Pris};{Id};{ErReserveret};{ErRequest}";
         }
 
         // Bruges når vi læser fra fil og skal lave tekst om til et objekt
@@ -69,15 +69,31 @@
             Stand stand = Enum.Parse<Stand>(data[2]);
             int pris = int.Parse(data[3]);
             int id = int.Parse(data[4]);
+            bool erReserveret = data.Length > 5 ? bool.Parse(data[5]) : false;
+            bool erRequest = data.Length > 6 ? bool.Parse(data[6]) : false;
 
             // Returnerer et nyt Spil-objekt med værdierne
-            return new Spil(titel, genre, stand, pris, id);
+            return new Spil(titel, genre, stand, pris, id, erReserveret, erRequest);
         }
 
         // Bruges til at vise spillet pænt i konsollen
         public string VisInfo()
         {
-            return $"{Id,-5} {Titel,-30} {Genre,-12} {Stand,-8} {Pris,8} kr";
+
+            if (ErReserveret)
+            {
+                string info = $"{Id,-5} {Titel,-30} {Genre,-12} {Stand,-8} {Pris,8} kr (RESERVERET)";
+                return info;
+            }
+            else if (ErRequest)
+            {
+                string info = $"{Id,-5} {Titel,-30} {Genre,-12} {Stand,-8} {Pris,8} kr (ØNSKET)";
+                return info;
+            }
+            else
+            {
+                return $"{Id,-5} {Titel,-30} {Genre,-12} {Stand,-8} {Pris,8} kr";
+            }
         }
     }
 }

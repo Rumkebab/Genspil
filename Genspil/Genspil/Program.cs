@@ -90,6 +90,7 @@ static void VisAlleSpil(List<Spil> spilListe, string filsti)
     else
     {
         // Udskriv tabel-header
+        
         Console.WriteLine(new string('-', 100));
         Console.WriteLine($"{"ID",-5} {"Titel",-30} {"Genre",-12} {"Stand",-8} {"Pris",8}");
         Console.WriteLine(new string('-', 100));
@@ -97,6 +98,7 @@ static void VisAlleSpil(List<Spil> spilListe, string filsti)
         // Udskriv hver spil som en tabel-række
         for (int i = 0; i < spilListe.Count; i++)
         {
+      
             Spil spil = spilListe[i];
              Console.WriteLine(spilListe[i].VisInfo());
         }
@@ -366,7 +368,8 @@ static void SøgEfterSpilMenu(string filsti, List<Spil> spilListe)
     Console.WriteLine("2. Genre");
     Console.WriteLine("3. Pris");
     Console.WriteLine("4. Stand");
-    Console.WriteLine("5. Gå tilbage");
+    Console.WriteLine("5. Søg på flere kriterier");
+    Console.WriteLine("6. Gå tilbage");
     Console.Write("> ");
     string svalg = Console.ReadLine();
 
@@ -385,9 +388,11 @@ static void SøgEfterSpilMenu(string filsti, List<Spil> spilListe)
             SøgEfterSpil(spilListe, filsti, "Stand");
             break;
         case "5":
+            SøgEfterSpil(spilListe, filsti, "Flere");
+            break;
+        case "6":
             Hovedmenu(filsti, spilListe);
             break;
-
         default:
             Console.WriteLine("Ugyldigt input. Prøv igen.");
             SøgEfterSpilMenu(filsti, spilListe);
@@ -424,6 +429,10 @@ static void SøgEfterSpil(List<Spil> spilListe, string filsti, string svalue = "
         case "Stand":
             Console.WriteLine("=== Søg efter stand ===");
             Console.Write("Indtast stand: ");
+            break;
+        case "Flere":
+            Console.WriteLine("Denne funtkionalitet er ikke implementeret endnu. Søger kun på titel som standard.");
+            Console.Write("Indtast søgekriterier: ");
             break;
         default:
             Console.WriteLine("=== Søg efter navn ===");
@@ -469,9 +478,18 @@ static void SøgEfterSpil(List<Spil> spilListe, string filsti, string svalue = "
                 fundneSpil.Add(spil);
             }
         }
+        else if (svalue == "Flere")
+        {
+            // Denne del kan udvides til at søge på flere kriterier samtidig, men for nu søger vi bare på titel som standard.
+            if (spil.Titel.ToLower().Contains(søgning.ToLower()))
+            {
+                fundneSpil.Add(spil);
+            }
+
+        }
     }
 
-    Console.WriteLine();
+        Console.WriteLine();
 
     if (fundneSpil.Count == 0)
     {
