@@ -2,8 +2,11 @@
 
 namespace Genspil.Data // Organiserer koden i en mappe/gruppe der hedder Data
 {
+
     public class SpilDataHandler // Klasse der står for at håndtere filer (læse og gemme spil)
     {
+
+
         // Metode til at læse spil fra en tekstfil
         public static List<Spil> LæsFraFil(string filnavn)
         {

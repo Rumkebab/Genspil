@@ -84,7 +84,7 @@ static void VisAlleSpil(List<Spil> spilListe)
     {
         for (int i = 0; i < spilListe.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {spilListe[i].VisInfo()}");
+            Console.WriteLine(spilListe[i].VisInfo());
         }
     }
 
@@ -374,21 +374,21 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
         }
         else if (svalue == "Genre")
         {
-            if (spil.Genre.ToString().ToLower() == søgning.ToLower())
+            if (spil.Genre.ToString().ToLower().Contains(søgning.ToLower()))
             {
                 fundneSpil.Add(spil);
             }
         }
         else if (svalue == "Pris")
         {
-            if (spil.Pris.ToString() == søgning)
+            if (spil.Pris.ToString().Contains(søgning))
             {
                 fundneSpil.Add(spil);
             }
         }
         else if (svalue == "Stand")
         {
-            if (spil.Stand.ToString().ToLower() == søgning.ToLower())
+            if (spil.Stand.ToString().ToLower().Contains(søgning.ToLower()))
             {
                 fundneSpil.Add(spil);
             }
@@ -414,6 +414,6 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
 static void Pause()
 {
     Console.WriteLine();
-    Console.WriteLine("Tryk på en tast for at fortsætte...");
+    Console.WriteLine("\nTryk på en tast for at fortsætte...");
     Console.ReadKey();
 }
