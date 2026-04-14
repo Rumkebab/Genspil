@@ -54,7 +54,12 @@ while (kører)
             break;
 
         case "4":
-            // Stopper programmet ved at sætte kører til false
+            // Sletter et spil fra listen
+            SletSpil(spilListe);
+            break;
+
+        case "5":
+            //stopper programmet ved at sætte til false
             kører = false;
             break;
 
@@ -67,23 +72,40 @@ while (kører)
 }
 
 // Metode til at vise alle spil i listen
-static void VisAlleSpil(List<Spil> spilListe)
+static void SletSpil(List<Spil> spilListe)
 {
     Console.Clear();
-    Console.WriteLine("=== Liste over spil ===");
+    Console.WriteLine("=== Slet spil ===");
 
-    // Hvis listen er tom
     if (spilListe.Count == 0)
     {
-        Console.WriteLine("Ingen spil fundet.");
+        Console.WriteLine("Ingen spil at slette.");
+        Pause();
+        return;
+    }
+
+    for (int i = 0; i < spilListe.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {spilListe[i].VisInfo()}");
+    }
+
+    Console.Write("Vælg nummer på spil der skal slettes: ");
+
+    if (int.TryParse(Console.ReadLine(), out int valg))
+    {
+        if (valg > 0 && valg <= spilListe.Count)
+        {
+            spilListe.RemoveAt(valg - 1);
+            Console.WriteLine("Spillet er slettet.");
+        }
+        else
+        {
+            Console.WriteLine("Ugyldigt nummer.");
+        }
     }
     else
     {
-        // Går igennem hvert spil og viser det
-        foreach (Spil spil in spilListe)
-        {
-            Console.WriteLine(spil.VisInfo());
-        }
+        Console.WriteLine("Du skal skrive et tal.");
     }
 
     Pause();
