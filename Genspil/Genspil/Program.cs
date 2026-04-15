@@ -23,11 +23,10 @@ static void Hovedmenu(string filsti, List<Spil> spilListe)
         Console.WriteLine("=== Genspil Menu ===");
         Console.WriteLine("1. Vis alle spil");
         Console.WriteLine("2. Tilføj nyt spil");
-        Console.WriteLine("3. Gem spil til fil");
-        Console.WriteLine("4. Slet spil");
-        Console.WriteLine("5. Rediger spil");
-        Console.WriteLine("6. Søg efter spil");
-        Console.WriteLine("7. Afslut");
+        Console.WriteLine("3. Slet spil");
+        Console.WriteLine("4. Rediger spil");
+        Console.WriteLine("5. Søg efter spil");
+        Console.WriteLine("6. Afslut");
         Console.Write("Vælg en mulighed: ");
 
         string valg = Console.ReadLine();
@@ -50,24 +49,18 @@ static void Hovedmenu(string filsti, List<Spil> spilListe)
                 break;
 
             case "3":
-                SpilDataHandler.GemTilFil(filsti, spilListe);
-                Console.WriteLine("Spillene er gemt til fil.");
-                Pause();
-                break;
-
-            case "4":
                 SletSpil(filsti, spilListe);
                 break;
 
-            case "5":
+            case "4":
                 RedigerSpil(filsti, spilListe);
                 break;
 
-            case "6":
+            case "5":
                 SøgEfterSpilMenu(spilListe);
                 break;
 
-            case "7":
+            case "6":
                 kører = false;
                 break;
 
