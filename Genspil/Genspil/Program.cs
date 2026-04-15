@@ -255,14 +255,14 @@ static string AfkortTekst(string tekst, int maxLængde)
     return tekst.Substring(0, maxLængde - 3) + "...";
 }
 
-// =========================
-// OPRET
-// =========================
-
 static Spil? OpretNytSpil()
 {
     Console.Clear();
-    Console.WriteLine("=== Opret nyt spil === Tast A for at afbryde");
+    Console.WriteLine("==================================");
+    Console.WriteLine("         OPRET NYT SPIL           ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("     Tast A for at afbryde       ");
+    Console.WriteLine("==================================");
 
     Console.Write("Indtast titel: ");
     string titel = (Console.ReadLine() ?? "").Trim();
@@ -343,7 +343,7 @@ static void SletSpil(string filsti, List<Spil> spilListe)
     if (spilListe.Count == 0)
     {
         Console.Clear();
-        Console.WriteLine("=== Slet spil === Tast A for at afbryde");
+        Console.WriteLine("=== Slet spil ===");
         Console.WriteLine("Ingen spil at slette.");
         VentPåA();
         return;
@@ -354,7 +354,7 @@ static void SletSpil(string filsti, List<Spil> spilListe)
     while (true)
     {
         Console.Clear();
-        Console.WriteLine("=== Slet spil === Tast A for at afbryde");
+        Console.WriteLine("=== Slet spil ===");
 
         List<Spil> sorteretListe = HentSorteretListe(spilListe, sortering);
         PrintSpilTabel(sorteretListe);
@@ -414,8 +414,8 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
     if (spilListe.Count == 0)
     {
         Console.Clear();
-        Console.WriteLine("=== Rediger spil === Tast A for at afbryde");
-        Console.WriteLine("Ingen spil at redigere.");
+        Console.WriteLine("=== Rediger spil ===");
+        Console.WriteLine("Ingen spil at redigere");
         VentPåA();
         return;
     }
@@ -425,7 +425,7 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
     while (true)
     {
         Console.Clear();
-        Console.WriteLine("=== Rediger spil === Tast A for at afbryde");
+        Console.WriteLine("=== Rediger spil ===");
 
         List<Spil> sorteretListe = HentSorteretListe(spilListe, sortering);
         PrintSpilTabel(sorteretListe);
@@ -459,8 +459,8 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
             }
 
             Console.WriteLine();
-            Console.WriteLine("Tryk Enter hvis du vil beholde den nuværende værdi.");
-            Console.WriteLine("Tast A for at afbryde.");
+            Console.WriteLine("Tryk Enter hvis du vil beholde den nuværende værdi");
+            Console.WriteLine("Tast A for at afbryde");
             Console.WriteLine("==================================");
 
             Console.Write($"Ny titel ({valgtSpil.Titel}): ");
@@ -501,12 +501,12 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
                     }
                     else
                     {
-                        Console.WriteLine("Ugyldigt genrevalg. Den gamle genre beholdes.");
+                        Console.WriteLine("Ugyldigt genrevalg. Den gamle genre beholdes");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Ugyldigt input. Den gamle genre beholdes.");
+                    Console.WriteLine("Ugyldigt input. Den gamle genre beholdes");
                 }
             }
 
@@ -533,12 +533,12 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
                     }
                     else
                     {
-                        Console.WriteLine("Ugyldigt standvalg. Den gamle stand beholdes.");
+                        Console.WriteLine("Ugyldigt standvalg. Den gamle stand beholdes");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Ugyldigt input. Den gamle stand beholdes.");
+                    Console.WriteLine("Ugyldigt input. Den gamle stand beholdes");
                 }
             }
 
@@ -559,21 +559,21 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
                 }
                 else
                 {
-                    Console.WriteLine("Ugyldig pris. Den gamle pris beholdes.");
+                    Console.WriteLine("Ugyldig pris. Den gamle pris beholdes");
                 }
             }
 
             SpilDataHandler.GemTilFil(filsti, spilListe);
 
             Console.WriteLine();
-            Console.WriteLine("Spillet er blevet opdateret og gemt.");
+            Console.WriteLine("Spillet er blevet opdateret og gemt");
             VentPåA();
             return;
         }
         else
         {
             Console.WriteLine();
-            Console.WriteLine("Du skal skrive et gyldigt ID eller et sorteringsbogstav.");
+            Console.WriteLine("Du skal skrive et gyldigt ID eller et sorteringsbogstav");
             Pause();
         }
     }

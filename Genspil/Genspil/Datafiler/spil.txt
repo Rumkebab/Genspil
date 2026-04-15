@@ -7,3 +7,4 @@ Pandemic;Samarbejde;God;220;5;False;False
 test spil.txt;Samarbejde;Slidt;2;7;False;False
 test123;Strategi;God;300;8;False;False
 test 6;Quiz;Slidt;500;9;False;False
+test;Strategi;Slidt;300;10;False;False
