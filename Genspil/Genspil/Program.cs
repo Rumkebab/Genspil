@@ -261,7 +261,7 @@ static Spil? OpretNytSpil()
     Console.WriteLine("==================================");
     Console.WriteLine("         OPRET NYT SPIL           ");
     Console.WriteLine("==================================");
-    Console.WriteLine("     Tast A for at afbryde       ");
+    Console.WriteLine("     Tast A for at afbryde        ");
     Console.WriteLine("==================================");
 
     Console.Write("Indtast titel: ");
@@ -586,16 +586,19 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
 static void SøgEfterSpilMenu(List<Spil> spilListe)
 {
     Console.Clear();
-    Console.WriteLine("=== Vælg hvad du vil søge efter ===");
-    Console.WriteLine("1. Navn");
+    Console.WriteLine("==================================");
+    Console.WriteLine("    VÆLG HVAD DU VIL SØGE EFTER   ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("1. Titel");
     Console.WriteLine("2. Genre");
     Console.WriteLine("3. Pris");
     Console.WriteLine("4. Stand");
     Console.WriteLine("5. Søg på flere kriterier");
-    Console.WriteLine("A. Gå tilbage");
-    Console.Write("> ");
+    Console.WriteLine("6. Afbryd og vend tilbage til hovedmenuen");
+    Console.WriteLine("==================================");
+    Console.Write("Valg: ");
 
-    string svalg = (Console.ReadLine() ?? "").Trim().ToUpper();
+    string svalg = (Console.ReadLine() ?? "").Trim();
 
     switch (svalg)
     {
@@ -614,9 +617,10 @@ static void SøgEfterSpilMenu(List<Spil> spilListe)
         case "5":
             SøgEfterFlereKriterier(spilListe);
             break;
-        case "A":
+        case "6":
             return;
         default:
+            Console.WriteLine();
             Console.WriteLine("Ugyldigt input. Prøv igen.");
             Pause();
             break;
@@ -635,42 +639,68 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
     }
 
     Console.Clear();
+    Console.WriteLine("==================================");
 
     switch (svalue)
     {
         case "Titel":
-            Console.WriteLine("=== Søg efter navn === Tast A for at afbryde");
+            Console.WriteLine("         SØG EFTER TITEL          ");
+            break;
+        case "Genre":
+            Console.WriteLine("         SØG EFTER GENRE          ");
+            break;
+        case "Pris":
+            Console.WriteLine("          SØG EFTER PRIS          ");
+            break;
+        case "Stand":
+            Console.WriteLine("         SØG EFTER STAND          ");
+            break;
+        default:
+            Console.WriteLine("         SØG EFTER TITEL          ");
+            break;
+    }
+
+    Console.WriteLine("==================================");
+    Console.WriteLine("Tast B for at gå tilbage til søgemenuen.");
+    Console.WriteLine("Tast A for at vende tilbage til hovedmenuen.");
+    Console.WriteLine("==================================");
+
+    switch (svalue)
+    {
+        case "Titel":
             Console.Write("Indtast titel eller en del af titlen: ");
             break;
         case "Genre":
-            Console.WriteLine("=== Søg efter genre === Tast A for at afbryde");
             Console.Write("Indtast genre: ");
             break;
         case "Pris":
-            Console.WriteLine("=== Søg efter pris === Tast A for at afbryde");
             Console.Write("Indtast pris: ");
             break;
         case "Stand":
-            Console.WriteLine("=== Søg efter stand === Tast A for at afbryde");
             Console.Write("Indtast stand: ");
             break;
         default:
-            Console.WriteLine("=== Søg efter navn === Tast A for at afbryde");
             Console.Write("Indtast titel eller en del af titlen: ");
             break;
     }
 
-    string søgning = (Console.ReadLine() ?? "").Trim();
+    string søgning = (Console.ReadLine() ?? "").Trim().ToUpper();
 
-    if (søgning.ToUpper() == "A")
+    if (søgning == "A")
     {
+        return;
+    }
+
+    if (søgning == "B")
+    {
+        SøgEfterSpilMenu(spilListe);
         return;
     }
 
     if (string.IsNullOrWhiteSpace(søgning))
     {
         Console.WriteLine("Du skal skrive noget for at søge.");
-        VentPåA();
+        VentPåSøgningValg(spilListe);
         return;
     }
 
@@ -706,29 +736,54 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
         PrintSpilTabel(fundneSpil);
     }
 
-    VentPåA();
+    VentPåSøgningValg(spilListe);
 }
 
 static void SøgEfterFlereKriterier(List<Spil> spilListe)
 {
     Console.Clear();
-    Console.WriteLine("=== Søg på flere kriterier === Tast A for at afbryde");
+    Console.WriteLine("==================================");
+    Console.WriteLine("      SØG PÅ FLERE KRITERIER      ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("Tast B for at gå tilbage til søgemenuen.");
+    Console.WriteLine("Tast A for at vende tilbage til hovedmenuen.");
+    Console.WriteLine("==================================");
 
     Console.Write("Titel (tryk Enter for at springe over): ");
     string titel = (Console.ReadLine() ?? "").Trim();
     if (titel.ToUpper() == "A") return;
+    if (titel.ToUpper() == "B")
+    {
+        SøgEfterSpilMenu(spilListe);
+        return;
+    }
 
     Console.Write("Genre (tryk Enter for at springe over): ");
     string genre = (Console.ReadLine() ?? "").Trim();
     if (genre.ToUpper() == "A") return;
+    if (genre.ToUpper() == "B")
+    {
+        SøgEfterSpilMenu(spilListe);
+        return;
+    }
 
     Console.Write("Stand (tryk Enter for at springe over): ");
     string stand = (Console.ReadLine() ?? "").Trim();
     if (stand.ToUpper() == "A") return;
+    if (stand.ToUpper() == "B")
+    {
+        SøgEfterSpilMenu(spilListe);
+        return;
+    }
 
     Console.Write("Pris (tryk Enter for at springe over): ");
     string pris = (Console.ReadLine() ?? "").Trim();
     if (pris.ToUpper() == "A") return;
+    if (pris.ToUpper() == "B")
+    {
+        SøgEfterSpilMenu(spilListe);
+        return;
+    }
 
     List<Spil> fundneSpil = new List<Spil>();
 
@@ -757,7 +812,7 @@ static void SøgEfterFlereKriterier(List<Spil> spilListe)
         PrintSpilTabel(fundneSpil);
     }
 
-    VentPåA();
+    VentPåSøgningValg(spilListe);
 }
 
 // =========================
@@ -780,6 +835,27 @@ static void VentPåA(string promptTekst = "Indtast A for at vende tilbage: ")
 
         if (input == "A")
         {
+            return;
+        }
+    }
+}
+
+static void VentPåSøgningValg(List<Spil> spilListe)
+{
+    while (true)
+    {
+        Console.WriteLine();
+        Console.Write("Tast B for søgemenu eller A for hovedmenu: ");
+        string valg = (Console.ReadLine() ?? "").Trim().ToUpper();
+
+        if (valg == "A")
+        {
+            return;
+        }
+
+        if (valg == "B")
+        {
+            SøgEfterSpilMenu(spilListe);
             return;
         }
     }
