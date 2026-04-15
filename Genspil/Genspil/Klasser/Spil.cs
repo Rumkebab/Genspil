@@ -79,20 +79,22 @@
         // Bruges til at vise spillet pænt i konsollen
         public string VisInfo()
         {
+            // Truncater titlen hvis den er for lang, så det ikke ødelægger layoutet, tilføjer "..." for at indikere det er forkortet
+            string titelTruncated = Titel.Length > 50 ? Titel.Substring(0, 47) + "..." : Titel;
 
             if (ErReserveret)
             {
-                string info = $"{Id,-5} {Titel,-30} {Genre,-12} {Stand,-8} {Pris,8} kr (RESERVERET)";
+                string info = $"{Id,-5} {titelTruncated,-50} {Genre,-12} {Stand,-8} {Pris,8} kr {"(RESERVERET)",20}";
                 return info;
             }
             else if (ErRequest)
             {
-                string info = $"{Id,-5} {Titel,-30} {Genre,-12} {Stand,-8} {Pris,8} kr (ØNSKET)";
+                string info = $"{Id,-5} {titelTruncated,-50} {Genre,-12} {Stand,-8} {Pris,8} kr {"(ØNSKET)",20}";
                 return info;
             }
             else
             {
-                return $"{Id,-5} {Titel,-30} {Genre,-12} {Stand,-8} {Pris,8} kr";
+                return $"{Id,-5} {titelTruncated,-50} {Genre,-12} {Stand,-8} {Pris,8} kr ";
             }
         }
     }
