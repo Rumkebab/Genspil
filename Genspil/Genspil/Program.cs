@@ -5,8 +5,6 @@ using Genspil.Data;    // Giver adgang til SpilDataHandler
 string filsti = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Datafiler\spil.txt");
 filsti = Path.GetFullPath(filsti);
 
-Console.WriteLine("Fuld sti: " + filsti);
-
 // Læser spillene fra filen ved opstart
 List<Spil> spilListe = SpilDataHandler.LæsFraFil(filsti);
 
@@ -15,18 +13,21 @@ Hovedmenu(filsti, spilListe);
 
 static void Hovedmenu(string filsti, List<Spil> spilListe)
 {
-    bool kører = true; // Styrer om programmet skal fortsætte
+    bool kører = true;
 
     while (kører)
     {
         Console.Clear();
-        Console.WriteLine("=== Genspil Menu ===");
+        Console.WriteLine("==================================");
+        Console.WriteLine("          GENSPIL MENU            ");
+        Console.WriteLine("==================================");
         Console.WriteLine("1. Vis alle spil");
         Console.WriteLine("2. Tilføj nyt spil");
         Console.WriteLine("3. Slet spil");
         Console.WriteLine("4. Rediger spil");
         Console.WriteLine("5. Søg efter spil");
         Console.WriteLine("6. Afslut");
+        Console.WriteLine("==================================");
         Console.Write("Vælg en mulighed: ");
 
         string valg = Console.ReadLine();
@@ -38,14 +39,47 @@ static void Hovedmenu(string filsti, List<Spil> spilListe)
                 break;
 
             case "2":
-                Spil nytSpil = OpretNytSpil();
-                spilListe.Add(nytSpil);
+                bool fortsætTilføjelse = true;
 
-                // Gemmer automatisk efter oprettelse
-                SpilDataHandler.GemTilFil(filsti, spilListe);
+                while (fortsætTilføjelse)
+                {
+                    Spil nytSpil = OpretNytSpil();
 
-                Console.WriteLine("Spillet blev tilføjet og gemt.");
-                Pause();
+                    if (nytSpil == null)
+                    {
+                        fortsætTilføjelse = false;
+                        break;
+                    }
+
+                    spilListe.Add(nytSpil);
+
+                    // Gemmer automatisk efter oprettelse
+                    SpilDataHandler.GemTilFil(filsti, spilListe);
+
+                    Console.WriteLine();
+                    Console.WriteLine("Spillet blev tilføjet og gemt.");
+                    Console.WriteLine("==================================");
+                    Console.WriteLine("1. Tilføj endnu et spil");
+                    Console.WriteLine("0. Afbryd og vend tilbage til hovedmenuen");
+                    Console.WriteLine("==================================");
+
+                    string tilfoejValg = "";
+                    while (tilfoejValg != "1" && tilfoejValg != "0")
+                    {
+                        Console.Write("Valg: ");
+                        tilfoejValg = Console.ReadLine();
+
+                        if (tilfoejValg != "1" && tilfoejValg != "0")
+                        {
+                            Console.WriteLine("Ugyldigt valg. Indtast 1 eller 0.");
+                        }
+                    }
+
+                    if (tilfoejValg == "0")
+                    {
+                        fortsætTilføjelse = false;
+                    }
+                }
                 break;
 
             case "3":
@@ -65,8 +99,9 @@ static void Hovedmenu(string filsti, List<Spil> spilListe)
                 break;
 
             default:
+                Console.WriteLine();
                 Console.WriteLine("Ugyldigt valg. Prøv igen.");
-                Pause();
+                VentPåNul();
                 break;
         }
     }
@@ -76,7 +111,11 @@ static void Hovedmenu(string filsti, List<Spil> spilListe)
 static void VisAlleSpil(List<Spil> spilListe)
 {
     Console.Clear();
-    Console.WriteLine("=== Liste over spil ===");
+    Console.WriteLine("==================================");
+    Console.WriteLine("          LISTE OVER SPIL         ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("Indtast 0 for at afbryde og vende tilbage til hovedmenuen.");
+    Console.WriteLine("==================================");
 
     if (spilListe.Count == 0)
     {
@@ -90,38 +129,72 @@ static void VisAlleSpil(List<Spil> spilListe)
         }
     }
 
-    Pause();
+    Console.WriteLine("==================================");
+    VentPåNul("Valg: ");
 }
 
 // Opretter et nyt spil
 static Spil OpretNytSpil()
 {
     Console.Clear();
-    Console.WriteLine("=== Opret nyt spil ===");
+    Console.WriteLine("==================================");
+    Console.WriteLine("          OPRET NYT SPIL          ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("Indtast 0 for at afbryde og vende tilbage til hovedmenuen.");
+    Console.WriteLine("==================================");
 
     Console.Write("Indtast titel: ");
     string titel = Console.ReadLine();
 
+    if (titel == "0")
+    {
+        return null;
+    }
+
+    Console.WriteLine();
     Console.WriteLine("Vælg genre:");
-    Console.WriteLine("1 = Strategi");
-    Console.WriteLine("2 = Familie");
-    Console.WriteLine("3 = Kortspil");
-    Console.WriteLine("4 = Quiz");
-    Console.WriteLine("5 = Samarbejde");
-    Console.Write("> ");
-    int genreValg = int.Parse(Console.ReadLine());
-    Genre genre = (Genre)(genreValg - 1); // Trækker 1 fra fordi enum starter ved 0
+    Console.WriteLine("1. Strategi");
+    Console.WriteLine("2. Familie");
+    Console.WriteLine("3. Kortspil");
+    Console.WriteLine("4. Quiz");
+    Console.WriteLine("5. Samarbejde");
+    Console.Write("Vælg genre: ");
+    string genreInput = Console.ReadLine();
 
+    if (genreInput == "0")
+    {
+        return null;
+    }
+
+    int genreValg = int.Parse(genreInput);
+    Genre genre = (Genre)(genreValg - 1);
+
+    Console.WriteLine();
     Console.WriteLine("Vælg stand:");
-    Console.WriteLine("1 = Ny");
-    Console.WriteLine("2 = God");
-    Console.WriteLine("3 = Slidt");
-    Console.Write("> ");
-    int standValg = int.Parse(Console.ReadLine());
-    Stand stand = (Stand)(standValg - 1); // Trækker 1 fra fordi enum starter ved 0
+    Console.WriteLine("1. Ny");
+    Console.WriteLine("2. God");
+    Console.WriteLine("3. Slidt");
+    Console.Write("Vælg stand: ");
+    string standInput = Console.ReadLine();
 
+    if (standInput == "0")
+    {
+        return null;
+    }
+
+    int standValg = int.Parse(standInput);
+    Stand stand = (Stand)(standValg - 1);
+
+    Console.WriteLine();
     Console.Write("Indtast pris: ");
-    int pris = int.Parse(Console.ReadLine());
+    string prisInput = Console.ReadLine();
+
+    if (prisInput == "0")
+    {
+        return null;
+    }
+
+    int pris = int.Parse(prisInput);
 
     return new Spil(titel, genre, stand, pris);
 }
@@ -130,12 +203,17 @@ static Spil OpretNytSpil()
 static void SletSpil(string filsti, List<Spil> spilListe)
 {
     Console.Clear();
-    Console.WriteLine("=== Slet spil ===");
+    Console.WriteLine("==================================");
+    Console.WriteLine("            SLET SPIL             ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("Indtast 0 for at afbryde og vende tilbage til hovedmenuen.");
+    Console.WriteLine("==================================");
 
     if (spilListe.Count == 0)
     {
         Console.WriteLine("Ingen spil at slette.");
-        Pause();
+        Console.WriteLine("==================================");
+        VentPåNul();
         return;
     }
 
@@ -145,11 +223,16 @@ static void SletSpil(string filsti, List<Spil> spilListe)
         Console.WriteLine(spil.VisInfo());
     }
 
-    Console.WriteLine();
+    Console.WriteLine("==================================");
     Console.Write("Indtast ID på spil der skal slettes: ");
 
     if (int.TryParse(Console.ReadLine(), out int id))
     {
+        if (id == 0)
+        {
+            return;
+        }
+
         Spil spilDerSkalSlettes = null;
 
         foreach (Spil spil in spilListe)
@@ -168,31 +251,39 @@ static void SletSpil(string filsti, List<Spil> spilListe)
             // Gemmer automatisk efter sletning
             SpilDataHandler.GemTilFil(filsti, spilListe);
 
+            Console.WriteLine();
             Console.WriteLine("Spillet er slettet og gemt.");
         }
         else
         {
+            Console.WriteLine();
             Console.WriteLine("Der blev ikke fundet et spil med det ID.");
         }
     }
     else
     {
+        Console.WriteLine();
         Console.WriteLine("Du skal skrive et gyldigt tal.");
     }
 
-    Pause();
+    VentPåNul();
 }
 
 // Redigerer et spil via ID
 static void RedigerSpil(string filsti, List<Spil> spilListe)
 {
     Console.Clear();
-    Console.WriteLine("=== Rediger spil ===");
+    Console.WriteLine("==================================");
+    Console.WriteLine("          REDIGER SPIL            ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("Indtast 0 for at afbryde og vende tilbage til hovedmenuen.");
+    Console.WriteLine("==================================");
 
     if (spilListe.Count == 0)
     {
         Console.WriteLine("Ingen spil at redigere.");
-        Pause();
+        Console.WriteLine("==================================");
+        VentPåNul();
         return;
     }
 
@@ -202,11 +293,16 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
         Console.WriteLine(spil.VisInfo());
     }
 
-    Console.WriteLine();
+    Console.WriteLine("==================================");
     Console.Write("Indtast ID på spil der skal redigeres: ");
 
     if (int.TryParse(Console.ReadLine(), out int id))
     {
+        if (id == 0)
+        {
+            return;
+        }
+
         Spil valgtSpil = null;
 
         foreach (Spil spil in spilListe)
@@ -222,23 +318,35 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
         {
             Console.WriteLine();
             Console.WriteLine("Tryk Enter hvis du vil beholde den nuværende værdi.");
+            Console.WriteLine("==================================");
 
             Console.Write($"Ny titel ({valgtSpil.Titel}): ");
             string nyTitel = Console.ReadLine();
+
+            if (nyTitel == "0")
+            {
+                return;
+            }
+
             if (!string.IsNullOrWhiteSpace(nyTitel))
             {
                 valgtSpil.Titel = nyTitel;
             }
 
+            Console.WriteLine();
             Console.WriteLine($"Nuværende genre: {valgtSpil.Genre}");
-            Console.WriteLine("Vælg ny genre:");
-            Console.WriteLine("1 = Strategi");
-            Console.WriteLine("2 = Familie");
-            Console.WriteLine("3 = Kortspil");
-            Console.WriteLine("4 = Quiz");
-            Console.WriteLine("5 = Samarbejde");
-            Console.Write("Ny genre (tryk Enter for at beholde): ");
+            Console.WriteLine("1. Strategi");
+            Console.WriteLine("2. Familie");
+            Console.WriteLine("3. Kortspil");
+            Console.WriteLine("4. Quiz");
+            Console.WriteLine("5. Samarbejde");
+            Console.Write("Vælg ny genre (tryk Enter for at beholde): ");
             string genreInput = Console.ReadLine();
+
+            if (genreInput == "0")
+            {
+                return;
+            }
 
             if (!string.IsNullOrWhiteSpace(genreInput))
             {
@@ -259,13 +367,18 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
                 }
             }
 
+            Console.WriteLine();
             Console.WriteLine($"Nuværende stand: {valgtSpil.Stand}");
-            Console.WriteLine("Vælg ny stand:");
-            Console.WriteLine("1 = Ny");
-            Console.WriteLine("2 = God");
-            Console.WriteLine("3 = Slidt");
-            Console.Write("Ny stand (tryk Enter for at beholde): ");
+            Console.WriteLine("1. Ny");
+            Console.WriteLine("2. God");
+            Console.WriteLine("3. Slidt");
+            Console.Write("Vælg ny stand (tryk Enter for at beholde): ");
             string standInput = Console.ReadLine();
+
+            if (standInput == "0")
+            {
+                return;
+            }
 
             if (!string.IsNullOrWhiteSpace(standInput))
             {
@@ -286,8 +399,14 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
                 }
             }
 
+            Console.WriteLine();
             Console.Write($"Ny pris ({valgtSpil.Pris} kr): ");
             string prisInput = Console.ReadLine();
+
+            if (prisInput == "0")
+            {
+                return;
+            }
 
             if (!string.IsNullOrWhiteSpace(prisInput))
             {
@@ -309,28 +428,35 @@ static void RedigerSpil(string filsti, List<Spil> spilListe)
         }
         else
         {
+            Console.WriteLine();
             Console.WriteLine("Der blev ikke fundet et spil med det ID.");
         }
     }
     else
     {
+        Console.WriteLine();
         Console.WriteLine("Du skal skrive et gyldigt tal.");
     }
 
-    Pause();
+    VentPåNul();
 }
 
 // Lille menu til søgning
 static void SøgEfterSpilMenu(List<Spil> spilListe)
 {
     Console.Clear();
-    Console.WriteLine("=== Vælg hvad du vil søge efter ===");
+    Console.WriteLine("==================================");
+    Console.WriteLine("          SØG EFTER SPIL          ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("Indtast 0 for at afbryde og vende tilbage til hovedmenuen.");
+    Console.WriteLine("==================================");
     Console.WriteLine("1. Navn");
     Console.WriteLine("2. Genre");
     Console.WriteLine("3. Pris");
     Console.WriteLine("4. Stand");
-    Console.WriteLine("5. Gå tilbage");
-    Console.Write("> ");
+    Console.WriteLine("==================================");
+    Console.Write("Vælg en mulighed: ");
+
     string svalg = Console.ReadLine();
 
     switch (svalg)
@@ -347,13 +473,13 @@ static void SøgEfterSpilMenu(List<Spil> spilListe)
         case "4":
             SøgEfterSpil(spilListe, "Stand");
             break;
-        case "5":
+        case "0":
             return;
 
         default:
+            Console.WriteLine();
             Console.WriteLine("Ugyldigt input. Prøv igen.");
-            Pause();
-            SøgEfterSpilMenu(spilListe);
+            VentPåNul();
             break;
     }
 }
@@ -363,45 +489,52 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
 {
     List<Spil> fundneSpil = new List<Spil>();
 
+    Console.Clear();
+    Console.WriteLine("==================================");
+    Console.WriteLine("          SØGNING I SPIL          ");
+    Console.WriteLine("==================================");
+    Console.WriteLine("Indtast 0 for at afbryde og vende tilbage til hovedmenuen.");
+    Console.WriteLine("==================================");
+
     if (spilListe.Count == 0)
     {
         Console.WriteLine("Ingen spil at søge efter.");
-        Pause();
+        Console.WriteLine("==================================");
+        VentPåNul();
         return;
     }
-
-    Console.Clear();
 
     switch (svalue)
     {
         case "Titel":
-            Console.WriteLine("=== Søg efter navn ===");
             Console.Write("Indtast titel eller en del af titlen: ");
             break;
         case "Genre":
-            Console.WriteLine("=== Søg efter genre ===");
             Console.Write("Indtast genre: ");
             break;
         case "Pris":
-            Console.WriteLine("=== Søg efter pris ===");
             Console.Write("Indtast pris: ");
             break;
         case "Stand":
-            Console.WriteLine("=== Søg efter stand ===");
             Console.Write("Indtast stand: ");
             break;
         default:
-            Console.WriteLine("=== Søg efter navn ===");
             Console.Write("Indtast titel eller en del af titlen: ");
             break;
     }
 
     string søgning = Console.ReadLine();
 
+    if (søgning == "0")
+    {
+        return;
+    }
+
     if (string.IsNullOrWhiteSpace(søgning))
     {
+        Console.WriteLine();
         Console.WriteLine("Du skal skrive noget for at søge.");
-        Pause();
+        VentPåNul();
         return;
     }
 
@@ -425,7 +558,7 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
         }
     }
 
-    Console.WriteLine();
+    Console.WriteLine("==================================");
 
     if (fundneSpil.Count == 0)
     {
@@ -434,19 +567,24 @@ static void SøgEfterSpil(List<Spil> spilListe, string svalue = "Titel")
     else
     {
         Console.WriteLine("Fundne spil:");
-        foreach (Spil spil in fundneSpil)
+        foreach (Spil spil in spilListe)
         {
             Console.WriteLine(spil.VisInfo());
         }
     }
 
-    Pause();
+    Console.WriteLine("==================================");
+    VentPåNul();
 }
 
-// Laver en lille pause i programmet
-static void Pause()
+// Venter på at brugeren skriver 0
+static void VentPåNul(string promptTekst = "Indtast 0: ")
 {
-    Console.WriteLine();
-    Console.WriteLine("Tryk på en tast for at fortsætte...");
-    Console.ReadKey();
+    string input = "";
+
+    while (input != "0")
+    {
+        Console.Write(promptTekst);
+        input = Console.ReadLine();
+    }
 }

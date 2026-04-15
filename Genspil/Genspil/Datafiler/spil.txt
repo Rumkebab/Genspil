@@ -5,3 +5,5 @@ UNO;Kortspil;Slidt;50;4;False;False
 Pandemic;Samarbejde;God;220;5;False;False
 111;Familie;Ny;111;6;False;False
 test spil.txt;Samarbejde;Slidt;2;7;False;False
+test123;Strategi;God;300;8;False;False
+test 6;Quiz;Slidt;500;9;False;False
