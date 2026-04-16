@@ -146,7 +146,7 @@ namespace Genspil.Klasser
                     sorteret.Sort((s1, s2) => s1.Genre.ToString().CompareTo(s2.Genre.ToString()));
                     break;
                 case 'S':
-                    sorteret.Sort((s1, s2) => s1.Stand.ToString().CompareTo(s2.Stand.ToString()));
+                    sorteret.Sort((s1, s2) => s1.Stand.CompareTo(s2.Stand));
                     break;
                 case 'P':
                     sorteret.Sort((s1, s2) => s1.Pris.CompareTo(s2.Pris));
@@ -179,7 +179,6 @@ namespace Genspil.Klasser
             }
         }
 
-        // Udskriver listen i samme tabel-format som Anders’ version
         public static void PrintSpilTabel(List<Spil> spilListe)
         {
             Console.WriteLine(new string('-', 120));
