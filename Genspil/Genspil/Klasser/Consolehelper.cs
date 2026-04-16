@@ -1,25 +1,27 @@
-﻿namespace Genspil.Klasser // Angiver at klassen hører til i projektets namespace "Genspil"
+﻿namespace Genspil.Klasser
 {
-    public static class ConsoleHelper // Opretter en statisk hjælpeklasse til fælles konsol-metoder
+    public static class ConsoleHelper
     {
-        public static void Pause() // Metode der laver en pause, så brugeren kan nå at læse teksten i konsollen
+        // Laver en pause så brugeren kan læse beskeden
+        public static void Pause()
         {
-            Console.WriteLine(); // Skriver en tom linje for at skabe luft i konsollen
-            Console.WriteLine("Tryk på en tast for at fortsætte..."); // Viser en besked til brugeren
-            Console.ReadKey(); // Venter på, at brugeren trykker på en tast
+            Console.WriteLine();
+            Console.WriteLine("Tryk på en tast for at fortsætte...");
+            Console.ReadKey();
         }
 
-        public static void VentPåA(string promptTekst = "Indtast A for at vende tilbage.") // Metode der bliver ved med at spørge, indtil brugeren skriver A
+        // Venter indtil brugeren trykker A
+        public static void VentPåA(string promptTekst = "Tryk A for at vende tilbage: ")
         {
-            while (true) // Uendelig løkke som kun stoppes med return
+            while (true)
             {
-                Console.Write(promptTekst); // Viser teksten foran inputfeltet
-                string input = (Console.ReadKey().KeyChar.ToString() ?? "").Trim().ToUpper(); // Læser brugerens input, undgår null, fjerner mellemrum og gør teksten til store bogstaver
-                Console.WriteLine(); // Går til næste linje efter input
+                Console.Write(promptTekst);
+                char input = char.ToUpper(Console.ReadKey().KeyChar);
+                Console.WriteLine();
 
-                if (input == "A") // Tjekker om brugeren har skrevet A
+                if (input == 'A')
                 {
-                    return; // Afslutter metoden og går tilbage til det sted, hvor metoden blev kaldt
+                    return;
                 }
             }
         }

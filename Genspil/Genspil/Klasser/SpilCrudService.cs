@@ -1,335 +1,268 @@
 ﻿using Genspil.Data;
 
-namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets namespace Genspil
+namespace Genspil.Klasser
 {
-    public static class SpilCrudService // Opretter en statisk serviceklasse til Create, Update og Delete af spil
+    public static class SpilCrudService
     {
-        public static Spil? OpretNytSpil(string filsti, List<Spil> spilListe) // Metode der opretter et nyt spil og returnerer det; kan returnere null hvis brugeren afbryder
+        // Opretter et nyt spil og gemmer det med det samme
+        public static Spil? OpretNytSpil(string filsti, List<Spil> spilListe)
         {
-            Console.Clear(); // Rydder konsollen så opret-siden starter pænt
-            Console.WriteLine("=================================="); // Dekorativ linje
-            Console.WriteLine("         OPRET NYT SPIL           "); // Overskrift
-            Console.WriteLine("=================================="); // Dekorativ linje
-            Console.WriteLine("     Tast A for at afbryde        "); // Hjælpetekst til brugeren
-            Console.WriteLine("=================================="); // Dekorativ linje
+            int maxGenre = Enum.GetValues(typeof(Genre)).Length;
+            int maxStand = Enum.GetValues(typeof(Stand)).Length;
 
-            Console.Write("Indtast titel: "); // Beder brugeren om at skrive spillets titel
-            string titel = (Console.ReadLine() ?? "").Trim(); // Læser input, undgår null og fjerner mellemrum før/efter
+            Console.Clear();
+            Console.WriteLine("==================================");
+            Console.WriteLine("         OPRET NYT SPIL           ");
+            Console.WriteLine("==================================");
+            Console.WriteLine("     Tast A for at afbryde        ");
+            Console.WriteLine("==================================");
 
-            if (titel.ToUpper() == "A") // Tjekker om brugeren vil afbryde
+            Console.Write("Indtast titel: ");
+            string titel = (Console.ReadLine() ?? "").Trim();
+            if (titel.ToUpper() == "A") return null;
+
+            Console.WriteLine("Vælg genre:");
+            foreach (var genre in Enum.GetValues(typeof(Genre)))
             {
-                return null; // Returnerer null for at signalere at oprettelsen blev afbrudt
+                int nummer = (int)genre + 1;
+                Console.WriteLine($"{nummer} = {genre}");
+            }
+            Console.Write("> ");
+
+            string genreInput = (Console.ReadLine() ?? "").Trim();
+            if (genreInput.ToUpper() == "A") return null;
+
+            if (!int.TryParse(genreInput, out int genreValg) || genreValg < 1 || genreValg > maxGenre)
+            {
+                Console.WriteLine("Ugyldigt genrevalg.");
+                ConsoleHelper.Pause();
+                return null;
             }
 
-            Console.WriteLine("Vælg genre:"); // Viser at brugeren nu skal vælge genre
-            foreach(var genr in Enum.GetValues(typeof(Genre))) // Løkke der viser alle genre-muligheder baseret på enum
+            Genre valgtGenre = (Genre)(genreValg - 1);
+
+            Console.Write("Indtast antal spillere: ");
+            string antalInput = (Console.ReadLine() ?? "").Trim();
+            if (antalInput.ToUpper() == "A") return null;
+
+            Console.WriteLine("Vælg stand:");
+            foreach (var stand in Enum.GetValues(typeof(Stand)))
             {
-                int genreNummer = (int)genr + 1; // Beregner det nummer der skal vises for brugeren (1-baseret)
-                Console.WriteLine($"{genreNummer} = {genr}"); // Viser nummer og genre-navn
+                int nummer = (int)stand + 1;
+                Console.WriteLine($"{nummer} = {stand}");
             }
-            Console.Write("> "); // Beder brugeren skrive sit valg
+            Console.Write("> ");
 
-            string genreInput = (Console.ReadLine() ?? "").Trim(); // Læser brugerens input til genre
-            if (genreInput.ToUpper() == "A") // Tjekker om brugeren vil afbryde
+            string standInput = (Console.ReadLine() ?? "").Trim();
+            if (standInput.ToUpper() == "A") return null;
+
+            if (!int.TryParse(standInput, out int standValg) || standValg < 1 || standValg > maxStand)
             {
-                return null; // Stopper oprettelsen og returnerer null
-            }
-
-            if (!int.TryParse(genreInput, out int genreValg) || genreValg < 1 || genreValg > 5) // Tjekker om input er et gyldigt tal mellem 1 og 5
-            {
-                Console.WriteLine("Ugyldigt genrevalg."); // Fejlbesked
-                ConsoleHelper.Pause(); // Pause så brugeren kan læse beskeden
-                return null; // Afslutter metoden uden at oprette et spil
-            }
-
-            Genre genre = (Genre)(genreValg - 1); // Laver tallet om til en enum-værdi i Genre
-
-
-            Console.WriteLine("Indtast antal spillere: "); // Beder brugeren om at indtaste antal spillere
-            string antalInput = (Console.ReadLine() ?? "").Trim(); // Læser input til antal spillere
-            Console.WriteLine("Vælg stand:"); // Viser at brugeren nu skal vælge stand
-            
-        foreach(var stan in Enum.GetValues(typeof(Stand))) // Løkke der viser alle stand-muligheder baseret på enum
-            {
-                int standNummer = (int)stan + 1; // Beregner det nummer der skal vises for brugeren (1-baseret)
-                Console.WriteLine($"{standNummer} = {stan}"); // Viser nummer og stand-navn
-            }
-            Console.Write("> "); // Beder brugeren skrive sit valg
-
-            string standInput = (Console.ReadLine() ?? "").Trim(); // Læser input til stand
-            if (standInput.ToUpper() == "A") // Tjekker om brugeren vil afbryde
-            {
-                return null; // Afbryder oprettelsen
+                Console.WriteLine("Ugyldigt standvalg.");
+                ConsoleHelper.Pause();
+                return null;
             }
 
-            if (!int.TryParse(standInput, out int standValg) || standValg < 1 || standValg > 3) // Tjekker om input er et gyldigt tal mellem 1 og 3
+            Stand valgtStand = (Stand)(standValg - 1);
+
+            Console.Write("Indtast pris: ");
+            string prisInput = (Console.ReadLine() ?? "").Trim();
+            if (prisInput.ToUpper() == "A") return null;
+
+            if (!int.TryParse(prisInput, out int pris))
             {
-                Console.WriteLine("Ugyldigt standvalg."); // Fejlbesked
-                ConsoleHelper.Pause(); // Pause så brugeren kan læse beskeden
-                return null; // Afslutter metoden uden at oprette et spil
+                Console.WriteLine("Ugyldig pris.");
+                ConsoleHelper.Pause();
+                return null;
             }
 
-            Stand stand = (Stand)(standValg - 1); // Laver tallet om til en enum-værdi i Stand
+            Spil nytSpil = new Spil(titel, valgtGenre, valgtStand, pris, antalInput);
+            spilListe.Add(nytSpil);
+            SpilDataHandler.GemTilFil(filsti, spilListe);
 
-            Console.Write("Indtast pris: "); // Beder brugeren om at indtaste pris
-            string prisInput = (Console.ReadLine() ?? "").Trim(); // Læser input til pris
-
-            if (prisInput.ToUpper() == "A") // Tjekker om brugeren vil afbryde
-            {
-                return null; // Afbryder oprettelsen
-            }
-
-            if (!int.TryParse(prisInput, out int pris)) // Tjekker om prisen er et gyldigt helt tal
-            {
-                Console.WriteLine("Ugyldig pris."); // Fejlbesked
-                ConsoleHelper.Pause(); // Pause så brugeren kan læse beskeden
-                return null; // Afslutter metoden uden at oprette et spil
-            }
-            Spil nytSpil = new Spil(titel, genre, stand, pris, antalInput); // Opretter et nyt Spil-objekt med de indtastede værdier
-            spilListe.Add(nytSpil); // Tilføjer det nye spil til listen i hukommelsen
-
-            // Gemmer automatisk efter oprettelse
-            SpilDataHandler.GemTilFil(filsti, spilListe); // Gemmer hele listen til filen efter oprettelse
-            return new Spil(titel, genre, stand, pris, antalInput); // Opretter og returnerer et nyt Spil-objekt
+            return nytSpil;
         }
 
-        public static void SletSpil(string filsti, List<Spil> spilListe) // Metode der sletter et spil fra listen og gemmer ændringen til fil
+        // Sletter et spil ud fra ID
+        public static void SletSpil(string filsti, List<Spil> spilListe)
         {
-            if (spilListe.Count == 0) // Tjekker om listen er tom
+            if (spilListe.Count == 0)
             {
-                Console.Clear(); // Rydder skærmen
-                Console.WriteLine("=== Slet spil ==="); // Overskrift
-                Console.WriteLine("Ingen spil at slette."); // Besked til brugeren
-                ConsoleHelper.VentPåA(); // Venter på A for at gå tilbage til hovedmenuen
-                return; // Afslutter metoden
+                Console.Clear();
+                Console.WriteLine("=== Slet spil ===");
+                Console.WriteLine("Ingen spil at slette.");
+                ConsoleHelper.VentPåA();
+                return;
             }
 
-            char sortering = 'O'; // Standard-sortering sættes til O, som her bruges til oprettelsesrækkefølge/ID
+            char sortering = 'O';
 
-            while (true) // Løkke der holder brugeren i slet-menuen indtil et gyldigt valg eller afbrydelse
+            while (true)
             {
-                Console.Clear(); // Rydder konsollen
-                Console.WriteLine("=== Slet spil ==="); // Overskrift
+                Console.Clear();
+                Console.WriteLine("=== Slet spil ===");
 
-                List<Spil> sorteretListe = SpilVisningService.HentSorteretListe(spilListe, sortering); // Henter en sorteret kopi af listen
-                SpilVisningService.PrintSpilTabel(sorteretListe); // Viser listen i tabelform
+                List<Spil> sorteretListe = SpilVisningService.HentSorteretListe(spilListe, sortering);
+                SpilVisningService.PrintSpilTabel(sorteretListe);
 
-                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [A]fbryd"); // Viser sorteringsmuligheder
-                Console.Write("Indtast ID på spil der skal slettes: "); // Beder brugeren om ID eller sorteringsbogstav
+                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [A]fbryd");
+                Console.Write("Indtast ID på spil der skal slettes: ");
 
-                string input = (Console.ReadLine() ?? "").Trim(); // Læser brugerens input
+                string input = (Console.ReadLine() ?? "").Trim();
 
-                if (input.ToUpper() == "A") // Hvis brugeren skriver A
+                if (input.ToUpper() == "A")
+                    return;
+
+                if (input.Length == 1 && "NGSPO".Contains(char.ToUpper(input[0])))
                 {
-                    return; // Går tilbage til hovedmenuen
+                    sortering = char.ToUpper(input[0]);
+                    continue;
                 }
 
-                if (input.Length == 1 && "NGSPO".Contains(char.ToUpper(input[0]))) // Hvis input er ét bogstav og er en gyldig sortering
+                if (int.TryParse(input, out int id))
                 {
-                    sortering = char.ToUpper(input[0]); // Gemmer ny sortering
-                    continue; // Starter løkken forfra og viser listen sorteret på ny
-                }
+                    Spil? spilDerSkalSlettes = spilListe.Find(s => s.Id == id);
 
-                if (int.TryParse(input, out int id)) // Hvis input kan laves om til et ID-tal
-                {
-                    Spil? spilDerSkalSlettes = spilListe.Find(s => s.Id == id); // Finder spillet med det angivne ID
-
-                    if (spilDerSkalSlettes != null) // Hvis der blev fundet et spil
+                    if (spilDerSkalSlettes != null)
                     {
-                        spilListe.Remove(spilDerSkalSlettes); // Fjerner spillet fra listen
-                        SpilDataHandler.GemTilFil(filsti, spilListe); // Gemmer den opdaterede liste til fil
-
-                        Console.WriteLine(); // Tom linje
-                        Console.WriteLine("Spillet er slettet og gemt."); // Bekræftelse til brugeren
+                        spilListe.Remove(spilDerSkalSlettes);
+                        SpilDataHandler.GemTilFil(filsti, spilListe);
+                        Console.WriteLine("Spillet er slettet og gemt.");
                     }
-                    else // Hvis der ikke findes et spil med det ID
+                    else
                     {
-                        Console.WriteLine(); // Tom linje
-                        Console.WriteLine("Ingen spil fundet med det ID."); // Fejlbesked
+                        Console.WriteLine("Ingen spil fundet med det ID.");
                     }
 
-                    ConsoleHelper.VentPåA(); // Venter på A før der vendes tilbage
-                    return; // Afslutter metoden
+                    ConsoleHelper.VentPåA();
+                    return;
                 }
-                else // Hvis input hverken er et ID eller et gyldigt sorteringsbogstav
-                {
-                    Console.WriteLine(); // Tom linje
-                    Console.WriteLine("Du skal skrive et gyldigt ID eller et sorteringsbogstav."); // Fejlbesked
-                    ConsoleHelper.Pause(); // Pause så brugeren kan læse beskeden
-                }
+
+                Console.WriteLine("Du skal skrive et gyldigt ID eller et sorteringsbogstav.");
+                ConsoleHelper.Pause();
             }
         }
 
-        public static void RedigerSpil(string filsti, List<Spil> spilListe) // Metode der redigerer et spil og gemmer ændringerne til fil
+        // Redigerer et spil ud fra ID
+        public static void RedigerSpil(string filsti, List<Spil> spilListe)
         {
-            if (spilListe.Count == 0) // Tjekker om listen er tom
+            int maxGenre = Enum.GetValues(typeof(Genre)).Length;
+            int maxStand = Enum.GetValues(typeof(Stand)).Length;
+
+            if (spilListe.Count == 0)
             {
-                Console.Clear(); // Rydder skærmen
-                Console.WriteLine("=== Rediger spil ==="); // Overskrift
-                Console.WriteLine("Ingen spil at redigere"); // Besked til brugeren
-                ConsoleHelper.VentPåA(); // Venter på A for at gå tilbage
-                return; // Afslutter metoden
+                Console.Clear();
+                Console.WriteLine("=== Rediger spil ===");
+                Console.WriteLine("Ingen spil at redigere.");
+                ConsoleHelper.VentPåA();
+                return;
             }
 
-            char sortering = 'O'; // Standard-sortering sættes til oprettelsesrækkefølge/ID
+            char sortering = 'O';
 
-            while (true) // Holder brugeren i rediger-menuen indtil et gyldigt valg eller afbrydelse
+            while (true)
             {
-                Console.Clear(); // Rydder konsollen
-                Console.WriteLine("=== Rediger spil ==="); // Overskrift
+                Console.Clear();
+                Console.WriteLine("=== Rediger spil ===");
 
-                List<Spil> sorteretListe = SpilVisningService.HentSorteretListe(spilListe, sortering); // Henter en sorteret kopi af listen
-                SpilVisningService.PrintSpilTabel(sorteretListe); // Viser den sorterede liste i tabelform
+                List<Spil> sorteretListe = SpilVisningService.HentSorteretListe(spilListe, sortering);
+                SpilVisningService.PrintSpilTabel(sorteretListe);
 
-                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [A]fbryd"); // Viser sorteringsmuligheder
-                Console.Write("Indtast ID på spil der skal redigeres: "); // Beder brugeren skrive ID eller sorteringsbogstav
+                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [A]fbryd");
+                Console.Write("Indtast ID på spil der skal redigeres: ");
 
-                string input = (Console.ReadLine() ?? "").Trim(); // Læser input
+                string input = (Console.ReadLine() ?? "").Trim();
 
-                if (input.ToUpper() == "A") // Hvis brugeren skriver A
+                if (input.ToUpper() == "A")
+                    return;
+
+                if (input.Length == 1 && "NGSPO".Contains(char.ToUpper(input[0])))
                 {
-                    return; // Afbryder og går tilbage
+                    sortering = char.ToUpper(input[0]);
+                    continue;
                 }
 
-                if (input.Length == 1 && "NGSPO".Contains(char.ToUpper(input[0]))) // Hvis input er et gyldigt sorteringsbogstav
+                if (!int.TryParse(input, out int id))
                 {
-                    sortering = char.ToUpper(input[0]); // Opdaterer sorteringen
-                    continue; // Starter løkken igen og viser ny sortering
+                    Console.WriteLine("Du skal skrive et gyldigt ID eller et sorteringsbogstav.");
+                    ConsoleHelper.Pause();
+                    continue;
                 }
 
-                if (int.TryParse(input, out int id)) // Hvis input kan laves om til et tal
+                Spil? valgtSpil = spilListe.Find(s => s.Id == id);
+
+                if (valgtSpil == null)
                 {
-                    Spil? valgtSpil = spilListe.Find(s => s.Id == id); // Finder spillet med det valgte ID
-
-                    if (valgtSpil == null) // Hvis der ikke blev fundet et spil
-                    {
-                        Console.WriteLine(); // Tom linje
-                        Console.WriteLine("Ingen spil fundet med det ID."); // Fejlbesked
-                        ConsoleHelper.VentPåA(); // Venter på A
-                        return; // Afslutter metoden
-                    }
-
-                    Console.WriteLine(); // Tom linje
-                    Console.WriteLine("Tryk Enter hvis du vil beholde den nuværende værdi"); // Forklarer at Enter beholder gammel værdi
-                    Console.WriteLine("Tast A for at afbryde"); // Forklarer at A afbryder
-                    Console.WriteLine("=================================="); // Dekorativ linje
-
-                    Console.Write($"Ny titel ({valgtSpil.Titel}): "); // Viser nuværende titel og beder om ny
-                    string nyTitel = (Console.ReadLine() ?? "").Trim(); // Læser ny titel
-
-                    if (nyTitel.ToUpper() == "A") // Hvis brugeren vil afbryde
-                    {
-                        return; // Går tilbage uden at gemme
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(nyTitel)) // Hvis brugeren faktisk har skrevet noget
-                    {
-                        valgtSpil.Titel = nyTitel; // Opdaterer titlen
-                    }
-
-                    Console.WriteLine(); // Tom linje
-                    Console.WriteLine($"Nuværende genre: {valgtSpil.Genre}"); // Viser den nuværende genre
-                    foreach(var genre in Enum.GetValues(typeof(Genre))) // Løkke der viser alle genre-muligheder baseret på enum
-                    {
-                        int genreNummer = (int)genre + 1; // Beregner det nummer der skal vises for brugeren (1-baseret)
-                        Console.WriteLine($"{genreNummer} = {genre}"); // Viser nummer og genre-navn
-                    }
-                    Console.Write("Vælg ny genre (tryk Enter for at beholde): "); // Beder om ny genre eller Enter for at beholde
-                    string genreInput = (Console.ReadLine() ?? "").Trim(); // Læser input til genre
-
-                    if (genreInput.ToUpper() == "A") // Hvis brugeren vil afbryde
-                    {
-                        return; // Går tilbage uden at gemme
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(genreInput)) // Hvis brugeren skrev noget
-                    {
-                        if (int.TryParse(genreInput, out int genreValg)) // Tjekker om input er et tal
-                        {
-                            if (genreValg >= 1 && genreValg <= 5) // Tjekker om tallet er inden for gyldigt interval
-                            {
-                                valgtSpil.Genre = (Genre)(genreValg - 1); // Opdaterer genre
-                            }
-                            else
-                            {
-                                Console.WriteLine("Ugyldigt genrevalg. Den gamle genre beholdes"); // Fejlbesked
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ugyldigt input. Den gamle genre beholdes"); // Fejlbesked
-                        }
-                    }
-
-                    Console.WriteLine(); // Tom linje
-                    Console.WriteLine($"Nuværende stand: {valgtSpil.Stand}"); // Viser nuværende stand
-                    Console.WriteLine("Vælg stand:"); // Viser at brugeren nu skal vælge stand
-                    foreach (var stand in Enum.GetValues(typeof(Stand))) // Løkke der viser alle stand-muligheder baseret på enum
-                    {
-                        int standNummer = (int)stand + 1; // Beregner det nummer der skal vises for brugeren (1-baseret)
-                        Console.WriteLine($"{standNummer} = {stand}"); // Viser nummer og stand-navn
-                    }
-                    Console.Write("Vælg ny stand (tryk Enter for at beholde): "); // Beder om ny stand eller Enter for at beholde
-                    string standInput = (Console.ReadLine() ?? "").Trim(); // Læser input til stand
-
-                    if (standInput.ToUpper() == "A") // Hvis brugeren vil afbryde
-                    {
-                        return; // Går tilbage uden at gemme
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(standInput)) // Hvis brugeren skrev noget
-                    {
-                        if (int.TryParse(standInput, out int standValg)) // Tjekker om input er et tal
-                        {
-                            if (standValg >= 1 && standValg <= 3) // Tjekker om tallet er gyldigt
-                            {
-                                valgtSpil.Stand = (Stand)(standValg - 1); // Opdaterer stand
-                            }
-                            else
-                            {
-                                Console.WriteLine("Ugyldigt standvalg. Den gamle stand beholdes"); // Fejlbesked
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ugyldigt input. Den gamle stand beholdes"); // Fejlbesked
-                        }
-                    }
-
-                    Console.WriteLine(); // Tom linje
-                    Console.Write($"Ny pris ({valgtSpil.Pris} kr): "); // Viser nuværende pris og beder om ny
-                    string prisInput = (Console.ReadLine() ?? "").Trim(); // Læser input til pris
-
-                    if (prisInput.ToUpper() == "A") // Hvis brugeren vil afbryde
-                    {
-                        return; // Går tilbage uden at gemme
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(prisInput)) // Hvis brugeren skrev noget
-                    {
-                        if (int.TryParse(prisInput, out int nyPris)) // Tjekker om input er et gyldigt tal
-                        {
-                            valgtSpil.Pris = nyPris; // Opdaterer prisen
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ugyldig pris. Den gamle pris beholdes"); // Fejlbesked
-                        }
-                    }
-
-                    SpilDataHandler.GemTilFil(filsti, spilListe); // Gemmer hele listen med ændringer til filen
-
-                    Console.WriteLine(); // Tom linje
-                    Console.WriteLine("Spillet er blevet opdateret og gemt"); // Bekræftelse til brugeren
-                    ConsoleHelper.VentPåA(); // Venter på A før der gås tilbage
-                    return; // Afslutter metoden
+                    Console.WriteLine("Ingen spil fundet med det ID.");
+                    ConsoleHelper.VentPåA();
+                    return;
                 }
-                else // Hvis input ikke er gyldigt
+
+                Console.WriteLine();
+                Console.WriteLine("Tryk Enter hvis du vil beholde den nuværende værdi.");
+                Console.WriteLine("Tast A for at afbryde.");
+                Console.WriteLine("==================================");
+
+                Console.Write($"Ny titel ({valgtSpil.Titel}): ");
+                string nyTitel = (Console.ReadLine() ?? "").Trim();
+                if (nyTitel.ToUpper() == "A") return;
+                if (!string.IsNullOrWhiteSpace(nyTitel))
+                    valgtSpil.Titel = nyTitel;
+
+                Console.WriteLine($"\nNuværende genre: {valgtSpil.Genre}");
+                foreach (var genre in Enum.GetValues(typeof(Genre)))
                 {
-                    Console.WriteLine(); // Tom linje
-                    Console.WriteLine("Du skal skrive et gyldigt ID eller et sorteringsbogstav"); // Fejlbesked
-                    ConsoleHelper.Pause(); // Pause så brugeren kan læse beskeden
+                    int nummer = (int)genre + 1;
+                    Console.WriteLine($"{nummer} = {genre}");
                 }
+                Console.Write("Vælg ny genre (tryk Enter for at beholde): ");
+                string genreInput = (Console.ReadLine() ?? "").Trim();
+
+                if (genreInput.ToUpper() == "A") return;
+
+                if (!string.IsNullOrWhiteSpace(genreInput) &&
+                    int.TryParse(genreInput, out int genreValg) &&
+                    genreValg >= 1 && genreValg <= maxGenre)
+                {
+                    valgtSpil.Genre = (Genre)(genreValg - 1);
+                }
+
+                Console.WriteLine($"\nNuværende stand: {valgtSpil.Stand}");
+                foreach (var stand in Enum.GetValues(typeof(Stand)))
+                {
+                    int nummer = (int)stand + 1;
+                    Console.WriteLine($"{nummer} = {stand}");
+                }
+                Console.Write("Vælg ny stand (tryk Enter for at beholde): ");
+                string standInput = (Console.ReadLine() ?? "").Trim();
+
+                if (standInput.ToUpper() == "A") return;
+
+                if (!string.IsNullOrWhiteSpace(standInput) &&
+                    int.TryParse(standInput, out int standValg) &&
+                    standValg >= 1 && standValg <= maxStand)
+                {
+                    valgtSpil.Stand = (Stand)(standValg - 1);
+                }
+
+                Console.Write($"\nNyt antal spillere ({valgtSpil.AntalSpillere}): ");
+                string antalInput = (Console.ReadLine() ?? "").Trim();
+                if (antalInput.ToUpper() == "A") return;
+                if (!string.IsNullOrWhiteSpace(antalInput))
+                    valgtSpil.AntalSpillere = antalInput;
+
+                Console.Write($"Ny pris ({valgtSpil.Pris} kr): ");
+                string prisInput = (Console.ReadLine() ?? "").Trim();
+                if (prisInput.ToUpper() == "A") return;
+
+                if (!string.IsNullOrWhiteSpace(prisInput) && int.TryParse(prisInput, out int nyPris))
+                    valgtSpil.Pris = nyPris;
+
+                SpilDataHandler.GemTilFil(filsti, spilListe);
+
+                Console.WriteLine("Spillet er blevet opdateret og gemt.");
+                ConsoleHelper.VentPåA();
+                return;
             }
         }
     }

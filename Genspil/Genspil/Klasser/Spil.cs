@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Timers;
-
-namespace Genspil.Klasser // Ligger i mappen Klasser
+﻿namespace Genspil.Klasser
 {
-    public enum Genre // bruger enum her for at vælge valg
+    public enum Genre
     {
         Strategi,
         Familie,
@@ -11,6 +8,7 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
         Quiz,
         Samarbejde
     }
+
     public enum Stand
     {
         Ny,
@@ -19,12 +17,12 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
         Slidt,
         Reparation
     }
-    public class Spil // Klasse der repræsenterer ét brætspil
+
+    public class Spil
     {
         // Holder styr på sidste brugte ID
         private static int lastId = 0;
 
-        // Oplysninger om spillet
         public string Titel { get; set; }
         public Genre Genre { get; set; }
         public Stand Stand { get; set; }
@@ -34,7 +32,6 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
         public bool ErReserveret { get; set; }
         public bool ErRequest { get; set; }
 
-        // Opdaterer sidste ID når vi læser fra fil
         public static void SetLastId(int id)
         {
             if (id > lastId)
@@ -43,7 +40,7 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
             }
         }
 
-        // Constructor
+        // Opretter et spil og giver automatisk ID hvis der ikke er et i forvejen
         public Spil(string titel, Genre genre, Stand stand, int pris, string antalSpillere, int id = 0, bool erReserveret = false, bool erRequest = false)
         {
             Titel = titel;
@@ -65,20 +62,18 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
             }
         }
 
-        // Laver nyt ID
         private int GenerateId()
         {
             lastId++;
             return lastId;
         }
 
-        // Gør objektet til tekst til filen
+        // Gemmer spillet i samme rækkefølge som FromString læser det
         public override string ToString()
         {
-            return $"{Titel};{Genre};{Stand};{Pris};{Id};{ErReserveret};{ErRequest}";
+            return $"{Titel};{Genre};{Stand};{Pris};{AntalSpillere};{Id};{ErReserveret};{ErRequest}";
         }
 
-        // Laver tekst fra filen om til et objekt
         public static Spil FromString(string linje)
         {
             string[] data = linje.Split(';');
@@ -87,7 +82,7 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
             Genre genre = Enum.Parse<Genre>(data[1]);
             Stand stand = Enum.Parse<Stand>(data[2]);
             int pris = int.Parse(data[3]);
-            string antalSpillere = data[4]; // Antal spillere er nu en string, så vi behøver ikke parse den
+            string antalSpillere = data[4];
             int id = int.Parse(data[5]);
             bool erReserveret = bool.Parse(data[6]);
             bool erRequest = bool.Parse(data[7]);
@@ -95,22 +90,25 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
             return new Spil(titel, genre, stand, pris, antalSpillere, id, erReserveret, erRequest);
         }
 
-        // Viser spillet pænt i konsollen
+        // Bruges til at vise spillet pænt i tabellen
         public string VisInfo()
         {
-            string titel = Titel.Length > 50 ? Titel.Substring(0, 46) + "... " : Titel; // Afkorter titel hvis den er for lang
+            string titel = Titel.Length > 50 ? Titel.Substring(0, 46) + "..." : Titel;
             string status = "";
-            if(ErReserveret)
-            {   status += "(RESERVERET) "; }
-            if(ErRequest)
-            {   status += "(ØNSKET) "; }
-            return $"{Id,-5}" + // Viser ID i en kolonne på 5 tegn
-             $"{titel,-50}" + // Viser titel afkortet til max 50 tegn
-             $"{Genre,-15}" + // Viser genre i kolonne på 15 tegn
-             $"{AntalSpillere,-12}" + // Viser antal spillere i kolonne på 12 tegn
-             $"{Stand,-15}" + // Viser stand i kolonne på 15 tegn
-             $"{Pris + " kr",8}" + // Viser pris højrejusteret i kolonne på 10 tegn
-             $"{status,15}";// Viser status i kolonne på 20 tegn
+
+            if (ErReserveret)
+                status += "(RESERVERET) ";
+
+            if (ErRequest)
+                status += "(ØNSKET)";
+
+            return $"{Id,-5}" +
+                   $"{titel,-50}" +
+                   $"{Genre,-15}" +
+                   $"{AntalSpillere,-12}" +
+                   $"{Stand,-15}" +
+                   $"{Pris + " kr",8}" +
+                   $"{status,15}";
         }
     }
 }

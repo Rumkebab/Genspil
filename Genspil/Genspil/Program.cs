@@ -7,14 +7,11 @@ namespace Genspil
     {
         public static void Main(string[] args)
         {
-            // Sti til filen med spillene
+            // Sti til tekstfilen med spillene
             string filsti = "Datafiler/spil.txt";
 
-
-            // Læser spillene fra filen ved opstart
+            // Læser spillene ind og starter hovedmenuen
             List<Spil> spilListe = SpilDataHandler.LæsFraFil(filsti);
-
-            // Starter hovedmenuen
             MenuService.Hovedmenu(filsti, spilListe);
         }
     }
