@@ -44,6 +44,9 @@ namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets nam
 
             Genre genre = (Genre)(genreValg - 1); // Laver tallet om til en enum-værdi i Genre
 
+
+            Console.WriteLine("Indtast antal spillere: "); // Beder brugeren om at indtaste antal spillere
+            string antalInput = (Console.ReadLine() ?? "").Trim(); // Læser input til antal spillere
             Console.WriteLine("Vælg stand:"); // Viser at brugeren nu skal vælge stand
             
         foreach(var stan in Enum.GetValues(typeof(Stand))) // Løkke der viser alle stand-muligheder baseret på enum
@@ -82,12 +85,12 @@ namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets nam
                 ConsoleHelper.Pause(); // Pause så brugeren kan læse beskeden
                 return null; // Afslutter metoden uden at oprette et spil
             }
-            Spil nytSpil = new Spil(titel, genre, stand, pris); // Opretter et nyt Spil-objekt med de indtastede værdier
+            Spil nytSpil = new Spil(titel, genre, stand, pris, antalInput); // Opretter et nyt Spil-objekt med de indtastede værdier
             spilListe.Add(nytSpil); // Tilføjer det nye spil til listen i hukommelsen
 
             // Gemmer automatisk efter oprettelse
             SpilDataHandler.GemTilFil(filsti, spilListe); // Gemmer hele listen til filen efter oprettelse
-            return new Spil(titel, genre, stand, pris); // Opretter og returnerer et nyt Spil-objekt
+            return new Spil(titel, genre, stand, pris, antalInput); // Opretter og returnerer et nyt Spil-objekt
         }
 
         public static void SletSpil(string filsti, List<Spil> spilListe) // Metode der sletter et spil fra listen og gemmer ændringen til fil

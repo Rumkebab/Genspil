@@ -28,6 +28,7 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
         public string Titel { get; set; }
         public Genre Genre { get; set; }
         public Stand Stand { get; set; }
+        public string AntalSpillere { get; set; }
         public int Pris { get; set; }
         public int Id { get; private set; }
         public bool ErReserveret { get; set; }
@@ -43,12 +44,13 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
         }
 
         // Constructor
-        public Spil(string titel, Genre genre, Stand stand, int pris, int id = 0, bool erReserveret = false, bool erRequest = false)
+        public Spil(string titel, Genre genre, Stand stand, int pris, string antalSpillere, int id = 0, bool erReserveret = false, bool erRequest = false)
         {
             Titel = titel;
             Genre = genre;
             Stand = stand;
             Pris = pris;
+            AntalSpillere = antalSpillere;
             ErReserveret = erReserveret;
             ErRequest = erRequest;
 
@@ -85,11 +87,12 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
             Genre genre = Enum.Parse<Genre>(data[1]);
             Stand stand = Enum.Parse<Stand>(data[2]);
             int pris = int.Parse(data[3]);
-            int id = int.Parse(data[4]);
-            bool erReserveret = bool.Parse(data[5]);
-            bool erRequest = bool.Parse(data[6]);
+            string antalSpillere = data[4]; // Antal spillere er nu en string, så vi behøver ikke parse den
+            int id = int.Parse(data[5]);
+            bool erReserveret = bool.Parse(data[6]);
+            bool erRequest = bool.Parse(data[7]);
 
-            return new Spil(titel, genre, stand, pris, id, erReserveret, erRequest);
+            return new Spil(titel, genre, stand, pris, antalSpillere, id, erReserveret, erRequest);
         }
 
         // Viser spillet pænt i konsollen
@@ -103,9 +106,10 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
             {   status += "(ØNSKET) "; }
             return $"{Id,-5}" + // Viser ID i en kolonne på 5 tegn
              $"{titel,-50}" + // Viser titel afkortet til max 50 tegn
-             $"{Genre,-25}" + // Viser genre i kolonne på 15 tegn
+             $"{Genre,-15}" + // Viser genre i kolonne på 15 tegn
+             $"{AntalSpillere,-12}" + // Viser antal spillere i kolonne på 12 tegn
              $"{Stand,-15}" + // Viser stand i kolonne på 15 tegn
-             $"{Pris + " kr",10}" + // Viser pris højrejusteret i kolonne på 10 tegn
+             $"{Pris + " kr",8}" + // Viser pris højrejusteret i kolonne på 10 tegn
              $"{status,15}";// Viser status i kolonne på 20 tegn
         }
     }

@@ -93,7 +93,7 @@
         public static void PrintSpilTabel(List<Spil> spilListe) // Metode der udskriver spillene i en pæn tabel
         {
             Console.WriteLine(new string('-', 120)); // Skriver en vandret streg som topkant på tabellen
-            Console.WriteLine($"{"ID",-5}{"Titel",-50}{"Genre",-25}{"Stand",-15}{"Pris",10}{"Status",15}"); // Skriver kolonneoverskrifter med fast bredde
+            Console.WriteLine($"{"ID",-5}{"Titel",-50}{"Genre",-15}{"Spillere",-12}{"Stand",-15}{"Pris",8}{"Status",15}"); // Skriver kolonneoverskrifter med fast bredde
             Console.WriteLine(new string('-', 120)); // Skriver endnu en vandret streg under overskrifterne
 
             foreach (Spil spil in spilListe) // Går igennem hvert spil i listen
