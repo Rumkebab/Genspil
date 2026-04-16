@@ -22,7 +22,7 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
             Console.Write("Genre (Strategi/Familie/Kortspil/Quiz/Samarbejde): ");
             string genreSøgning = (Console.ReadLine() ?? "").Trim();
 
-            Console.Write("Stand (Ny/God/Slidt): ");
+            Console.Write("Stand (Ny/Uåbnet/God/Slidt/Reparation): ");
             string standSøgning = (Console.ReadLine() ?? "").Trim();
 
             Console.Write("Pris: ");
