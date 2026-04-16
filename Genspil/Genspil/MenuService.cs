@@ -24,8 +24,9 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
                 Console.WriteLine("=================================="); // Udskriver en bundlinje
                 Console.Write("Vælg en mulighed: "); // Beder brugeren vælge et punkt i menuen
 
-                string valg = (Console.ReadLine() ?? "").Trim(); // Læser brugerens input, undgår null og fjerner ekstra mellemrum
-
+                string valg = (Console.ReadKey().KeyChar.ToString() ?? "").Trim(); // Læser brugerens input, undgår null og fjerner ekstra mellemrum
+                Console.WriteLine(); // Gør så næste output starter på en ny linje
+        
                 switch (valg) // Kigger på hvad brugeren skrev og vælger handling ud fra det
                 {
                     case "1": // Hvis brugeren vælger 1
@@ -37,18 +38,13 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
 
                         while (fortsætTilføjelse) // Så længe brugeren vil fortsætte med at tilføje spil
                         {
-                            Spil? nytSpil = SpilCrudService.OpretNytSpil(); // Kalder metoden der opretter et nyt spil og gemmer resultatet i variablen nytSpil
+                            Spil? nytSpil = SpilCrudService.OpretNytSpil(filsti, spilListe); // Kalder metoden der opretter et nyt spil og gemmer resultatet i variablen nytSpil
 
                             if (nytSpil == null) // Hvis metoden returnerer null, betyder det at brugeren afbrød oprettelsen
                             {
                                 fortsætTilføjelse = false; // Stopper løkken
                                 break; // Hopper ud af while-løkken
                             }
-
-                            spilListe.Add(nytSpil); // Tilføjer det nye spil til listen i hukommelsen
-
-                            // Gemmer automatisk efter oprettelse
-                            SpilDataHandler.GemTilFil(filsti, spilListe); // Gemmer hele listen til filen efter oprettelse
 
                             Console.WriteLine(); // Skriver en tom linje for luft i layoutet
                             Console.WriteLine("Spillet blev tilføjet og gemt."); // Bekræfter at spillet er gemt

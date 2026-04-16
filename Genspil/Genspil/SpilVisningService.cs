@@ -94,58 +94,18 @@ namespace Genspil // Angiver at denne serviceklasse hører til i projektets name
 
         public static void PrintSpilTabel(List<Spil> spilListe) // Metode der udskriver spillene i en pæn tabel
         {
-            Console.WriteLine(new string('-', 118)); // Skriver en vandret streg som topkant på tabellen
-            Console.WriteLine($"{"ID",-5} {"Titel",-38} {"Genre",-15} {"Stand",-10} {"Pris",-10} {"Status",-25}"); // Skriver kolonneoverskrifter med fast bredde
-            Console.WriteLine(new string('-', 118)); // Skriver endnu en vandret streg under overskrifterne
+            Console.WriteLine(new string('-', 120)); // Skriver en vandret streg som topkant på tabellen
+            Console.WriteLine($"{"ID",-5}{"Titel",-50}{"Genre",-25}{"Stand",-15}{"Pris",10}{"Status",15}"); // Skriver kolonneoverskrifter med fast bredde
+            Console.WriteLine(new string('-', 120)); // Skriver endnu en vandret streg under overskrifterne
 
             foreach (Spil spil in spilListe) // Går igennem hvert spil i listen
             {
-                string prisTekst = $"{spil.Pris} kr"; // Laver prisen om til en tekst med "kr"
-                string status = HentStatusTekst(spil); // Henter status-tekst for spillet, fx reserveret eller ønsket
-
-                Console.WriteLine( // Skriver én række i tabellen
-                    $"{spil.Id,-5} " + // Viser ID i en kolonne på 5 tegn
-                    $"{AfkortTekst(spil.Titel, 38),-38} " + // Viser titel og afkorter hvis den er for lang
-                    $"{spil.Genre,-15} " + // Viser genre i kolonne på 15 tegn
-                    $"{spil.Stand,-10} " + // Viser stand i kolonne på 10 tegn
-                    $"{prisTekst,-10} " + // Viser pris i kolonne på 10 tegn
-                    $"{status,-25}" // Viser status i kolonne på 25 tegn
-                );
+                Console.WriteLine(spil.VisInfo());
             }
 
-            Console.WriteLine(new string('-', 118)); // Skriver en bundlinje på tabellen
+            Console.WriteLine(new string('-', 120)); // Skriver en bundlinje på tabellen
         }
 
-        public static string HentStatusTekst(Spil spil) // Metode der finder tekst til statuskolonnen
-        {
-            List<string> statusListe = new List<string>(); // Opretter en liste til at samle status-ord
-
-            if (spil.ErReserveret) // Tjekker om spillet er reserveret
-            {
-                statusListe.Add("(RESERVERET)"); // Tilføjer reserveret-status til listen
-            }
-
-            if (spil.ErRequest) // Tjekker om spillet er markeret som ønsket/request
-            {
-                statusListe.Add("(ØNSKET)"); // Tilføjer ønsket-status til listen
-            }
-
-            return string.Join(" ", statusListe); // Samler alle status-ord til én tekst med mellemrum imellem
-        }
-
-        public static string AfkortTekst(string tekst, int maxLængde) // Metode der forkorter en tekst hvis den er længere end den tilladte længde
-        {
-            if (string.IsNullOrWhiteSpace(tekst)) // Tjekker om teksten er tom eller kun mellemrum
-            {
-                return ""; // Returnerer tom tekst hvis der ikke er noget indhold
-            }
-
-            if (tekst.Length <= maxLængde) // Tjekker om teksten allerede er kort nok
-            {
-                return tekst; // Returnerer teksten uændret
-            }
-
-            return tekst.Substring(0, maxLængde - 3) + "..."; // Skærer teksten af og tilføjer ... til sidst
-        }
+       
     }
 }

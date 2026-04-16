@@ -1,5 +1,22 @@
-﻿namespace Genspil.Klasser // Ligger i mappen Klasser
+﻿using System.Collections;
+using System.Timers;
+
+namespace Genspil.Klasser // Ligger i mappen Klasser
 {
+    public enum Genre // bruger enum her for at vælge valg
+    {
+        Strategi,
+        Familie,
+        Kortspil,
+        Quiz,
+        Samarbejde
+    }
+    public enum Stand
+    {
+        Ny,
+        God,
+        Slidt
+    }
     public class Spil // Klasse der repræsenterer ét brætspil
     {
         // Holder styr på sidste brugte ID
@@ -54,10 +71,6 @@
         // Gør objektet til tekst til filen
         public override string ToString()
         {
-<<<<<<< HEAD
-            // Laver objektet om til en tekstlinje med ; imellem
-=======
->>>>>>> Karl-på-Fiozi
             return $"{Titel};{Genre};{Stand};{Pris};{Id};{ErReserveret};{ErRequest}";
         }
 
@@ -71,43 +84,27 @@
             Stand stand = Enum.Parse<Stand>(data[2]);
             int pris = int.Parse(data[3]);
             int id = int.Parse(data[4]);
-<<<<<<< HEAD
-            bool erReserveret = data.Length > 5 ? bool.Parse(data[5]) : false;
-            bool erRequest = data.Length > 6 ? bool.Parse(data[6]) : false;
-
-            // Returnerer et nyt Spil-objekt med værdierne
-=======
             bool erReserveret = bool.Parse(data[5]);
             bool erRequest = bool.Parse(data[6]);
 
->>>>>>> Karl-på-Fiozi
             return new Spil(titel, genre, stand, pris, id, erReserveret, erRequest);
         }
 
         // Viser spillet pænt i konsollen
         public string VisInfo()
         {
-<<<<<<< HEAD
-            // Truncater titlen hvis den er for lang, så det ikke ødelægger layoutet, tilføjer "..." for at indikere det er forkortet
-            string titelTruncated = Titel.Length > 50 ? Titel.Substring(0, 47) + "..." : Titel;
-
-            if (ErReserveret)
-            {
-                string info = $"{Id,-5} {titelTruncated,-50} {Genre,-12} {Stand,-8} {Pris,8} kr {"(RESERVERET)",20}";
-                return info;
-            }
-            else if (ErRequest)
-            {
-                string info = $"{Id,-5} {titelTruncated,-50} {Genre,-12} {Stand,-8} {Pris,8} kr {"(ØNSKET)",20}";
-                return info;
-            }
-            else
-            {
-                return $"{Id,-5} {titelTruncated,-50} {Genre,-12} {Stand,-8} {Pris,8} kr ";
-            }
-=======
-            return $"{Id}: Titel: {Titel}, Genre: {Genre}, Stand: {Stand}, Pris: {Pris} kr., Reserveret: {ErReserveret}, Request: {ErRequest}";
->>>>>>> Karl-på-Fiozi
+            string titel = Titel.Length > 50 ? Titel.Substring(0, 46) + "... " : Titel; // Afkorter titel hvis den er for lang
+            string status = "";
+            if(ErReserveret)
+            {   status += "(RESERVERET) "; }
+            if(ErRequest)
+            {   status += "(ØNSKET) "; }
+            return $"{Id,-5}" + // Viser ID i en kolonne på 5 tegn
+             $"{titel,-50}" + // Viser titel afkortet til max 50 tegn
+             $"{Genre,-25}" + // Viser genre i kolonne på 15 tegn
+             $"{Stand,-15}" + // Viser stand i kolonne på 15 tegn
+             $"{Pris + " kr",10}" + // Viser pris højrejusteret i kolonne på 10 tegn
+             $"{status,15}";// Viser status i kolonne på 20 tegn
         }
     }
 }

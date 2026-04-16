@@ -5,7 +5,7 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
 {
     public static class SpilCrudService // Opretter en statisk serviceklasse til Create, Update og Delete af spil
     {
-        public static Spil? OpretNytSpil() // Metode der opretter et nyt spil og returnerer det; kan returnere null hvis brugeren afbryder
+        public static Spil? OpretNytSpil(string filsti, List<Spil> spilListe) // Metode der opretter et nyt spil og returnerer det; kan returnere null hvis brugeren afbryder
         {
             Console.Clear(); // Rydder konsollen så opret-siden starter pænt
             Console.WriteLine("=================================="); // Dekorativ linje
@@ -80,7 +80,11 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
                 ConsoleHelper.Pause(); // Pause så brugeren kan læse beskeden
                 return null; // Afslutter metoden uden at oprette et spil
             }
+            Spil nytSpil = new Spil(titel, genre, stand, pris); // Opretter et nyt Spil-objekt med de indtastede værdier
+            spilListe.Add(nytSpil); // Tilføjer det nye spil til listen i hukommelsen
 
+            // Gemmer automatisk efter oprettelse
+            SpilDataHandler.GemTilFil(filsti, spilListe); // Gemmer hele listen til filen efter oprettelse
             return new Spil(titel, genre, stand, pris); // Opretter og returnerer et nyt Spil-objekt
         }
 
@@ -91,7 +95,7 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
                 Console.Clear(); // Rydder skærmen
                 Console.WriteLine("=== Slet spil ==="); // Overskrift
                 Console.WriteLine("Ingen spil at slette."); // Besked til brugeren
-                ConsoleHelper.VentPåA(); // Venter på at brugeren skriver A for at gå tilbage
+                ConsoleHelper.VentPåA(); // Venter på A for at gå tilbage til hovedmenuen
                 return; // Afslutter metoden
             }
 
