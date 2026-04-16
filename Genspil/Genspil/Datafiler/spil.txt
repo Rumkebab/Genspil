@@ -8,3 +8,5 @@ test spil.txt;Samarbejde;Slidt;200;7-8;7;False;False
 test123;Strategi;God;300;90;8;False;False
 test 6;Quiz;Slidt;500;2-3;9;False;False
 test;Strategi;Slidt;300;8-10;10;False;False
+;Strategi;Reparation;50000;10;11;True;False
+;Strategi;Ny;111111;5000000000;12;False;False
