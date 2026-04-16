@@ -1,4 +1,4 @@
-﻿namespace Genspil // Angiver at klassen hører til i projektets namespace "Genspil"
+﻿namespace Genspil.Klasser // Angiver at klassen hører til i projektets namespace "Genspil"
 {
     public static class ConsoleHelper // Opretter en statisk hjælpeklasse til fælles konsol-metoder
     {

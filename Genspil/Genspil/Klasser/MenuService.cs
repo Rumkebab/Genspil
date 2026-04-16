@@ -1,7 +1,6 @@
-﻿using Genspil.Klasser; // Giver adgang til klasserne i mappen Klasser, fx Spil
-using Genspil.Data;    // Giver adgang til datalaget, fx SpilDataHandler
+﻿using Genspil.Data;
 
-namespace Genspil // Angiver at denne klasse hører til i projektets namespace Genspil
+namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets namespace Genspil
 {
     public static class MenuService // Opretter en statisk serviceklasse, som styrer hovedmenuen i programmet
     {

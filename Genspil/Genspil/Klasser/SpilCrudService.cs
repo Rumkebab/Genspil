@@ -1,7 +1,6 @@
-﻿using Genspil.Klasser; // Giver adgang til klasserne i mappen Klasser, fx Spil, Genre og Stand
-using Genspil.Data;    // Giver adgang til datalaget, fx SpilDataHandler som gemmer og læser fra fil
+﻿using Genspil.Data;
 
-namespace Genspil // Angiver at denne klasse hører til i projektets namespace Genspil
+namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets namespace Genspil
 {
     public static class SpilCrudService // Opretter en statisk serviceklasse til Create, Update og Delete af spil
     {

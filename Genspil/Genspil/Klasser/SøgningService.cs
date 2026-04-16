@@ -1,6 +1,4 @@
-﻿using Genspil.Klasser; // Giver adgang til model-klassen Spil
-
-namespace Genspil // Angiver at denne klasse hører til i projektets namespace Genspil
+﻿namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets namespace Genspil
 {
     public static class SøgningService // Opretter en statisk serviceklasse til alt der handler om søgning
     {

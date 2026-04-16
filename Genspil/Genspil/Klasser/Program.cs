@@ -1,7 +1,6 @@
-﻿using Genspil.Klasser;
-using Genspil.Data;
+﻿using Genspil.Data;
 
-namespace Genspil
+namespace Genspil.Klasser
 {
     public class Program
     {

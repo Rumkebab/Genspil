@@ -1,4 +1,4 @@
-﻿namespace Genspil.Klasser
+﻿namespace Genspil
 {
     public enum Stand
     {

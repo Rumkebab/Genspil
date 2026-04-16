@@ -1,4 +1,4 @@
-﻿namespace Genspil.Klasser // Høre til i Klasser mappen
+﻿namespace Genspil // Høre til i Klasser mappen
 {
     public enum Genre // bruger enum her for at vælge valg
     {
