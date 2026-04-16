@@ -198,27 +198,30 @@ namespace Genspil.Klasser
                     return;
                 }
 
-                Console.WriteLine();
-                Console.WriteLine("Tryk Enter hvis du vil beholde den nuværende værdi.");
-                Console.WriteLine("Tast A for at afbryde.");
-                Console.WriteLine("==================================");
-
-                Console.Write($"Ny titel ({valgtSpil.Titel}): ");
+                string title = $"=== Rediger {valgtSpil.Titel} ===";
+                string newHeader =title + "\nTryk Enter hvis du vil beholde den nuværende værdi.\nTast A for at afbryde.\n" + new string('=', title.Length) + "";
+                Console.Clear();
+                Console.WriteLine(newHeader);
+                Console.Write($"NUVÆRENDE TITEL: {valgtSpil.Titel}\n\nTryk Enter for at beholde titel\nEller skriv ny titel:\n> ");
                 string nyTitel = (Console.ReadLine() ?? "").Trim();
                 if (nyTitel.ToUpper() == "A") return;
                 if (!string.IsNullOrWhiteSpace(nyTitel))
                     valgtSpil.Titel = nyTitel;
+                Console.Clear();
+                Console.WriteLine(newHeader);
 
-                Console.WriteLine($"\nNuværende genre: {valgtSpil.Genre}");
+                Console.WriteLine($"Nuværende genre: {valgtSpil.Genre}\n");
+                Console.WriteLine("Muligheder:");
                 foreach (var genre in Enum.GetValues(typeof(Genre)))
                 {
                     int nummer = (int)genre + 1;
                     Console.WriteLine($"{nummer} = {genre}");
                 }
-                Console.Write("Vælg ny genre (tryk Enter for at beholde): ");
+                Console.Write("\nTryk Enter for at beholde genre\nEller skriv ny genre:\n> ");
                 string genreInput = (Console.ReadLine() ?? "").Trim();
 
                 if (genreInput.ToUpper() == "A") return;
+                Console.Clear();
 
                 if (!string.IsNullOrWhiteSpace(genreInput) &&
                     int.TryParse(genreInput, out int genreValg) &&
@@ -226,17 +229,19 @@ namespace Genspil.Klasser
                 {
                     valgtSpil.Genre = (Genre)(genreValg - 1);
                 }
-
-                Console.WriteLine($"\nNuværende stand: {valgtSpil.Stand}");
+                Console.WriteLine(newHeader);
+                Console.WriteLine($"Nuværende stand: {valgtSpil.Stand}\n");
+                Console.WriteLine("Muligheder:");
                 foreach (var stand in Enum.GetValues(typeof(Stand)))
                 {
                     int nummer = (int)stand + 1;
                     Console.WriteLine($"{nummer} = {stand}");
                 }
-                Console.Write("Vælg ny stand (tryk Enter for at beholde): ");
+                Console.Write("\nTryk Enter for at beholde stand\nEller skriv ny stand:\n> "); 
                 string standInput = (Console.ReadLine() ?? "").Trim();
 
                 if (standInput.ToUpper() == "A") return;
+                Console.Clear();
 
                 if (!string.IsNullOrWhiteSpace(standInput) &&
                     int.TryParse(standInput, out int standValg) &&
@@ -244,14 +249,16 @@ namespace Genspil.Klasser
                 {
                     valgtSpil.Stand = (Stand)(standValg - 1);
                 }
-
-                Console.Write($"\nNyt antal spillere ({valgtSpil.AntalSpillere}): ");
+                Console.WriteLine(newHeader);
+                Console.Write($"Antal spillere: {valgtSpil.AntalSpillere}\n\nTryk Enter for at beholde antal\nEller skriv nyt antal:\n> ");
                 string antalInput = (Console.ReadLine() ?? "").Trim();
                 if (antalInput.ToUpper() == "A") return;
+                Console.Clear();
+
                 if (!string.IsNullOrWhiteSpace(antalInput))
                     valgtSpil.AntalSpillere = antalInput;
-
-                Console.Write($"Ny pris ({valgtSpil.Pris} kr): ");
+                Console.WriteLine(newHeader);
+                Console.Write($"Pris: {valgtSpil.Pris} kr\n\nTryk Enter for at beholde pris\nEller skriv ny pris:\n> ");
                 string prisInput = (Console.ReadLine() ?? "").Trim();
                 if (prisInput.ToUpper() == "A") return;
 
@@ -259,7 +266,8 @@ namespace Genspil.Klasser
                     valgtSpil.Pris = nyPris;
 
                 SpilDataHandler.GemTilFil(filsti, spilListe);
-
+                Console.Clear();
+                Console.WriteLine(newHeader);
                 Console.WriteLine("Spillet er blevet opdateret og gemt.");
                 ConsoleHelper.VentPåA();
                 return;

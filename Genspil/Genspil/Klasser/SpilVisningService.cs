@@ -42,7 +42,7 @@ namespace Genspil.Klasser
                 {
                     Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato");
                     Console.WriteLine("Reservation: [R] Reserver spil | [F] Fjern reservation | [A] Afbryd");
-                    Console.Write("Indtast spillets ID og tast derefter R eller F: ");
+                    Console.Write("\nIndtast spillets ID og tast derefter R eller F: ");
 
                     (char valg, int id) = LæsKommando();
 

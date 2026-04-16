@@ -17,7 +17,6 @@
             {
                 Console.Write(promptTekst);
                 char input = char.ToUpper(Console.ReadKey().KeyChar);
-                Console.WriteLine();
 
                 if (input == 'A')
                 {
