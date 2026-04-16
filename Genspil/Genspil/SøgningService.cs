@@ -63,6 +63,8 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
                     fundneSpil.Add(spil);
             }
 
+            // Viser de fundne spil eller en besked hvis ingen spil matcher søgningen
+
             Console.WriteLine();
 
             if (fundneSpil.Count == 0)
