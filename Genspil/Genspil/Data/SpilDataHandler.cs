@@ -1,5 +1,6 @@
 ﻿using Genspil.Klasser; // Giver adgang til Spil-klassen
 
+
 namespace Genspil.Data // Organiserer koden i en mappe/gruppe der hedder Data
 {
 

@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 ﻿Matador;Familie;God;150;1;false;false
 Catan;Strategi;Ny;250;2;false;false
 Gæt;Quiz;God;180;3;false;false
 UNO;Kortspil;Slidt;50;4;true;false
 Pandemic;Samarbejde;God;220;5;false;true
+=======
+Matador;Familie;God;150;1;False;False
+Catan;Strategi;Ny;250;2;False;False
+Gæt;Quiz;God;180;3;False;False
+UNO;Kortspil;Slidt;50;4;False;False
+Pandemic;Samarbejde;God;220;5;False;False
+111;Familie;Ny;111;6;False;False
+test spil.txt;Samarbejde;Slidt;2;7;False;False
+test123;Strategi;God;300;8;False;False
+test 6;Quiz;Slidt;500;9;False;False
+test;Strategi;Slidt;300;10;False;False
+>>>>>>> Karl-på-Fiozi

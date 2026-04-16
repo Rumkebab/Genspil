@@ -1,6 +1,8 @@
-﻿using Genspil.Klasser;
+﻿
+using Genspil.Klasser;
 using Genspil.Data;
 
+<<<<<<< HEAD
 // Sti til tekstfilen
 string filsti = "Datafiler/spil.txt";
 
@@ -156,14 +158,30 @@ static void VisAlleSpil(List<Spil> spilListe, string filsti)
         Console.WriteLine(new string('-', 120));
 
         for (int i = 0; i < spilListe.Count; i++)
+=======
+namespace Genspil
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+>>>>>>> Karl-på-Fiozi
         {
-            Console.WriteLine(spilListe[i].VisInfo());
+            // Sti til filen med spillene
+            string filsti = "Datafiler/spil.txt";
+            
+
+            // Læser spillene fra filen ved opstart
+            List<Spil> spilListe = SpilDataHandler.LæsFraFil(filsti);
+
+            // Starter hovedmenuen
+            MenuService.Hovedmenu(filsti, spilListe);
         }
         Console.WriteLine(new string('-', 120));
 
         Sorteringsmenu();
         Pause();
     }
+<<<<<<< HEAD
 
     Sorteringsmenu();
 }
@@ -592,4 +610,6 @@ static void GoBack()
 {
     Console.WriteLine("Går tilbage til hovedmenu...");
     Hovedmenu("Datafiler/spil.txt", SpilDataHandler.LæsFraFil("Datafiler/spil.txt"));
+=======
+>>>>>>> Karl-på-Fiozi
 }
