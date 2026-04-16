@@ -1,5 +1,5 @@
-﻿using Genspil.Klasser;
-using Genspil.Data;
+﻿using Genspil.Data;
+using Genspil.Klasser;
 
 namespace Genspil
 {
