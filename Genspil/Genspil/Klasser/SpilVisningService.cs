@@ -1,149 +1,242 @@
-﻿namespace Genspil.Klasser // Angiver at denne serviceklasse hører til i projektets namespace Genspil
+﻿using Genspil.Klasser;
+using Genspil.Data;
+using System.Text;
+
+namespace Genspil
 {
-    public static class SpilVisningService // Opretter en statisk serviceklasse til visning og sortering af spil
+    public static class SpilVisningService
     {
-        public static void VisAlleSpil(List<Spil> spilListe) // Metode der viser alle spil og lader brugeren sortere listen
+        public static void VisAlleSpil(string filsti, List<Spil> spilListe)
         {
-            if (spilListe.Count == 0) // Tjekker om listen er tom
+            if (spilListe.Count == 0)
             {
-                Console.Clear(); // Rydder konsollen
-                Console.WriteLine("=== Liste over spil ==="); // Viser overskrift
-                Console.WriteLine("Ingen spil fundet."); // Fortæller brugeren at der ikke findes nogen spil
-                ConsoleHelper.VentPåA(); // Venter på at brugeren skriver A for at gå tilbage
-                return; // Afslutter metoden
+                Console.Clear();
+                Console.WriteLine("=== Liste over spil ===");
+                Console.WriteLine("Ingen spil fundet.");
+                ConsoleHelper.VentPåA();
+                return;
             }
 
-            char sortering = 'N'; // Sætter standard-sorteringen til N, som betyder navn/titel
+            char sortering = 'N';
 
-            while (true) // Løkke der fortsætter indtil brugeren afbryder med A
+            while (true)
             {
-                Console.Clear(); // Rydder konsollen før listen vises igen
-                List<Spil> sorteretListe = HentSorteretListe(spilListe, sortering); // Henter en sorteret kopi af listen ud fra den valgte sortering
+                Console.Clear();
+                List<Spil> sorteretListe = HentSorteretListe(spilListe, sortering);
 
-                Console.WriteLine($"=== Liste over spil ({HentSorteringsTekst(sortering)}) ==="); // Viser overskrift med tekst for den aktuelle sortering
-                PrintSpilTabel(sorteretListe); // Udskriver listen pænt som tabel
+                Console.WriteLine($"=== Liste over spil ({HentSorteringsTekst(sortering)}) ===");
+                PrintSpilTabel(sorteretListe);
 
-                Console.WriteLine(); // Skriver en tom linje for luft i layoutet
-                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [A]fbryd"); // Viser sorteringsmuligheder
-                Console.Write("> "); // Inputmarkør
+                Console.WriteLine();
+                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato");
+                Console.WriteLine("Reservation: [R] Reserver spil | [F] Fjern reservation | [A] Afbryd");
+                Console.Write("Indtast spillets ID og tast derefter R eller F: ");
 
-                char valg = char.ToUpper(Console.ReadKey(true).KeyChar); // Læser ét tegn fra brugeren og gør det til stort bogstav
+                var kommando = LæsVisningsKommando();
 
-                if (valg == 'A') // Hvis brugeren vælger A
+                if (kommando.Type == "Afbryd")
                 {
-                    return; // Afslutter metoden og går tilbage
+                    return;
                 }
 
-                if ("NGSPO".Contains(valg)) // Tjekker om bogstavet er en gyldig sorteringsmulighed
+                if (kommando.Type == "Sorter")
                 {
-                    sortering = valg; // Gemmer den nye sortering, så listen vises anderledes næste gang
+                    sortering = kommando.Bogstav;
+                    continue;
+                }
+
+                if (kommando.Type == "Reserver")
+                {
+                    OpdaterReservation(filsti, spilListe, kommando.Id, true);
+                    continue;
+                }
+
+                if (kommando.Type == "Fjern")
+                {
+                    OpdaterReservation(filsti, spilListe, kommando.Id, false);
+                    continue;
                 }
             }
         }
 
-        public static List<Spil> HentSorteretListe(List<Spil> spilListe, char sortering) // Metode der returnerer en ny liste sorteret efter brugerens valg
+        private static void OpdaterReservation(string filsti, List<Spil> spilListe, int id, bool skalReserveres)
         {
-            List<Spil> sorteret = new List<Spil>(spilListe); // Opretter en kopi af listen, så originalen ikke bliver ændret direkte
+            Spil? valgtSpil = spilListe.Find(s => s.Id == id);
 
-            switch (char.ToUpper(sortering)) // Kigger på hvilken sortering der er valgt
+            if (valgtSpil != null)
             {
-                case 'G': // Hvis der sorteres efter genre
-                    sorteret.Sort((s1, s2) => s1.Genre.ToString().CompareTo(s2.Genre.ToString())); // Sorterer alfabetisk på genre
-                    break; // Afslutter denne case
+                valgtSpil.ErReserveret = skalReserveres;
+                SpilDataHandler.GemTilFil(filsti, spilListe);
 
-                case 'S': // Hvis der sorteres efter stand
-                    sorteret.Sort((s1, s2) => s1.Stand.ToString().CompareTo(s2.Stand.ToString())); // Sorterer alfabetisk på stand
-                    break; // Afslutter denne case
-
-                case 'P': // Hvis der sorteres efter pris
-                    sorteret.Sort((s1, s2) => s1.Pris.CompareTo(s2.Pris)); // Sorterer numerisk efter pris
-                    break; // Afslutter denne case
-
-                case 'O': // Hvis der sorteres efter oprettelsesdato, som i jeres projekt svarer til ID-rækkefølge
-                    sorteret.Sort((s1, s2) => s1.Id.CompareTo(s2.Id)); // Sorterer stigende efter ID
-                    break; // Afslutter denne case
-
-                case 'N': // Hvis der sorteres efter navn
-                default: // Standardvalg hvis input ikke passer på andre cases
-                    sorteret.Sort((s1, s2) => s1.Titel.CompareTo(s2.Titel)); // Sorterer alfabetisk efter titel
-                    break; // Afslutter denne case
+                if (skalReserveres)
+                {
+                    Console.WriteLine("Spillet er nu markeret som reserveret.");
+                }
+                else
+                {
+                    Console.WriteLine("Reservationen er fjernet.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ingen spil fundet med det ID.");
             }
 
-            return sorteret; // Returnerer den sorterede kopi af listen
+            ConsoleHelper.Pause();
         }
 
-        public static string HentSorteringsTekst(char sortering) // Metode der laver en pæn tekstbeskrivelse af den valgte sortering
+        private static (string Type, char Bogstav, int Id) LæsVisningsKommando()
         {
-            switch (char.ToUpper(sortering)) // Kigger på sorteringsbogstavet
+            StringBuilder idBuffer = new StringBuilder();
+
+            while (true)
             {
-                case 'G': // Hvis sortering er genre
-                    return "sorteret efter genre"; // Returnerer tekst til visning i overskriften
-                case 'S': // Hvis sortering er stand
-                    return "sorteret efter stand"; // Returnerer tekst til visning i overskriften
-                case 'P': // Hvis sortering er pris
-                    return "sorteret efter pris"; // Returnerer tekst til visning i overskriften
-                case 'O': // Hvis sortering er oprettelsesdato/ID
-                    return "sorteret efter oprettelsesdato"; // Returnerer tekst til visning i overskriften
-                case 'N': // Hvis sortering er navn
-                default: // Standardvalg
-                    return "sorteret efter navn"; // Returnerer tekst til visning i overskriften
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                char tegn = char.ToUpper(keyInfo.KeyChar);
+
+                if (char.IsDigit(keyInfo.KeyChar))
+                {
+                    idBuffer.Append(keyInfo.KeyChar);
+                    Console.Write(keyInfo.KeyChar);
+                    continue;
+                }
+
+                if (keyInfo.Key == ConsoleKey.Backspace && idBuffer.Length > 0)
+                {
+                    idBuffer.Length--;
+                    Console.Write("\b \b");
+                    continue;
+                }
+
+                if (idBuffer.Length == 0 && "NGSPO".Contains(tegn))
+                {
+                    Console.WriteLine(tegn);
+                    return ("Sorter", tegn, 0);
+                }
+
+                if (tegn == 'A')
+                {
+                    Console.WriteLine("A");
+                    return ("Afbryd", 'A', 0);
+                }
+
+                if (idBuffer.Length > 0 && tegn == 'R')
+                {
+                    Console.WriteLine("R");
+                    return ("Reserver", 'R', int.Parse(idBuffer.ToString()));
+                }
+
+                if (idBuffer.Length > 0 && tegn == 'F')
+                {
+                    Console.WriteLine("F");
+                    return ("Fjern", 'F', int.Parse(idBuffer.ToString()));
+                }
             }
         }
 
-        public static void PrintSpilTabel(List<Spil> spilListe) // Metode der udskriver spillene i en pæn tabel
+        public static List<Spil> HentSorteretListe(List<Spil> spilListe, char sortering)
         {
-            Console.WriteLine(new string('-', 118)); // Skriver en vandret streg som topkant på tabellen
-            Console.WriteLine($"{"ID",-5} {"Titel",-38} {"Genre",-15} {"Stand",-10} {"Pris",-10} {"Status",-25}"); // Skriver kolonneoverskrifter med fast bredde
-            Console.WriteLine(new string('-', 118)); // Skriver endnu en vandret streg under overskrifterne
+            List<Spil> sorteret = new List<Spil>(spilListe);
 
-            foreach (Spil spil in spilListe) // Går igennem hvert spil i listen
+            switch (char.ToUpper(sortering))
             {
-                string prisTekst = $"{spil.Pris} kr"; // Laver prisen om til en tekst med "kr"
-                string status = HentStatusTekst(spil); // Henter status-tekst for spillet, fx reserveret eller ønsket
+                case 'G':
+                    sorteret.Sort((s1, s2) => s1.Genre.ToString().CompareTo(s2.Genre.ToString()));
+                    break;
 
-                Console.WriteLine( // Skriver én række i tabellen
-                    $"{spil.Id,-5} " + // Viser ID i en kolonne på 5 tegn
-                    $"{AfkortTekst(spil.Titel, 38),-38} " + // Viser titel og afkorter hvis den er for lang
-                    $"{spil.Genre,-15} " + // Viser genre i kolonne på 15 tegn
-                    $"{spil.Stand,-10} " + // Viser stand i kolonne på 10 tegn
-                    $"{prisTekst,-10} " + // Viser pris i kolonne på 10 tegn
-                    $"{status,-25}" // Viser status i kolonne på 25 tegn
+                case 'S':
+                    sorteret.Sort((s1, s2) => s1.Stand.ToString().CompareTo(s2.Stand.ToString()));
+                    break;
+
+                case 'P':
+                    sorteret.Sort((s1, s2) => s1.Pris.CompareTo(s2.Pris));
+                    break;
+
+                case 'O':
+                    sorteret.Sort((s1, s2) => s1.Id.CompareTo(s2.Id));
+                    break;
+
+                case 'N':
+                default:
+                    sorteret.Sort((s1, s2) => s1.Titel.CompareTo(s2.Titel));
+                    break;
+            }
+
+            return sorteret;
+        }
+
+        public static string HentSorteringsTekst(char sortering)
+        {
+            switch (char.ToUpper(sortering))
+            {
+                case 'G':
+                    return "sorteret efter genre";
+                case 'S':
+                    return "sorteret efter stand";
+                case 'P':
+                    return "sorteret efter pris";
+                case 'O':
+                    return "sorteret efter oprettelsesdato";
+                case 'N':
+                default:
+                    return "sorteret efter navn";
+            }
+        }
+
+        public static void PrintSpilTabel(List<Spil> spilListe)
+        {
+            Console.WriteLine(new string('-', 118));
+            Console.WriteLine($"{"ID",-5} {"Titel",-38} {"Genre",-15} {"Stand",-10} {"Pris",-10} {"Status",-25}");
+            Console.WriteLine(new string('-', 118));
+
+            foreach (Spil spil in spilListe)
+            {
+                string prisTekst = $"{spil.Pris} kr";
+                string status = HentStatusTekst(spil);
+
+                Console.WriteLine(
+                    $"{spil.Id,-5} " +
+                    $"{AfkortTekst(spil.Titel, 38),-38} " +
+                    $"{spil.Genre,-15} " +
+                    $"{spil.Stand,-10} " +
+                    $"{prisTekst,-10} " +
+                    $"{status,-25}"
                 );
             }
 
-            Console.WriteLine(new string('-', 118)); // Skriver en bundlinje på tabellen
+            Console.WriteLine(new string('-', 118));
         }
 
-        public static string HentStatusTekst(Spil spil) // Metode der finder tekst til statuskolonnen
+        public static string HentStatusTekst(Spil spil)
         {
-            List<string> statusListe = new List<string>(); // Opretter en liste til at samle status-ord
+            List<string> statusListe = new List<string>();
 
-            if (spil.ErReserveret) // Tjekker om spillet er reserveret
+            if (spil.ErReserveret)
             {
-                statusListe.Add("(RESERVERET)"); // Tilføjer reserveret-status til listen
+                statusListe.Add("(RESERVERET)");
             }
 
-            if (spil.ErRequest) // Tjekker om spillet er markeret som ønsket/request
+            if (spil.ErRequest)
             {
-                statusListe.Add("(ØNSKET)"); // Tilføjer ønsket-status til listen
+                statusListe.Add("(ØNSKET)");
             }
 
-            return string.Join(" ", statusListe); // Samler alle status-ord til én tekst med mellemrum imellem
+            return string.Join(" ", statusListe);
         }
 
-        public static string AfkortTekst(string tekst, int maxLængde) // Metode der forkorter en tekst hvis den er længere end den tilladte længde
+        public static string AfkortTekst(string tekst, int maxLængde)
         {
-            if (string.IsNullOrWhiteSpace(tekst)) // Tjekker om teksten er tom eller kun mellemrum
+            if (string.IsNullOrWhiteSpace(tekst))
             {
-                return ""; // Returnerer tom tekst hvis der ikke er noget indhold
+                return "";
             }
 
-            if (tekst.Length <= maxLængde) // Tjekker om teksten allerede er kort nok
+            if (tekst.Length <= maxLængde)
             {
-                return tekst; // Returnerer teksten uændret
+                return tekst;
             }
 
-            return tekst.Substring(0, maxLængde - 3) + "..."; // Skærer teksten af og tilføjer ... til sidst
+            return tekst.Substring(0, maxLængde - 3) + "...";
         }
     }
 }

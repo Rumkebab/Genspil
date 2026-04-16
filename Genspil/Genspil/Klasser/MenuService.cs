@@ -28,7 +28,7 @@ namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets nam
                 switch (valg) // Kigger på hvad brugeren skrev og vælger handling ud fra det
                 {
                     case "1": // Hvis brugeren vælger 1
-                        SpilVisningService.VisAlleSpil(spilListe); // Kalder metoden der viser alle spil
+                        SpilVisningService.VisAlleSpil(filsti,spilListe); // Kalder metoden der viser alle spil
                         break; // Afslutter dette case
 
                     case "2": // Hvis brugeren vælger 2
