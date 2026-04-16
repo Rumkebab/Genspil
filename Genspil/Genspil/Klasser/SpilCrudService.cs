@@ -22,12 +22,12 @@ namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets nam
             }
 
             Console.WriteLine("Vælg genre:"); // Viser at brugeren nu skal vælge genre
-            Console.WriteLine("1 = Strategi"); // Mulighed 1
-            Console.WriteLine("2 = Familie"); // Mulighed 2
-            Console.WriteLine("3 = Kortspil"); // Mulighed 3
-            Console.WriteLine("4 = Quiz"); // Mulighed 4
-            Console.WriteLine("5 = Samarbejde"); // Mulighed 5
-            Console.Write("Vælg genre: "); // Beder brugeren skrive sit valg
+            foreach(var genr in Enum.GetValues(typeof(Genre))) // Løkke der viser alle genre-muligheder baseret på enum
+            {
+                int genreNummer = (int)genr + 1; // Beregner det nummer der skal vises for brugeren (1-baseret)
+                Console.WriteLine($"{genreNummer} = {genr}"); // Viser nummer og genre-navn
+            }
+            Console.Write("> "); // Beder brugeren skrive sit valg
 
             string genreInput = (Console.ReadLine() ?? "").Trim(); // Læser brugerens input til genre
             if (genreInput.ToUpper() == "A") // Tjekker om brugeren vil afbryde
@@ -45,10 +45,13 @@ namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets nam
             Genre genre = (Genre)(genreValg - 1); // Laver tallet om til en enum-værdi i Genre
 
             Console.WriteLine("Vælg stand:"); // Viser at brugeren nu skal vælge stand
-            Console.WriteLine("1 = Ny"); // Mulighed 1
-            Console.WriteLine("2 = God"); // Mulighed 2
-            Console.WriteLine("3 = Slidt"); // Mulighed 3
-            Console.Write("Vælg stand: "); // Beder brugeren skrive sit valg
+            
+        foreach(var stan in Enum.GetValues(typeof(Stand))) // Løkke der viser alle stand-muligheder baseret på enum
+            {
+                int standNummer = (int)stan + 1; // Beregner det nummer der skal vises for brugeren (1-baseret)
+                Console.WriteLine($"{standNummer} = {stan}"); // Viser nummer og stand-navn
+            }
+            Console.Write("> "); // Beder brugeren skrive sit valg
 
             string standInput = (Console.ReadLine() ?? "").Trim(); // Læser input til stand
             if (standInput.ToUpper() == "A") // Tjekker om brugeren vil afbryde
@@ -223,11 +226,11 @@ namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets nam
 
                     Console.WriteLine(); // Tom linje
                     Console.WriteLine($"Nuværende genre: {valgtSpil.Genre}"); // Viser den nuværende genre
-                    Console.WriteLine("1 = Strategi"); // Genrevalg 1
-                    Console.WriteLine("2 = Familie"); // Genrevalg 2
-                    Console.WriteLine("3 = Kortspil"); // Genrevalg 3
-                    Console.WriteLine("4 = Quiz"); // Genrevalg 4
-                    Console.WriteLine("5 = Samarbejde"); // Genrevalg 5
+                    foreach(var genre in Enum.GetValues(typeof(Genre))) // Løkke der viser alle genre-muligheder baseret på enum
+                    {
+                        int genreNummer = (int)genre + 1; // Beregner det nummer der skal vises for brugeren (1-baseret)
+                        Console.WriteLine($"{genreNummer} = {genre}"); // Viser nummer og genre-navn
+                    }
                     Console.Write("Vælg ny genre (tryk Enter for at beholde): "); // Beder om ny genre eller Enter for at beholde
                     string genreInput = (Console.ReadLine() ?? "").Trim(); // Læser input til genre
 
@@ -257,9 +260,12 @@ namespace Genspil.Klasser // Angiver at denne klasse hører til i projektets nam
 
                     Console.WriteLine(); // Tom linje
                     Console.WriteLine($"Nuværende stand: {valgtSpil.Stand}"); // Viser nuværende stand
-                    Console.WriteLine("1 = Ny"); // Standvalg 1
-                    Console.WriteLine("2 = God"); // Standvalg 2
-                    Console.WriteLine("3 = Slidt"); // Standvalg 3
+                    Console.WriteLine("Vælg stand:"); // Viser at brugeren nu skal vælge stand
+                    foreach (var stand in Enum.GetValues(typeof(Stand))) // Løkke der viser alle stand-muligheder baseret på enum
+                    {
+                        int standNummer = (int)stand + 1; // Beregner det nummer der skal vises for brugeren (1-baseret)
+                        Console.WriteLine($"{standNummer} = {stand}"); // Viser nummer og stand-navn
+                    }
                     Console.Write("Vælg ny stand (tryk Enter for at beholde): "); // Beder om ny stand eller Enter for at beholde
                     string standInput = (Console.ReadLine() ?? "").Trim(); // Læser input til stand
 

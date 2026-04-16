@@ -14,8 +14,10 @@ namespace Genspil.Klasser // Ligger i mappen Klasser
     public enum Stand
     {
         Ny,
+        Uåbnet,
         God,
-        Slidt
+        Slidt,
+        Reparation
     }
     public class Spil // Klasse der repræsenterer ét brætspil
     {

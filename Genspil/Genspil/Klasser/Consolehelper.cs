@@ -9,12 +9,13 @@
             Console.ReadKey(); // Venter på, at brugeren trykker på en tast
         }
 
-        public static void VentPåA(string promptTekst = "Indtast A for at vende tilbage: ") // Metode der bliver ved med at spørge, indtil brugeren skriver A
+        public static void VentPåA(string promptTekst = "Indtast A for at vende tilbage.") // Metode der bliver ved med at spørge, indtil brugeren skriver A
         {
             while (true) // Uendelig løkke som kun stoppes med return
             {
                 Console.Write(promptTekst); // Viser teksten foran inputfeltet
-                string input = (Console.ReadLine() ?? "").Trim().ToUpper(); // Læser brugerens input, undgår null, fjerner mellemrum og gør teksten til store bogstaver
+                string input = (Console.ReadKey().KeyChar.ToString() ?? "").Trim().ToUpper(); // Læser brugerens input, undgår null, fjerner mellemrum og gør teksten til store bogstaver
+                Console.WriteLine(); // Går til næste linje efter input
 
                 if (input == "A") // Tjekker om brugeren har skrevet A
                 {
