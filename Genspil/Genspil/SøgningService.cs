@@ -2,7 +2,7 @@
 
 namespace Genspil // Angiver at denne klasse hører til i projektets namespace Genspil
 {
-    public static class SøgningService // Opretter en statisk serviceklasse til alt der handler om søgning
+    public static class SøgningService // Opretter klasse til alt der handler om søgning i spil-listen
     {
         public static void SøgEfterSpilMenu(List<Spil> spilListe)
         {
@@ -11,6 +11,7 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
             SøgEfterSpil(spilListe);
         }
 
+        // Metode der håndterer selve søgningen efter spil baseret på brugerinput
         public static void SøgEfterSpil(List<Spil> spilListe)
         {
             Console.Clear();
@@ -61,6 +62,8 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
                 if (matcher)
                     fundneSpil.Add(spil);
             }
+
+            // Viser de fundne spil eller en besked hvis ingen spil matcher søgningen
 
             Console.WriteLine();
 
