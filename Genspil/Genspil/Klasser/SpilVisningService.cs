@@ -91,14 +91,12 @@ namespace Genspil.Klasser
                 {
                     Console.Write("Reserveret af (navn): ");
                     string navn = (Console.ReadLine() ?? "").Trim();
-                    valgtSpil.ErReserveret = true;
-                    valgtSpil.ReserveretAf = navn;
+                    valgtSpil.SætReservation(navn);
                     Console.WriteLine("Spillet er nu markeret som reserveret.");
                 }
                 else
                 {
-                    valgtSpil.ErReserveret = false;
-                    valgtSpil.ReserveretAf = "";
+                    valgtSpil.FjernReservation();
                     Console.WriteLine("Reservationen er fjernet.");
                 }
 

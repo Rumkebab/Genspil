@@ -20,21 +20,71 @@
 
     public class Spil
     {
-        // Holder styr på sidste brugte ID
-        private static int lastId = 0;
-
-        public string Titel { get; set; }
-        public Genre Genre { get; set; }
-        public Stand Stand { get; set; }
-        public string AntalSpillere { get; set; }
-        public int Pris { get; set; }
+        
+        private static int lastId = 0; // Holder styr på sidste brugte ID
+        public string Titel { get; private set; }
+        public Genre Genre { get; private set; }
+        public Stand Stand { get; private set; }
+        public string AntalSpillere { get; private set; }
+        public int Pris { get; private set; }
         public int Id { get; private set; }
-        public bool ErReserveret { get; set; }
-        public bool ErRequest { get; set; }
-        public string Kontaktperson { get; set; }
-        public string ReserveretAf { get; set; }
+        public bool ErReserveret { get; private set; }
+        public bool ErRequest { get; private set; }
+        public string Kontaktperson { get; private set; }
+        public string ReserveretAf { get; private set; }
 
-        public static void SetLastId(int id)
+        // Metode til at opdatere reservation
+        public void SætReservation(string navn)
+        {
+            ErReserveret = true;
+            ReserveretAf = navn;
+        }
+
+        // Metode til at fjerne reservation
+        public void FjernReservation()
+        {
+            ErReserveret = false;
+            ReserveretAf = "";
+        }
+
+        // Metoder til at redigere spiloplysninger
+        public void OpdaterTitel(string nyTitel)
+        {
+            Titel = nyTitel;
+        }
+
+        public void OpdaterGenre(Genre nyGenre)
+        {
+            Genre = nyGenre;
+        }
+
+        public void OpdaterStand(Stand nyStand)
+        {
+            Stand = nyStand;
+        }
+
+        public void OpdaterAntalSpillere(string nytAntal)
+        {
+            AntalSpillere = nytAntal;
+        }
+
+        public void OpdaterPris(int nyPris)
+        {
+            Pris = nyPris;
+        }
+
+        public void SætRequest(bool erRequest, string kontaktperson = "")
+        {
+            ErRequest = erRequest;
+            Kontaktperson = kontaktperson;
+        }
+
+        public void OpdaterKontaktperson(string nyKontaktperson)
+        {
+            Kontaktperson = nyKontaktperson;
+        }
+         
+        private static void SetLastId(int id)
         {
             if (id > lastId)
             {

@@ -221,7 +221,7 @@ namespace Genspil.Klasser
                 string nyTitel = (Console.ReadLine() ?? "").Trim();
                 if (nyTitel.ToUpper() == "A") return;
                 if (!string.IsNullOrWhiteSpace(nyTitel))
-                    valgtSpil.Titel = nyTitel;
+                    valgtSpil.OpdaterTitel(nyTitel);
 
                 Console.Clear();
                 Console.WriteLine(newHeader);
@@ -240,7 +240,7 @@ namespace Genspil.Klasser
                     int.TryParse(genreInput, out int genreValg) &&
                     genreValg >= 1 && genreValg <= maxGenre)
                 {
-                    valgtSpil.Genre = (Genre)(genreValg - 1);
+                    valgtSpil.OpdaterGenre((Genre)(genreValg - 1));
                 }
 
                 Console.Clear();
@@ -260,7 +260,7 @@ namespace Genspil.Klasser
                     int.TryParse(standInput, out int standValg) &&
                     standValg >= 1 && standValg <= maxStand)
                 {
-                    valgtSpil.Stand = (Stand)(standValg - 1);
+                    valgtSpil.OpdaterStand((Stand)(standValg - 1));
                 }
 
                 Console.Clear();
@@ -269,7 +269,7 @@ namespace Genspil.Klasser
                 string antalInput = (Console.ReadLine() ?? "").Trim();
                 if (antalInput.ToUpper() == "A") return;
                 if (!string.IsNullOrWhiteSpace(antalInput))
-                    valgtSpil.AntalSpillere = antalInput;
+                    valgtSpil.OpdaterAntalSpillere(antalInput);
 
                 Console.Clear();
                 Console.WriteLine(newHeader);
@@ -277,7 +277,7 @@ namespace Genspil.Klasser
                 string prisInput = (Console.ReadLine() ?? "").Trim();
                 if (prisInput.ToUpper() == "A") return;
                 if (!string.IsNullOrWhiteSpace(prisInput) && int.TryParse(prisInput, out int nyPris))
-                    valgtSpil.Pris = nyPris;
+                    valgtSpil.OpdaterPris(nyPris);
 
                 Console.Clear();
                 Console.WriteLine(newHeader);
@@ -286,11 +286,10 @@ namespace Genspil.Klasser
                 if (requestRedigering == "A") return;
 
                 if (requestRedigering == "J")
-                    valgtSpil.ErRequest = true;
+                    valgtSpil.SætRequest(true, valgtSpil.Kontaktperson);
                 else if (requestRedigering == "N")
                 {
-                    valgtSpil.ErRequest = false;
-                    valgtSpil.Kontaktperson = "";
+                    valgtSpil.SætRequest(false);
                 }
 
                 if (valgtSpil.ErRequest)
@@ -301,7 +300,7 @@ namespace Genspil.Klasser
                     string nyKontakt = (Console.ReadLine() ?? "").Trim();
                     if (nyKontakt.ToUpper() == "A") return;
                     if (!string.IsNullOrWhiteSpace(nyKontakt))
-                        valgtSpil.Kontaktperson = nyKontakt;
+                        valgtSpil.OpdaterKontaktperson(nyKontakt);
                 }
 
                 SpilDataHandler.GemTilFil(filsti, spilListe);
