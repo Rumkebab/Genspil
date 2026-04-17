@@ -99,7 +99,7 @@
         // Bruges til at vise spillet pænt i tabellen
         public string VisInfo()
         {
-            string titel = Titel.Length > 50 ? Titel.Substring(0, 46) + "..." : Titel;
+            string titel = Titel.Length > 25 ? Titel.Substring(0, 22) + "..." : Titel;
             string status = "";
 
             if (ErReserveret)
@@ -109,6 +109,7 @@
                     ? "(RESERVERET)"
                     : $"(RESERVERET: {navn})";
             }
+
             if (ErRequest)
             {
                 string kontakt = Kontaktperson.Length > 20 ? Kontaktperson.Substring(0, 17) + "..." : Kontaktperson;
@@ -116,13 +117,16 @@
                     ? "(ØNSKET)"
                     : $"(ØNSKET: {kontakt})";
             }
+
+            string statusTrunk = status.Length > 30 ? status.Substring(0, 27) + "..." : status;
+
             return $"{Id,-5}" +
-                   $"{titel,-50}" +
+                   $"{titel,-25}" +
                    $"{Genre,-15}" +
                    $"{AntalSpillere,-12}" +
                    $"{Stand,-15}" +
                    $"{Pris + " kr",8}" +
-                   $"{status,15}";
+                   $"{statusTrunk,32}";
         }
     }
 }
