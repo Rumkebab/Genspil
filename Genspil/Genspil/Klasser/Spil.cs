@@ -119,7 +119,7 @@
                     : $"(ØNS: {kontakt})";
             }
 
-            // Trimmer titlen og status-teksten og status for at undgå at ødelægge tabellayoutet
+            // Trimmer titlen for at undgå at ødelægge tabellayoutet
             string titel = Titel.Length > 32 ? Titel.Substring(0, 29) + "..." : Titel;
 
             return $"{Id,-5}" +
