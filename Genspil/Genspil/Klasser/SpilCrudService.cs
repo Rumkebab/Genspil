@@ -76,7 +76,21 @@ namespace Genspil.Klasser
                 return null;
             }
 
-            Spil nytSpil = new Spil(titel, valgtGenre, valgtStand, pris, antalInput);
+            Console.Write("Er dette et ønsket spil/forespørgsel? (J/N): ");
+            string requestInput = (Console.ReadLine() ?? "").Trim().ToUpper();
+            if (requestInput == "A") return null;
+
+            bool erRequest = requestInput == "J";
+            string kontaktperson = "";
+
+            if (erRequest)
+            {
+                Console.Write("Kontaktperson (navn på den der har forespurgt): ");
+                kontaktperson = (Console.ReadLine() ?? "").Trim();
+                if (kontaktperson.ToUpper() == "A") return null;
+            }
+
+            Spil nytSpil = new Spil(titel, valgtGenre, valgtStand, pris, antalInput, erRequest: erRequest, kontaktperson: kontaktperson);
             spilListe.Add(nytSpil);
             SpilDataHandler.GemTilFil(filsti, spilListe);
 
@@ -105,7 +119,7 @@ namespace Genspil.Klasser
                 List<Spil> sorteretListe = SpilVisningService.HentSorteretListe(spilListe, sortering);
                 SpilVisningService.PrintSpilTabel(sorteretListe);
 
-                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [A]fbryd");
+                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [L]spillere | [A]fbryd");
                 Console.Write("Indtast ID på spil der skal slettes: ");
 
                 string input = (Console.ReadLine() ?? "").Trim();
@@ -113,7 +127,7 @@ namespace Genspil.Klasser
                 if (input.ToUpper() == "A")
                     return;
 
-                if (input.Length == 1 && "NGSPO".Contains(char.ToUpper(input[0])))
+                if (input.Length == 1 && "NGSPOL".Contains(char.ToUpper(input[0])))
                 {
                     sortering = char.ToUpper(input[0]);
                     continue;
@@ -168,7 +182,7 @@ namespace Genspil.Klasser
                 List<Spil> sorteretListe = SpilVisningService.HentSorteretListe(spilListe, sortering);
                 SpilVisningService.PrintSpilTabel(sorteretListe);
 
-                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [A]fbryd");
+                Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [L]spillere | [A]fbryd");
                 Console.Write("Indtast ID på spil der skal redigeres: ");
 
                 string input = (Console.ReadLine() ?? "").Trim();
@@ -176,7 +190,7 @@ namespace Genspil.Klasser
                 if (input.ToUpper() == "A")
                     return;
 
-                if (input.Length == 1 && "NGSPO".Contains(char.ToUpper(input[0])))
+                if (input.Length == 1 && "NGSPOL".Contains(char.ToUpper(input[0])))
                 {
                     sortering = char.ToUpper(input[0]);
                     continue;
@@ -199,7 +213,8 @@ namespace Genspil.Klasser
                 }
 
                 string title = $"=== Rediger {valgtSpil.Titel} ===";
-                string newHeader =title + "\nTryk Enter hvis du vil beholde den nuværende værdi.\nTast A for at afbryde.\n" + new string('=', title.Length) + "";
+                string newHeader = title + "\nTryk Enter hvis du vil beholde den nuværende værdi.\nTast A for at afbryde.\n" + new string('=', title.Length) + "";
+
                 Console.Clear();
                 Console.WriteLine(newHeader);
                 Console.Write($"NUVÆRENDE TITEL: {valgtSpil.Titel}\n\nTryk Enter for at beholde titel\nEller skriv ny titel:\n> ");
@@ -207,9 +222,9 @@ namespace Genspil.Klasser
                 if (nyTitel.ToUpper() == "A") return;
                 if (!string.IsNullOrWhiteSpace(nyTitel))
                     valgtSpil.Titel = nyTitel;
+
                 Console.Clear();
                 Console.WriteLine(newHeader);
-
                 Console.WriteLine($"Nuværende genre: {valgtSpil.Genre}\n");
                 Console.WriteLine("Muligheder:");
                 foreach (var genre in Enum.GetValues(typeof(Genre)))
@@ -219,9 +234,7 @@ namespace Genspil.Klasser
                 }
                 Console.Write("\nTryk Enter for at beholde genre\nEller skriv ny genre:\n> ");
                 string genreInput = (Console.ReadLine() ?? "").Trim();
-
                 if (genreInput.ToUpper() == "A") return;
-                Console.Clear();
 
                 if (!string.IsNullOrWhiteSpace(genreInput) &&
                     int.TryParse(genreInput, out int genreValg) &&
@@ -229,6 +242,8 @@ namespace Genspil.Klasser
                 {
                     valgtSpil.Genre = (Genre)(genreValg - 1);
                 }
+
+                Console.Clear();
                 Console.WriteLine(newHeader);
                 Console.WriteLine($"Nuværende stand: {valgtSpil.Stand}\n");
                 Console.WriteLine("Muligheder:");
@@ -237,11 +252,9 @@ namespace Genspil.Klasser
                     int nummer = (int)stand + 1;
                     Console.WriteLine($"{nummer} = {stand}");
                 }
-                Console.Write("\nTryk Enter for at beholde stand\nEller skriv ny stand:\n> "); 
+                Console.Write("\nTryk Enter for at beholde stand\nEller skriv ny stand:\n> ");
                 string standInput = (Console.ReadLine() ?? "").Trim();
-
                 if (standInput.ToUpper() == "A") return;
-                Console.Clear();
 
                 if (!string.IsNullOrWhiteSpace(standInput) &&
                     int.TryParse(standInput, out int standValg) &&
@@ -249,21 +262,47 @@ namespace Genspil.Klasser
                 {
                     valgtSpil.Stand = (Stand)(standValg - 1);
                 }
+
+                Console.Clear();
                 Console.WriteLine(newHeader);
                 Console.Write($"Antal spillere: {valgtSpil.AntalSpillere}\n\nTryk Enter for at beholde antal\nEller skriv nyt antal:\n> ");
                 string antalInput = (Console.ReadLine() ?? "").Trim();
                 if (antalInput.ToUpper() == "A") return;
-                Console.Clear();
-
                 if (!string.IsNullOrWhiteSpace(antalInput))
                     valgtSpil.AntalSpillere = antalInput;
+
+                Console.Clear();
                 Console.WriteLine(newHeader);
                 Console.Write($"Pris: {valgtSpil.Pris} kr\n\nTryk Enter for at beholde pris\nEller skriv ny pris:\n> ");
                 string prisInput = (Console.ReadLine() ?? "").Trim();
                 if (prisInput.ToUpper() == "A") return;
-
                 if (!string.IsNullOrWhiteSpace(prisInput) && int.TryParse(prisInput, out int nyPris))
                     valgtSpil.Pris = nyPris;
+
+                Console.Clear();
+                Console.WriteLine(newHeader);
+                Console.Write($"Er det et ønsket spil: {(valgtSpil.ErRequest ? "Ja" : "Nej")}\n\nTryk Enter for at beholde\nEller skriv J eller N:\n> ");
+                string requestRedigering = (Console.ReadLine() ?? "").Trim().ToUpper();
+                if (requestRedigering == "A") return;
+
+                if (requestRedigering == "J")
+                    valgtSpil.ErRequest = true;
+                else if (requestRedigering == "N")
+                {
+                    valgtSpil.ErRequest = false;
+                    valgtSpil.Kontaktperson = "";
+                }
+
+                if (valgtSpil.ErRequest)
+                {
+                    Console.Clear();
+                    Console.WriteLine(newHeader);
+                    Console.Write($"Kontaktperson: {valgtSpil.Kontaktperson}\n\nTryk Enter for at beholde\nEller skriv ny kontaktperson:\n> ");
+                    string nyKontakt = (Console.ReadLine() ?? "").Trim();
+                    if (nyKontakt.ToUpper() == "A") return;
+                    if (!string.IsNullOrWhiteSpace(nyKontakt))
+                        valgtSpil.Kontaktperson = nyKontakt;
+                }
 
                 SpilDataHandler.GemTilFil(filsti, spilListe);
                 Console.Clear();

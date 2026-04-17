@@ -40,7 +40,7 @@ namespace Genspil.Klasser
 
                 if (måReservere)
                 {
-                    Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato");
+                    Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [L]spillere");
                     Console.WriteLine("Reservation: [R] Reserver spil | [F] Fjern reservation | [A] Afbryd");
                     Console.Write("\nIndtast spillets ID og tast derefter R eller F: ");
 
@@ -55,6 +55,7 @@ namespace Genspil.Klasser
                         case 'S':
                         case 'P':
                         case 'O':
+                        case 'L':
                             sortering = valg;
                             break;
                         case 'R':
@@ -67,13 +68,13 @@ namespace Genspil.Klasser
                 }
                 else
                 {
-                    Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [A]fbryd");
+                    Console.WriteLine("Sortér efter: [N]avn | [G]enre | [S]tand | [P]ris | [O]prettelsesdato | [L]spillere | [A]fbryd");
                     char valg = char.ToUpper(Console.ReadKey(true).KeyChar);
 
                     if (valg == 'A')
                         return;
 
-                    if ("NGSPO".Contains(valg))
+                    if ("NGSPOL".Contains(valg))
                         sortering = valg;
                 }
             }
@@ -86,13 +87,22 @@ namespace Genspil.Klasser
 
             if (valgtSpil != null)
             {
-                valgtSpil.ErReserveret = skalReserveres;
-                SpilDataHandler.GemTilFil(filsti, spilListe);
-
                 if (skalReserveres)
+                {
+                    Console.Write("Reserveret af (navn): ");
+                    string navn = (Console.ReadLine() ?? "").Trim();
+                    valgtSpil.ErReserveret = true;
+                    valgtSpil.ReserveretAf = navn;
                     Console.WriteLine("Spillet er nu markeret som reserveret.");
+                }
                 else
+                {
+                    valgtSpil.ErReserveret = false;
+                    valgtSpil.ReserveretAf = "";
                     Console.WriteLine("Reservationen er fjernet.");
+                }
+
+                SpilDataHandler.GemTilFil(filsti, spilListe);
             }
             else
             {
@@ -122,7 +132,7 @@ namespace Genspil.Klasser
                     idTekst = idTekst.Substring(0, idTekst.Length - 1);
                     Console.Write("\b \b");
                 }
-                else if (idTekst == "" && "NGSPOA".Contains(tegn))
+                else if (idTekst == "" && "NGSPOAL".Contains(tegn))
                 {
                     Console.WriteLine(tegn);
                     return (tegn, 0);
@@ -154,6 +164,14 @@ namespace Genspil.Klasser
                 case 'O':
                     sorteret.Sort((s1, s2) => s1.Id.CompareTo(s2.Id));
                     break;
+                case 'L':
+                    sorteret.Sort((s1, s2) =>
+                    {
+                        int min1 = int.TryParse(s1.AntalSpillere.Split('-')[0], out int a) ? a : 0;
+                        int min2 = int.TryParse(s2.AntalSpillere.Split('-')[0], out int b) ? b : 0;
+                        return min1.CompareTo(min2);
+                    });
+                    break;
                 default:
                     sorteret.Sort((s1, s2) => s1.Titel.CompareTo(s2.Titel));
                     break;
@@ -174,6 +192,8 @@ namespace Genspil.Klasser
                     return "sorteret efter pris";
                 case 'O':
                     return "sorteret efter oprettelsesdato";
+                case 'L':
+                    return "sorteret efter antal spillere";
                 default:
                     return "sorteret efter navn";
             }
@@ -191,6 +211,22 @@ namespace Genspil.Klasser
             }
 
             Console.WriteLine(new string('-', 120));
+        }
+
+        public static void VisForespørgsler(List<Spil> spilListe)
+        {
+            List<Spil> forespørgsler = spilListe.FindAll(s => s.ErRequest);
+
+            if (forespørgsler.Count == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("=== Forespurgte spil ===");
+                Console.WriteLine("Ingen forespørgsler registreret.");
+                ConsoleHelper.VentPåA();
+                return;
+            }
+
+            VisAlleSpil(forespørgsler);
         }
     }
 }

@@ -31,6 +31,8 @@
         public int Id { get; private set; }
         public bool ErReserveret { get; set; }
         public bool ErRequest { get; set; }
+        public string Kontaktperson { get; set; }
+        public string ReserveretAf { get; set; }
 
         public static void SetLastId(int id)
         {
@@ -41,7 +43,7 @@
         }
 
         // Opretter et spil og giver automatisk ID hvis der ikke er et i forvejen
-        public Spil(string titel, Genre genre, Stand stand, int pris, string antalSpillere, int id = 0, bool erReserveret = false, bool erRequest = false)
+        public Spil(string titel, Genre genre, Stand stand, int pris, string antalSpillere, int id = 0, bool erReserveret = false, bool erRequest = false, string kontaktperson = "", string reserveretAf = "")
         {
             Titel = titel;
             Genre = genre;
@@ -50,6 +52,8 @@
             AntalSpillere = antalSpillere;
             ErReserveret = erReserveret;
             ErRequest = erRequest;
+            Kontaktperson = kontaktperson;
+            ReserveretAf = reserveretAf;
 
             if (id > 0)
             {
@@ -71,7 +75,7 @@
         // Gemmer spillet i samme rækkefølge som FromString læser det
         public override string ToString()
         {
-            return $"{Titel};{Genre};{Stand};{Pris};{AntalSpillere};{Id};{ErReserveret};{ErRequest}";
+            return $"{Titel};{Genre};{Stand};{Pris};{AntalSpillere};{Id};{ErReserveret};{ErRequest};{Kontaktperson};{ReserveretAf}";
         }
 
         public static Spil FromString(string linje)
@@ -86,8 +90,10 @@
             int id = int.Parse(data[5]);
             bool erReserveret = bool.Parse(data[6]);
             bool erRequest = bool.Parse(data[7]);
+            string kontaktperson = data.Length > 8 ? data[8] : "";
+            string reserveretAf = data.Length > 9 ? data[9] : "";
 
-            return new Spil(titel, genre, stand, pris, antalSpillere, id, erReserveret, erRequest);
+            return new Spil(titel, genre, stand, pris, antalSpillere, id, erReserveret, erRequest, kontaktperson, reserveretAf);
         }
 
         // Bruges til at vise spillet pænt i tabellen
@@ -97,11 +103,19 @@
             string status = "";
 
             if (ErReserveret)
-                status += "(RESERVERET) ";
-
+            {
+                string navn = ReserveretAf.Length > 20 ? ReserveretAf.Substring(0, 17) + "..." : ReserveretAf;
+                status += string.IsNullOrWhiteSpace(ReserveretAf)
+                    ? "(RESERVERET)"
+                    : $"(RESERVERET: {navn})";
+            }
             if (ErRequest)
-                status += "(ØNSKET)";
-
+            {
+                string kontakt = Kontaktperson.Length > 20 ? Kontaktperson.Substring(0, 17) + "..." : Kontaktperson;
+                status += string.IsNullOrWhiteSpace(Kontaktperson)
+                    ? "(ØNSKET)"
+                    : $"(ØNSKET: {kontakt})";
+            }
             return $"{Id,-5}" +
                    $"{titel,-50}" +
                    $"{Genre,-15}" +

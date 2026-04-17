@@ -20,7 +20,8 @@ namespace Genspil.Klasser
                 Console.WriteLine("3. Slet spil");
                 Console.WriteLine("4. Rediger spil");
                 Console.WriteLine("5. Søg efter spil");
-                Console.WriteLine("6. Afslut");
+                Console.WriteLine("6. Vis forespørgsler");
+                Console.WriteLine("7. Afslut");
                 Console.WriteLine("==================================");
                 Console.Write("Vælg en mulighed: ");
 
@@ -86,6 +87,10 @@ namespace Genspil.Klasser
                         break;
 
                     case "6":
+                        SpilVisningService.VisForespørgsler(spilListe);
+                        break;
+
+                    case "7":
                         kører = false;
                         break;
 

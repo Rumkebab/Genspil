@@ -1,8 +1,8 @@
-﻿using Genspil.Klasser; // Giver adgang til model-klassen Spil
+﻿using Genspil.Klasser;
 
-namespace Genspil // Angiver at denne klasse hører til i projektets namespace Genspil
+namespace Genspil
 {
-    public static class SøgningService // Opretter klasse til alt der handler om søgning i spil-listen
+    public static class SøgningService
     {
         public static void SøgEfterSpilMenu(List<Spil> spilListe)
         {
@@ -89,14 +89,16 @@ namespace Genspil // Angiver at denne klasse hører til i projektets namespace G
             Console.WriteLine();
 
             if (fundneSpil.Count == 0)
+            {
                 Console.WriteLine("Ingen spil fundet.");
+                ConsoleHelper.VentPåA();
+            }
             else
             {
                 Console.WriteLine($"Fandt {fundneSpil.Count} eksemplar(er).");
-                SpilVisningService.PrintSpilTabel(fundneSpil);
+                ConsoleHelper.Pause();
+                SpilVisningService.VisAlleSpil(fundneSpil);
             }
-
-            ConsoleHelper.VentPåA();
         }
     }
 }
