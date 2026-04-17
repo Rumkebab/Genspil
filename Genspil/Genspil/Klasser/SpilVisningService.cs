@@ -201,16 +201,17 @@ namespace Genspil.Klasser
 
         public static void PrintSpilTabel(List<Spil> spilListe)
         {
-            Console.WriteLine(new string('-', 112));
-            Console.WriteLine($"{"ID",-5}{"Titel",-25}{"Genre",-15}{"Spillere",-12}{"Stand",-15}{"Pris",8}{"Status",32}");
-            Console.WriteLine(new string('-', 112));
+            string afskæringsstring = new string('-', 120);
+            Console.WriteLine(afskæringsstring);
+            Console.WriteLine($"{"ID",-5}{"Titel",-33}{"Genre",-15}{"Spillere",-12}{"Stand",-15}{"Pris",8}{"Status",32}");
+            Console.WriteLine(afskæringsstring);
 
             foreach (Spil spil in spilListe)
             {
                 Console.WriteLine(spil.VisInfo());
             }
 
-            Console.WriteLine(new string('-', 112));
+            Console.WriteLine(afskæringsstring);
         }
 
         public static void VisForespørgsler(List<Spil> spilListe)

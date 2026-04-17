@@ -3,11 +3,11 @@ Catan;Strategi;Ny;250;3-4;2;False;False;;
 Gæt;Quiz;God;180;2-8;3;False;False;;
 UNO;Kortspil;Slidt;50;2-8;4;True;False;;
 Pandemic;Samarbejde;God;220;2-4;5;False;False;;
-111;Familie;Ny;111;5;6;True;False;;Hemming Flemmingsen
+111;Familie;Ny;111;5;6;True;False;;Hemming Flemmingsensensen
 test spil.txt;Samarbejde;Slidt;200;7-8;7;False;False;;
 test123;Strategi;God;300;90;8;False;False;;
 test 6;Quiz;Slidt;500;2-3;9;False;False;;
-test;Strategi;Slidt;300;8-10;10;True;False;;
+test;Strategi;Slidt;300;8-10;10;True;False;;Gitte Nielsen
 mata;Samarbejde;Reparation;600;6;11;False;False;;
 Matador;Familie;God;150;2-4;12;False;True;Hanne Bananje;
 Matador;Familie;Uåbnet;300;2-4;13;False;True;Jens Werner;
