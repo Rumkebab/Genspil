@@ -1,8 +1,9 @@
 ﻿namespace Genspil.Klasser
 {
+    // Hjælpeklasse med genbrugelige konsol-operationer
     public static class ConsoleHelper
     {
-        // Laver en pause så brugeren kan læse beskeden
+        // Viser en pause-besked og venter på at brugeren trykker en vilkårlig tast
         public static void Pause()
         {
             Console.WriteLine();
@@ -10,7 +11,8 @@
             Console.ReadKey();
         }
 
-        // Venter indtil brugeren trykker A
+        // Venter indtil brugeren specifikt trykker 'A' for at fortsætte
+        // Ignorerer alle andre tastetryk
         public static void VentPåA(string promptTekst = "Tryk A for at vende tilbage: ")
         {
             while (true)

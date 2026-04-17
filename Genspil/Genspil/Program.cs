@@ -3,15 +3,19 @@ using Genspil.Klasser;
 
 namespace Genspil
 {
+    // Programmets entry point - starter applikationen
     public class Program
     {
         public static void Main(string[] args)
         {
-            // Sti til tekstfilen med spillene
+            // Konstruerer stien til datafilen relativt til programmets placering
+            // Går tre mapper op (..\..\..\) for at finde Datafiler mappen i projektstrukturen
             string filsti = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Datafiler\spil.txt");
 
-            // Læser spillene ind og starter hovedmenuen
+            // Indlæser eksisterende spil fra fil (eller tom liste hvis filen ikke findes)
             List<Spil> spilListe = SpilDataHandler.LæsFraFil(filsti);
+
+            // Starter hovedmenuen som kører indtil brugeren vælger at afslutte
             MenuService.Hovedmenu(filsti, spilListe);
         }
     }

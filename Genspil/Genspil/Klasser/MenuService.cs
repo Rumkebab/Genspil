@@ -2,9 +2,10 @@
 
 namespace Genspil.Klasser
 {
+    // Håndterer hovedmenuen og koordinerer brugerens navigation mellem funktioner
     public static class MenuService
     {
-        // Viser hovedmenuen og sender brugeren videre til de rigtige funktioner
+        // Viser hovedmenu og håndterer brugervalg i en loop indtil programmet afsluttes
         public static void Hovedmenu(string filsti, List<Spil> spilListe)
         {
             bool kører = true;
@@ -35,12 +36,14 @@ namespace Genspil.Klasser
                         break;
 
                     case "2":
+                        // Loop der tillader tilføjelse af flere spil efter hinanden
                         bool fortsætTilføjelse = true;
 
                         while (fortsætTilføjelse)
                         {
                             Spil? nytSpil = SpilCrudService.OpretNytSpil(filsti, spilListe);
 
+                            // Hvis null returneres, har brugeren afbrudt
                             if (nytSpil == null)
                             {
                                 fortsætTilføjelse = false;
@@ -56,6 +59,7 @@ namespace Genspil.Klasser
 
                             string tilfoejValg = "";
 
+                            // Validerer input (kun 1 eller A accepteres)
                             while (tilfoejValg != "1" && tilfoejValg != "A")
                             {
                                 Console.Write("Valg: ");

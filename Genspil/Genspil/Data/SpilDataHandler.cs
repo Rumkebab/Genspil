@@ -1,56 +1,51 @@
-﻿using Genspil.Klasser; // Giver adgang til Spil-klassen
+﻿using Genspil.Klasser;
 
-
-namespace Genspil.Data // Organiserer koden i en mappe/gruppe der hedder Data
+namespace Genspil.Data
 {
-
-    public static class SpilDataHandler // Klasse der står for at håndtere filer (læse og gemme spil)
+    // Håndterer persistering af spil til og fra tekstfil
+    public static class SpilDataHandler
     {
-        // Metode til at læse spil fra en tekstfil
+        // Læser alle spil fra tekstfil og returnerer dem som en liste
         public static List<Spil> LæsFraFil(string filnavn)
         {
-            // Opretter en tom liste, hvor vi gemmer spillene
             List<Spil> spilListe = new List<Spil>();
 
-            // Tjekker om filen overhovedet findes, så programmet ikke crasher
+            // Tjekker om filen eksisterer før vi forsøger at læse
             if (File.Exists(filnavn))
             {
-                // Åbner filen og sørger for at den bliver lukket igen automatisk bagefter
+                // Using sikrer at filen lukkes korrekt, selv ved fejl
                 using (StreamReader sr = new StreamReader(filnavn))
                 {
-                    string linje; // Variabel til at holde hver linje fra filen
+                    string linje;
 
-                    // Læser linje for linje indtil der ikke er flere linjer (null betyder slut)
+                    // Læser fil linje for linje indtil slutningen (null)
                     while ((linje = sr.ReadLine()) != null)
                     {
-                        // Springer tomme linjer over (bare for at undgå fejl)
+                        // Springer blanke linjer over
                         if (!string.IsNullOrWhiteSpace(linje))
                         {
-                            // Laver linjen om til et Spil-objekt og tilføjer det til listen
+                            // Konverterer tekstlinje til Spil-objekt
                             spilListe.Add(Spil.FromString(linje));
                         }
                     }
                 }
             }
 
-            // Returnerer listen med alle spillene
             return spilListe;
         }
 
-        // Metode til at gemme alle spil i en fil
+        // Gemmer hele spillisten til fil (overskriver eksisterende indhold)
         public static void GemTilFil(string filnavn, List<Spil> spilListe)
         {
-            // Åbner filen til at skrive i (overskriver det gamle indhold)
             using (StreamWriter sw = new StreamWriter(filnavn))
             {
-                // Går igennem hvert spil i listen
+                // Skriver hvert spil som en separat linje
                 foreach (Spil spil in spilListe)
                 {
-                    // Skriver spillet til filen som en tekstlinje
                     sw.WriteLine(spil.ToString());
                 }
             }
         }
-     
+
     }
 }

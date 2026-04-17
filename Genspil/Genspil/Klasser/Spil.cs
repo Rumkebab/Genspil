@@ -20,14 +20,18 @@
 
     public class Spil
     {
-        
-        private static int lastId = 0; // Holder styr på sidste brugte ID
+        // Holder styr på sidste brugte ID på tværs af alle spil-instanser
+        private static int lastId = 0;
+
+        // Spillets grundlæggende information
         public string Titel { get; private set; }
         public Genre Genre { get; private set; }
         public Stand Stand { get; private set; }
         public string AntalSpillere { get; private set; }
         public int Pris { get; private set; }
         public int Id { get; private set; }
+
+        // Status for reservation og ønskeliste
         public bool ErReserveret { get; private set; }
         public bool ErRequest { get; private set; }
         public string Kontaktperson { get; private set; }
@@ -130,7 +134,7 @@
 
         public static Spil FromString(string linje)
         {
-            string[] data = linje.Split(';');
+            string[] data = linje.Split(';'); //Vi vælger semikolon da det er mindre sandsynligt at det vil være en del af felterne, og det gør parsing mere robust.
 
             string titel = data[0];
             Genre genre = Enum.Parse<Genre>(data[1]);
@@ -146,13 +150,12 @@
             return new Spil(titel, genre, stand, pris, antalSpillere, id, erReserveret, erRequest, kontaktperson, reserveretAf);
         }
 
-        // Bruges til at vise spillet pænt i tabellen
+        // Formaterer spillet til visning i konsol-tabel med faste kolonnebredder
         public string VisInfo()
         {
-
-
             string status = "";
 
+            // Bygger status-tekst med reservation hvis relevant
             if (ErReserveret)
             {
                 string navn = ReserveretAf.Length > 20 ? ReserveretAf.Substring(0, 17) + "..." : ReserveretAf;
@@ -161,6 +164,7 @@
                     : $"(RES: {navn})";
             }
 
+            // Tilføjer ønsket-status hvis relevant
             if (ErRequest)
             {
                 string kontakt = Kontaktperson.Length > 20 ? Kontaktperson.Substring(0, 17) + "..." : Kontaktperson;
@@ -169,9 +173,10 @@
                     : $"(ØNS: {kontakt})";
             }
 
-            // Trimmer titlen for at undgå at ødelægge tabellayoutet
+            // Afkorter titel hvis den er for lang
             string titel = Titel.Length > 32 ? Titel.Substring(0, 29) + "..." : Titel;
 
+            // Returnerer formateret string med faste kolonnebredder
             return $"{Id,-5}" +
                    $"{titel,-33}" +
                    $"{Genre,-15}" +
@@ -179,6 +184,40 @@
                    $"{Stand,-15}" +
                    $"{Pris + " kr",8}" +
                    $"{status,32}";
+        }
+
+        // Indlæser alle spil fra tekstfil med fejlhåndtering
+        public static List<Spil> LæsFraFil(string filnavn) {
+            List<Spil> spilListe = new List<Spil>();
+
+            try {
+                if (File.Exists(filnavn)) {
+                    using (StreamReader sr = new StreamReader(filnavn)) {
+                        string? linje;
+                        while ((linje = sr.ReadLine()) != null) {
+                            if (!string.IsNullOrWhiteSpace(linje)) {
+                                try {
+                                    spilListe.Add(Spil.FromString(linje));
+                                }
+                                catch (Exception ex) {
+                                    // Springer fejlagtige linjer over i stedet for at crashe
+                                    Console.WriteLine($"Advarsel: Kunne ikke indlæse linje: {linje}");
+                                    Console.WriteLine($"Fejl: {ex.Message}");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (IOException ex) {
+                Console.WriteLine($"Fejl ved læsning af fil: {ex.Message}");
+                Console.WriteLine("Starter med tom liste.");
+            }
+            catch (UnauthorizedAccessException ex) {
+                Console.WriteLine($"Ingen adgang til fil: {ex.Message}");
+            }
+
+            return spilListe;
         }
     }
 }
